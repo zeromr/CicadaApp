@@ -3,6 +3,8 @@ package com.demo.cicada.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -159,6 +161,12 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     // 加载天气和图片数据
     public void loadData() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String bingPic = sp.getString("bing_pic", null);
+        if (bingPic != null) {
+            Glide.with(this).load(bingPic).into(ivBingPic);
+        } else {
+            loadBingPic();
+        }
         String weatherStr = sp.getString("weather", null);
         if (weatherStr != null) {
             // 有缓存时直接解析天气数据
@@ -175,12 +183,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             checkPermission();
         }
         swipeRefresh.setOnRefreshListener(() -> requestWeather(mWeatherId));
-        String bingPic = sp.getString("bing_pic", null);
-        if (bingPic != null) {
-            Glide.with(this).load(bingPic).into(ivBingPic);
-        } else {
-            loadBingPic();
-        }
     }
 
     // 菜单项
@@ -251,7 +253,9 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
      * 加载必应每日一图
      */
     private void loadBingPic() {
-        String requestBingPic = "http://guolin.tech/api/bing_pic";
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_bg_weather);
+        ivBingPic.setImageBitmap(bitmap);
+        /*String requestBingPic = "http://guolin.tech/api/bing_pic";
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -272,7 +276,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 });
             }
-        });
+        });*/
     }
 
     /**
