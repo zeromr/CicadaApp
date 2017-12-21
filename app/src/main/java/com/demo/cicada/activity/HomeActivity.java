@@ -202,6 +202,7 @@ public class HomeActivity extends PlayBarBaseActivity {
             case android.R.id.home:
                 Intent intent = new Intent(HomeActivity.this,WeatherActivity.class);
                 startActivity(intent);
+                this.finish();
                 break;
             default:
                 break;

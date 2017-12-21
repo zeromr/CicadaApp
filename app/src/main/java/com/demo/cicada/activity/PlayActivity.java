@@ -34,10 +34,7 @@ import com.demo.cicada.view.PlayingPopWindow;
 import java.util.Locale;
 
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
-
     private static final String TAG = PlayActivity.class.getName();
-
-//    public static final String ACTION_UPDATE_UI_PLAY_ACTIVITY = "com.demo.cicada.activity.playactivity:action_update_ui_broad_cast";
 
     private DBManager dbManager;
 
@@ -100,7 +97,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-//                seekBar_touch = true;	//可以拖动标志
+                //                seekBar_touch = true;	//可以拖动标志
                 int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
                 if (musicId == -1) {
                     Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
@@ -123,8 +120,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mProgress = progress;
                 initTime();
             }
@@ -156,7 +152,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-    private void initPlayIv(){
+    private void initPlayIv() {
         int status = PlayerManagerReceiver.status;
         switch (status) {
             case Constant.STATUS_STOP:
@@ -196,10 +192,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private void initTime() {
         curTimeTv.setText(formatTime(current));
         totalTimeTv.setText(formatTime(duration));
-//        if (progress - mLastProgress >= 1000) {
-//            tvCurrentTime.setText(formatTime(progress));
-//            mLastProgress = progress;
-//        }
     }
 
     private String formatTime(long time) {
@@ -230,14 +222,14 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         initPlayMode();
     }
 
-    private void setSeekBarBg(){
+    private void setSeekBarBg() {
         try {
-            int progressColor = CustomAttrValueUtil.getAttrColorValue(R.attr.colorPrimary, R.color.colorAccent,this);
+            int progressColor = CustomAttrValueUtil.getAttrColorValue(R.attr.colorPrimary, R.color.colorAccent, this);
             LayerDrawable layerDrawable = (LayerDrawable) seekBar.getProgressDrawable();
-            ScaleDrawable scaleDrawable = (ScaleDrawable)layerDrawable.findDrawableByLayerId(android.R.id.progress);
+            ScaleDrawable scaleDrawable = (ScaleDrawable) layerDrawable.findDrawableByLayerId(android.R.id.progress);
             GradientDrawable drawable = (GradientDrawable) scaleDrawable.getDrawable();
             drawable.setColor(progressColor);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -246,7 +238,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         int musicId;
         musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
         if (musicId == -1 || musicId == 0) {
-            musicId = dbManager.getFirstId(Constant.LIST_ALLMUSIC);
+            //            musicId = dbManager.getFirstId(Constant.LIST_ALLMUSIC);
             Intent intent = new Intent(Constant.MP_FILTER);
             intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
             sendBroadcast(intent);
@@ -275,16 +267,17 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     public void showPopFormBottom() {
         PlayingPopWindow playingPopWindow = new PlayingPopWindow(PlayActivity.this);
-        playingPopWindow.showAtLocation(findViewById(R.id.activity_play), Gravity.BOTTOM| Gravity.CENTER_HORIZONTAL, 0, 0);
+        playingPopWindow.showAtLocation(findViewById(R.id.activity_play), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                0, 0);
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.alpha=0.7f;
+        params.alpha = 0.7f;
         getWindow().setAttributes(params);
 
         playingPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 WindowManager.LayoutParams params = getWindow().getAttributes();
-                params.alpha=1f;
+                params.alpha = 1f;
                 getWindow().setAttributes(params);
             }
         });
@@ -347,8 +340,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private void setStyle() {
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }

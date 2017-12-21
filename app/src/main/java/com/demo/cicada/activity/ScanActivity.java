@@ -101,7 +101,7 @@ public class ScanActivity extends BaseActivity {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case Constant.SCAN_NO_MUSIC:
-                        Toast.makeText(ScanActivity.this,"本地没有歌曲，快去下载吧", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScanActivity.this, "本地没有歌曲，快去下载吧", Toast.LENGTH_SHORT).show();
                         scanComplete();
                         break;
                     case Constant.SCAN_ERROR:
@@ -113,7 +113,7 @@ public class ScanActivity extends BaseActivity {
                         scanComplete();
                         break;
                     case Constant.SCAN_UPDATE:
-//                        int updateProgress = msg.getData().getInt("progress");
+                        //                        int updateProgress = msg.getData().getInt("progress");
                         String path = msg.getData().getString("scanPath");
                         scanCountTv.setText("已扫描到" + progress + "首歌曲");
                         scanPathTv.setText(path);
@@ -124,19 +124,20 @@ public class ScanActivity extends BaseActivity {
 
     }
 
-    private void scanComplete(){
+    private void scanComplete() {
         scanBtn.setText("完成");
         scanning = false;
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!scanning){
+                if (!scanning) {
                     ScanActivity.this.finish();
                 }
             }
         });
         scanView.stop();
     }
+
     public void startScanLocalMusic() {
         new Thread() {
 
@@ -144,29 +145,30 @@ public class ScanActivity extends BaseActivity {
             public void run() {
                 super.run();
                 try {
-                    String[] muiscInfoArray = new String[]{
-                            MediaStore.Audio.Media.TITLE,               //歌曲名称
+                    String[] muiscInfoArray = new String[]{MediaStore.Audio.Media.TITLE,               //歌曲名称
                             MediaStore.Audio.Media.ARTIST,              //歌曲歌手
                             MediaStore.Audio.Media.ALBUM,               //歌曲的专辑名
                             MediaStore.Audio.Media.DURATION,            //歌曲时长
                             MediaStore.Audio.Media.DATA};               //歌曲文件的全路径
                     Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                             muiscInfoArray, null, null, null);
-                    if (cursor!= null && cursor.getCount() != 0){
-                        musicInfoList = new ArrayList<MusicInfo>();
+                    if (cursor != null && cursor.getCount() != 0) {
+                        musicInfoList = new ArrayList<>();
                         Log.i(TAG, "run: cursor.getCount() = " + cursor.getCount());
                         while (cursor.moveToNext()) {
-                            if (!scanning){
+                            if (!scanning) {
                                 return;
                             }
                             String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.TITLE));
-                            String singer = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.ARTIST));
+                            String singer = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns
+                                    .ARTIST));
                             String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.ALBUM));
                             String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA));
-                            String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
+                            String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns
+                                    .DURATION));
 
-                            if (filterCb.isChecked() && duration != null && Long.valueOf(duration) < 1000 * 60){
-                                Log.e(TAG, "run: name = "+name+" duration < 1000 * 60" );
+                            if (filterCb.isChecked() && duration != null && Long.valueOf(duration) < 1000 * 60) {
+                                Log.e(TAG, "run: name = " + name + " duration < 1000 * 60");
                                 continue;
                             }
 
@@ -184,9 +186,10 @@ public class ScanActivity extends BaseActivity {
                             musicInfo.setSinger(singer);
                             musicInfo.setAlbum(album);
                             musicInfo.setPath(path);
-                            Log.e(TAG, "run: parentPath = "+parentPath );
+                            Log.e(TAG, "run: parentPath = " + parentPath);
                             musicInfo.setParentPath(parentPath);
-                            musicInfo.setFirstLetter(ChineseToEnglish.StringToPinyinSpecial(name).toUpperCase().charAt(0)+"");
+                            musicInfo.setFirstLetter(ChineseToEnglish.StringToPinyinSpecial(name).toUpperCase()
+                                    .charAt(0) + "");
 
                             musicInfoList.add(musicInfo);
                             progress++;
@@ -195,10 +198,6 @@ public class ScanActivity extends BaseActivity {
                             msg = new Message();    //每次都必须new，必须发送新对象，不然会报错
                             msg.what = Constant.SCAN_UPDATE;
                             msg.arg1 = musicCount;
-//                                Bundle data = new Bundle();
-//                                data.putInt("progress", progress);
-//                                data.putString("scanPath", scanPath);
-//                                msg.setData(data);
                             handler.sendMessage(msg);  //更新UI界面
                             try {
                                 sleep(50);
@@ -220,7 +219,7 @@ public class ScanActivity extends BaseActivity {
                         msg.what = Constant.SCAN_COMPLETE;
                         handler.sendMessage(msg);  //更新UI界面
 
-                    }else {
+                    } else {
                         msg = new Message();
                         msg.what = Constant.SCAN_NO_MUSIC;
                         handler.sendMessage(msg);  //更新UI界面
@@ -228,9 +227,9 @@ public class ScanActivity extends BaseActivity {
                     if (cursor != null) {
                         cursor.close();
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e(TAG, "run: error = ",e );
+                    Log.e(TAG, "run: error = ", e);
                     //扫描出错
                     msg = new Message();
                     msg.what = Constant.SCAN_ERROR;
@@ -240,59 +239,60 @@ public class ScanActivity extends BaseActivity {
         }.start();
     }
 
-    public static String replaseUnKnowe(String oldStr){
+    public static String replaseUnKnowe(String oldStr) {
         try {
-            if (oldStr != null){
-                if (oldStr.equals("<unknown>")){
+            if (oldStr != null) {
+                if (oldStr.equals("<unknown>")) {
                     oldStr = oldStr.replaceAll("<unknown>", "未知");
                 }
             }
-        }catch (Exception e){
-            Log.e(TAG, "replaseUnKnowe: error = ",e );
+        } catch (Exception e) {
+            Log.e(TAG, "replaseUnKnowe: error = ", e);
         }
         return oldStr;
     }
 
     //初始化当前播放音乐，有可能当前正在播放音乐已经被过滤掉了
-    private void initCurPlaying(){
+    private void initCurPlaying() {
         try {
             boolean contain = false;
             int id = 1;
-            if (musicInfoList != null){
-                for (MusicInfo info : musicInfoList){
-                    Log.d(TAG, "initCurPlaying: info.getPath() = "+info.getPath());
-                    Log.d(TAG, "initCurPlaying: curMusicPath = "+ curMusicPath);
-                    if (info.getPath().equals(curMusicPath)){
+            if (musicInfoList != null) {
+                for (MusicInfo info : musicInfoList) {
+                    Log.d(TAG, "initCurPlaying: info.getPath() = " + info.getPath());
+                    Log.d(TAG, "initCurPlaying: curMusicPath = " + curMusicPath);
+                    if (info.getPath().equals(curMusicPath)) {
                         contain = true;
-                        Log.d(TAG, "initCurPlaying: musicInfoList.indexOf(info) = "+musicInfoList.indexOf(info));
+                        Log.d(TAG, "initCurPlaying: musicInfoList.indexOf(info) = " + musicInfoList.indexOf(info));
                         id = musicInfoList.indexOf(info) + 1;
                     }
 
                 }
             }
-            if (contain){
+            if (contain) {
                 Log.d(TAG, "initCurPlaying: contains");
-                    Log.d(TAG, "initCurPlaying: id = "+id);
-                    MyMusicUtil.setShared(Constant.KEY_ID, id);
-            }else {
+                Log.d(TAG, "initCurPlaying: id = " + id);
+                MyMusicUtil.setShared(Constant.KEY_ID, id);
+            } else {
                 Log.d(TAG, "initCurPlaying: !!!contains");
                 Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
                 intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
                 sendBroadcast(intent);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private void setScanBtnBg(){
-        int defColor = CustomAttrValueUtil.getAttrColorValue(R.attr.colorAccent, R.color.colorAccent,this);
-        int pressColor = CustomAttrValueUtil.getAttrColorValue(R.attr.press_color, R.color.colorAccent,this);
-        Drawable backgroundDrawable =  scanBtn.getBackground();
-        StateListDrawable sld = (StateListDrawable) backgroundDrawable;// 通过向下转型，转回原型，selector对应的Java类为：StateListDrawable
-        SelectorUtil.changeViewColor(sld,new int[]{pressColor,defColor});
+    private void setScanBtnBg() {
+        int defColor = CustomAttrValueUtil.getAttrColorValue(R.attr.colorAccent, R.color.colorAccent, this);
+        int pressColor = CustomAttrValueUtil.getAttrColorValue(R.attr.press_color, R.color.colorAccent, this);
+        Drawable backgroundDrawable = scanBtn.getBackground();
+        StateListDrawable sld = (StateListDrawable) backgroundDrawable;//
+        // 通过向下转型，转回原型，selector对应的Java类为：StateListDrawable
+        SelectorUtil.changeViewColor(sld, new int[]{pressColor, defColor});
     }
 
     @Override

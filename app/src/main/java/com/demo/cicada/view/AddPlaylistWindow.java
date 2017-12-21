@@ -31,9 +31,6 @@ import java.util.List;
  */
 
 public class AddPlaylistWindow extends PopupWindow {
-
-    private static final String TAG = "AddPlaylistWindow";
-
     private View view;
     private Activity activity;
     private MusicInfo musicInfo;
@@ -52,14 +49,14 @@ public class AddPlaylistWindow extends PopupWindow {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         this.view = LayoutInflater.from(activity).inflate(R.layout.pop_add_playlist, null);
         // 设置视图
         this.setContentView(this.view);
         // 设置弹出窗体的宽和高,不设置显示不出来
         Point size = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(size);
-        int height = (int)(size.y * 0.6);
+        int height = (int) (size.y * 0.6);
         this.setHeight(height);
         this.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
 
@@ -88,19 +85,19 @@ public class AddPlaylistWindow extends PopupWindow {
                 return true;
             }
         });
-        
-        listView = (ListView)view.findViewById(R.id.pop_add_pl_lv);
+
+        listView = (ListView) view.findViewById(R.id.pop_add_pl_lv);
         adapter = new Adapter();
         listView.setAdapter(adapter);
 
-        addLl = (LinearLayout)view.findViewById(R.id.pop_add_playlist_ll);
+        addLl = (LinearLayout) view.findViewById(R.id.pop_add_playlist_ll);
         addLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //添加歌单
                 final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                View view = LayoutInflater.from(activity).inflate(R.layout.dialog_create_playlist,null);
-                final EditText playlistEt = (EditText)view.findViewById(R.id.dialog_playlist_name_et);
+                View view = LayoutInflater.from(activity).inflate(R.layout.dialog_create_playlist, null);
+                final EditText playlistEt = (EditText) view.findViewById(R.id.dialog_playlist_name_et);
                 builder.setView(view);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -147,7 +144,7 @@ public class AddPlaylistWindow extends PopupWindow {
             if (convertView == null) {
                 holder = new Holder();
                 convertView = LayoutInflater.from(activity).inflate(R.layout.play_list_view_item, null, false);
-                holder.swipView =  (SwipeMenuLayout)convertView.findViewById(R.id.play_list_content_swip_view);
+                holder.swipView = (SwipeMenuLayout) convertView.findViewById(R.id.play_list_content_swip_view);
                 holder.contentLl = (LinearLayout) convertView.findViewById(R.id.play_list_content_ll);
                 holder.coverIv = (ImageView) convertView.findViewById(R.id.play_list_cover_iv);
                 holder.listName = (TextView) convertView.findViewById(R.id.play_list_name_tv);
@@ -157,56 +154,21 @@ public class AddPlaylistWindow extends PopupWindow {
                 holder = (Holder) convertView.getTag();
             }
             holder.swipView.setSwipeEnable(false);
-
-//        if (dataList.size() == 0){
-//            //展现默认的新建歌单列表
-//            holder.listName.setText("aaa");
-//            holder.listCount.setText("0首");
-//        }else {
             //展现已有的歌单列表
             final PlayListInfo playListInfo = dataList.get(position);
             holder.listName.setText(playListInfo.getName());
             holder.listCount.setText(playListInfo.getCount() + "首");
-//        }
 
             holder.contentLl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(dbManager.isExistPlaylist(playListInfo.getId(),musicInfo.getId())){
-                        Toast.makeText(activity,"该歌单已存在该歌曲", Toast.LENGTH_SHORT).show();
-                    }else {
-                        dbManager.addToPlaylist(playListInfo.getId(),musicInfo.getId());
-                        Toast.makeText(activity,"添加到歌单成功", Toast.LENGTH_SHORT).show();
+                    if (dbManager.isExistPlaylist(playListInfo.getId(), musicInfo.getId())) {
+                        Toast.makeText(activity, "该歌单已存在该歌曲", Toast.LENGTH_SHORT).show();
+                    } else {
+                        dbManager.addToPlaylist(playListInfo.getId(), musicInfo.getId());
+                        Toast.makeText(activity, "添加到歌单成功", Toast.LENGTH_SHORT).show();
                     }
                     dismiss();
-//                if (dataList.size() == 0){
-//                    //添加歌单
-//                    final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                    View view = LayoutInflater.from(context).inflate(R.layout.dialog_create_playlist,null);
-//                    final EditText playlistEt = (EditText)view.findViewById(R.id.dialog_playlist_name_et);
-//                    builder.setView(view);
-//                    builder.setTitle("新建歌单");
-//                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            String name = playlistEt.getText().toString();
-//                            dbManager.createPlaylist(name);
-//                            dialog.dismiss();
-//                            updateDataList();
-//                        }
-//                    });
-//
-//                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//
-//                    builder.show();//配置好后再builder show
-//                }else {
-                    //进入歌单
-//                }
                 }
             });
 

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.demo.cicada.R;
-import com.demo.cicada.activity.ThemeActivity;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.AlbumInfo;
 import com.demo.cicada.entity.music.FolderInfo;
@@ -33,12 +32,13 @@ import java.util.Map;
 public class MyMusicUtil {
 
     private static final String TAG = MyMusicUtil.class.getName();
+
     //获取当前播放列表
-    public static List<MusicInfo> getCurPlayList(Context context){
+    public static List<MusicInfo> getCurPlayList(Context context) {
         DBManager dbManager = DBManager.getInstance(context);
         int playList = MyMusicUtil.getIntShared(Constant.KEY_LIST);
         List<MusicInfo> musicInfoList = new ArrayList<>();
-        switch (playList){
+        switch (playList) {
             case Constant.LIST_ALLMUSIC:
                 musicInfoList = dbManager.getAllMusicFromMusicTable();
                 break;
@@ -54,25 +54,25 @@ public class MyMusicUtil {
                 break;
             case Constant.LIST_SINGER:
                 String singerName = MyMusicUtil.getStringShared(Constant.KEY_LIST_ID);
-                if (singerName == null){
+                if (singerName == null) {
                     musicInfoList = dbManager.getAllMusicFromMusicTable();
-                }else {
+                } else {
                     musicInfoList = dbManager.getMusicListBySinger(singerName);
                 }
                 break;
             case Constant.LIST_ALBUM:
                 String albumName = MyMusicUtil.getStringShared(Constant.KEY_LIST_ID);
-                if (albumName == null){
+                if (albumName == null) {
                     musicInfoList = dbManager.getAllMusicFromMusicTable();
-                }else {
+                } else {
                     musicInfoList = dbManager.getMusicListByAlbum(albumName);
                 }
                 break;
             case Constant.LIST_FOLDER:
                 String folderName = MyMusicUtil.getStringShared(Constant.KEY_LIST_ID);
-                if (folderName == null){
+                if (folderName == null) {
                     musicInfoList = dbManager.getAllMusicFromMusicTable();
-                }else {
+                } else {
                     musicInfoList = dbManager.getMusicListByFolder(folderName);
                 }
                 break;
@@ -80,19 +80,19 @@ public class MyMusicUtil {
         return musicInfoList;
     }
 
-    public static void playNextMusic(Context context){
+    public static void playNextMusic(Context context) {
         //获取下一首ID
         DBManager dbManager = DBManager.getInstance(context);
         int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
-        Log.d(TAG,"next play mode ="+playMode);
+        Log.d(TAG, "next play mode =" + playMode);
         int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
         List<MusicInfo> musicList = getCurPlayList(context);
-        ArrayList<Integer> musicIdList =new ArrayList<>();
-        for (MusicInfo info : musicList){
+        ArrayList<Integer> musicIdList = new ArrayList<>();
+        for (MusicInfo info : musicList) {
             musicIdList.add(info.getId());
         }
-        musicId = dbManager.getNextMusic(musicIdList,musicId,playMode);
-        MyMusicUtil.setShared(Constant.KEY_ID,musicId);
+        musicId = dbManager.getNextMusic(musicIdList, musicId, playMode);
+        MyMusicUtil.setShared(Constant.KEY_ID, musicId);
         if (musicId == -1) {
             Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
             intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
@@ -103,28 +103,28 @@ public class MyMusicUtil {
 
         //获取播放歌曲路径
         String path = dbManager.getMusicPath(musicId);
-        Log.d(TAG,"next path ="+path);
+        Log.d(TAG, "next path =" + path);
         //发送播放请求
-        Log.d(TAG,"next  id = "+musicId+"path = "+ path);
+        Log.d(TAG, "next  id = " + musicId + "path = " + path);
         Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
         intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
         intent.putExtra(Constant.KEY_PATH, path);
         context.sendBroadcast(intent);
     }
 
-    public static void playPreMusic(Context context){
+    public static void playPreMusic(Context context) {
         //获取下一首ID
         DBManager dbManager = DBManager.getInstance(context);
         int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
-        Log.d(TAG,"pre play mode ="+playMode);
+        Log.d(TAG, "pre play mode =" + playMode);
         int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
         List<MusicInfo> musicList = getCurPlayList(context);
-        ArrayList<Integer> musicIdList =new ArrayList<>();
-        for (MusicInfo info : musicList){
+        ArrayList<Integer> musicIdList = new ArrayList<>();
+        for (MusicInfo info : musicList) {
             musicIdList.add(info.getId());
         }
-        musicId = dbManager.getPreMusic(musicIdList,musicId,playMode);
-        MyMusicUtil.setShared(Constant.KEY_ID,musicId);
+        musicId = dbManager.getPreMusic(musicIdList, musicId, playMode);
+        MyMusicUtil.setShared(Constant.KEY_ID, musicId);
         if (musicId == -1) {
             Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
             intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
@@ -135,17 +135,17 @@ public class MyMusicUtil {
 
         //获取播放歌曲路径
         String path = dbManager.getMusicPath(musicId);
-        Log.d(TAG,"pre path ="+path);
+        Log.d(TAG, "pre path =" + path);
         //发送播放请求
-        Log.d(TAG,"pre  id = "+musicId+"path = "+ path);
+        Log.d(TAG, "pre  id = " + musicId + "path = " + path);
         Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
         intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
         intent.putExtra(Constant.KEY_PATH, path);
         context.sendBroadcast(intent);
     }
 
-    public static void setMusicMylove(Context context, int musicId){
-        if (musicId == -1){
+    public static void setMusicMylove(Context context, int musicId) {
+        if (musicId == -1) {
             Toast.makeText(context, "歌曲不存在", Toast.LENGTH_LONG).show();
             return;
         }
@@ -154,8 +154,7 @@ public class MyMusicUtil {
     }
 
     //设置--铃声的具体方法
-    public static void setMyRingtone(Context context)
-    {
+    public static void setMyRingtone(Context context) {
         DBManager dbManager = DBManager.getInstance(context);
         int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
         String path = dbManager.getMusicPath(musicId);
@@ -172,19 +171,21 @@ public class MyMusicUtil {
         Uri uri = MediaStore.Audio.Media.getContentUriForPath(sdfile.getAbsolutePath());
         Uri newUri = context.getContentResolver().insert(uri, values);
         RingtoneManager.setActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE, newUri);
-        Toast.makeText( context,"设置来电铃声成功！", Toast.LENGTH_SHORT ).show();
+        Toast.makeText(context, "设置来电铃声成功！", Toast.LENGTH_SHORT).show();
     }
 
     // 设置sharedPreferences
-    public static void setShared(String key, int value){
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext().MODE_PRIVATE);
+    public static void setShared(String key, int value) {
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext()
+                .MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt(key, value);
         editor.commit();
     }
 
-    public static void setShared(String key, String value){
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext().MODE_PRIVATE);
+    public static void setShared(String key, String value) {
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext()
+                .MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(key, value);
         editor.commit();
@@ -192,20 +193,22 @@ public class MyMusicUtil {
 
     // 获取sharedPreferences
     public static int getIntShared(String key) {
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext().MODE_PRIVATE);
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext()
+                .MODE_PRIVATE);
         int value;
-        if (key.equals(Constant.KEY_CURRENT)){
+        if (key.equals(Constant.KEY_CURRENT)) {
             value = pref.getInt(key, 0);
-        }else{
+        } else {
             value = pref.getInt(key, -1);
         }
         return value;
     }
 
     public static String getStringShared(String key) {
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext().MODE_PRIVATE);
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext()
+                .MODE_PRIVATE);
         String value;
-        value = pref.getString(key,null);
+        value = pref.getString(key, null);
         return value;
     }
 
@@ -225,7 +228,7 @@ public class MyMusicUtil {
             }
         }
 
-        for (Map.Entry<String,List<MusicInfo>> entry : musicMap.entrySet()) {
+        for (Map.Entry<String, List<MusicInfo>> entry : musicMap.entrySet()) {
             System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
             SingerInfo singerInfo = new SingerInfo();
             singerInfo.setName(entry.getKey());
@@ -251,7 +254,7 @@ public class MyMusicUtil {
             }
         }
 
-        for (Map.Entry<String,List<MusicInfo>> entry : musicMap.entrySet()) {
+        for (Map.Entry<String, List<MusicInfo>> entry : musicMap.entrySet()) {
             AlbumInfo albumInfo = new AlbumInfo();
             albumInfo.setName(entry.getKey());
             albumInfo.setSinger(entry.getValue().get(0).getSinger());
@@ -278,7 +281,7 @@ public class MyMusicUtil {
             }
         }
 
-        for (Map.Entry<String,List<MusicInfo>> entry : musicMap.entrySet()) {
+        for (Map.Entry<String, List<MusicInfo>> entry : musicMap.entrySet()) {
             System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
             FolderInfo folderInfo = new FolderInfo();
             File file = new File(entry.getKey());
@@ -293,25 +296,18 @@ public class MyMusicUtil {
 
     //设置主题
     public static void setTheme(Context context, int position) {
-        int preSelect = getTheme(context);
+//        int preSelect = getTheme(context);
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.THEME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putInt("theme_select", position).commit();
-        if (preSelect != ThemeActivity.THEME_SIZE - 1) {
-            sharedPreferences.edit().putInt("pre_theme_select", preSelect).commit();
-        }
+        sharedPreferences.edit().putInt("theme_select", position).apply();
+        /*if (preSelect != ThemeActivity.THEME_SIZE - 1) {
+            sharedPreferences.edit().putInt("pre_theme_select", preSelect).apply();
+        }*/
     }
-
 
     //得到主题
     public static int getTheme(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.THEME, Context.MODE_PRIVATE);
-        return sharedPreferences.getInt("theme_select", 1);
-    }
-
-    //得到上一次选择的主题，用于取消夜间模式时恢复用
-    public static int getPreTheme(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.THEME, Context.MODE_PRIVATE);
-        return sharedPreferences.getInt("pre_theme_select", 0);
+        return sharedPreferences.getInt("theme_select", 0);
     }
 
     //设置夜间模式
@@ -322,20 +318,20 @@ public class MyMusicUtil {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.THEME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor =  sharedPreferences.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("night", mode).commit();
     }
 
     //得到是否夜间模式
     public static boolean getNightMode(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.THEME, Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean("night",false);
+        return sharedPreferences.getBoolean("night", false);
     }
 
     //得到主题
     public static int getMyThemeStyle(Context context) {
         int themeId = MyMusicUtil.getTheme(context);
-        switch (themeId){
+        switch (themeId) {
             default:
             case 0:
                 return R.style.BiLiPinkTheme;
@@ -363,8 +359,9 @@ public class MyMusicUtil {
     }
 
     // 设置必用图片 sharedPreferences
-    public static void setBingShared(String value){
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("bing_pic", MyApplication.getContext().MODE_PRIVATE);
+    public static void setBingShared(String value) {
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("bing_pic", MyApplication.getContext
+                ().MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("pic", value);
         editor.commit();
@@ -372,8 +369,9 @@ public class MyMusicUtil {
 
     // 获取必用图片 sharedPreferences
     public static String getBingShared() {
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("bing_pic", MyApplication.getContext().MODE_PRIVATE);
-        String value = pref.getString("pic",null);
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("bing_pic", MyApplication.getContext
+                ().MODE_PRIVATE);
+        String value = pref.getString("pic", null);
         return value;
     }
 

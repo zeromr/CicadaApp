@@ -22,7 +22,6 @@ import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.PlayListInfo;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,43 +61,43 @@ public class HomeListViewAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Holder holder;
-        if (convertView == null){
+        if (convertView == null) {
             holder = new Holder();
-            convertView = LayoutInflater.from(activity).inflate(R.layout.play_list_view_item,null,false);
-            holder.swipView =  (View)convertView.findViewById(R.id.play_list_content_swip_view);
+            convertView = LayoutInflater.from(activity).inflate(R.layout.play_list_view_item, null, false);
+            holder.swipView = convertView.findViewById(R.id.play_list_content_swip_view);
             holder.contentView = (LinearLayout) convertView.findViewById(R.id.play_list_content_ll);
             holder.coverIv = (ImageView) convertView.findViewById(R.id.play_list_cover_iv);
             holder.listName = (TextView) convertView.findViewById(R.id.play_list_name_tv);
             holder.listCount = (TextView) convertView.findViewById(R.id.play_list_music_count_tv);
             holder.deleteBtn = (Button) convertView.findViewById(R.id.playlist_swip_delete_menu_btn);
             convertView.setTag(holder);
-        }else {
-            holder = (Holder)convertView.getTag();
+        } else {
+            holder = (Holder) convertView.getTag();
         }
-        if (dataList.size() == 0){
+        if (dataList.size() == 0) {
             //展现默认的新建歌单列表
             holder.listName.setText("新建歌单");
             holder.listName.setGravity(Gravity.CENTER_VERTICAL);
             holder.listCount.setVisibility(View.GONE);
-            ((SwipeMenuLayout)holder.swipView).setSwipeEnable(false);
-        }else {
+            ((SwipeMenuLayout) holder.swipView).setSwipeEnable(false);
+        } else {
             //展现已有的歌单列表
             PlayListInfo playListInfo = dataList.get(position);
             holder.listName.setText(playListInfo.getName());
-            holder.listCount.setText(playListInfo.getCount()+"首");
+            holder.listCount.setText(playListInfo.getCount() + "首");
             holder.listName.setGravity(Gravity.BOTTOM);
             holder.listCount.setVisibility(View.VISIBLE);
-            ((SwipeMenuLayout)holder.swipView).setSwipeEnable(true);
+            ((SwipeMenuLayout) holder.swipView).setSwipeEnable(true);
         }
 
         holder.contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dataList.size() == 0){
+                if (dataList.size() == 0) {
                     //添加歌单
                     final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    View view = LayoutInflater.from(activity).inflate(R.layout.dialog_create_playlist,null);
-                    final EditText playlistEt = (EditText)view.findViewById(R.id.dialog_playlist_name_et);
+                    View view = LayoutInflater.from(activity).inflate(R.layout.dialog_create_playlist, null);
+                    final EditText playlistEt = (EditText) view.findViewById(R.id.dialog_playlist_name_et);
                     builder.setView(view);
                     builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
@@ -118,10 +117,10 @@ public class HomeListViewAdapter extends BaseAdapter {
                     });
 
                     builder.show();
-                }else {
+                } else {
                     //进入歌单
                     Intent intent = new Intent(activity, PlaylistActivity.class);
-                    intent.putExtra("playlistInfo",dataList.get(position));
+                    intent.putExtra("playlistInfo", dataList.get(position));
                     activity.startActivity(intent);
                 }
             }
@@ -130,7 +129,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = LayoutInflater.from(activity).inflate(R.layout.dialog_delete_playlist,null);
+                View view = LayoutInflater.from(activity).inflate(R.layout.dialog_delete_playlist, null);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setView(view);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -156,17 +155,17 @@ public class HomeListViewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void updateDataList(){
-        List<PlayListInfo> playListInfos = new ArrayList<>();
+    public void updateDataList() {
+        List<PlayListInfo> playListInfos;
         playListInfos = dbManager.getMyPlayList();
         dataList.clear();
         dataList.addAll(playListInfos);
         notifyDataSetChanged();
-        ((HomeActivity)activity).updatePlaylistCount();
+        ((HomeActivity) activity).updatePlaylistCount();
 
     }
 
-    class Holder{
+    class Holder {
         View swipView;
         LinearLayout contentView;
         ImageView coverIv;

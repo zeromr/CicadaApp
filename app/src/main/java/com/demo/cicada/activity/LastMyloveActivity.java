@@ -68,12 +68,12 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
         setContentView(R.layout.activity_last_mylove);
         dbManager = DBManager.getInstance(LastMyloveActivity.this);
         label = getIntent().getStringExtra(Constant.LABEL);
-        toolbar = (Toolbar)findViewById(R.id.last_mylove_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.last_mylove_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            if (label != null){
+            if (label != null) {
                 actionBar.setTitle(label);
             }
         }
@@ -81,16 +81,16 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
         register();
     }
 
-    private void init(){
-        recyclerView = (RecyclerView)findViewById(R.id.last_mylove_recycler_view);
+    private void init() {
+        recyclerView = (RecyclerView) findViewById(R.id.last_mylove_recycler_view);
         recyclerViewAdapter = new RecyclerViewAdapter(LastMyloveActivity.this, musicInfoList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LastMyloveActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         //设置Item增加、移除动画
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(
-                LastMyloveActivity.this, DividerItemDecoration.VERTICAL_LIST));
+        //        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(LastMyloveActivity.this, DividerItemDecoration
+                .VERTICAL_LIST));
         recyclerView.setAdapter(recyclerViewAdapter);
 
         recyclerViewAdapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
@@ -102,15 +102,15 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
 
             @Override
             public void onDeleteMenuClick(View swipeView, int position) {
-                deleteOperate(swipeView,position,LastMyloveActivity.this);
+                deleteOperate(swipeView, position, LastMyloveActivity.this);
             }
 
             @Override
             public void onContentClick(int position) {
-                if (label != null){
-                    if (label.equals(Constant.LABEL_LAST)){
+                if (label != null) {
+                    if (label.equals(Constant.LABEL_LAST)) {
                         MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_LASTPLAY);
-                    }else if (label.equals(Constant.LABEL_MYLOVE)){
+                    } else if (label.equals(Constant.LABEL_MYLOVE)) {
                         MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_MYLOVE);
                     }
                 }
@@ -144,9 +144,9 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
             }
         });
 
-        playModeRl = (RelativeLayout)findViewById(R.id.last_mylove_playmode_rl);
-        playModeIv = (ImageView)findViewById(R.id.last_mylove_playmode_iv);
-        playModeTv = (TextView)findViewById(R.id.last_mylove_playmode_tv);
+        playModeRl = (RelativeLayout) findViewById(R.id.last_mylove_playmode_rl);
+        playModeIv = (ImageView) findViewById(R.id.last_mylove_playmode_iv);
+        playModeTv = (TextView) findViewById(R.id.last_mylove_playmode_tv);
 
         initDefaultPlayModeView();
 
@@ -155,7 +155,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
             @Override
             public void onClick(View v) {
                 int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
-                switch (playMode){
+                switch (playMode) {
                     case Constant.PLAYMODE_SEQUENCE:
                         playModeTv.setText(Constant.PLAYMODE_RANDOM_TEXT);
                         MyMusicUtil.setShared(Constant.KEY_MODE, Constant.PLAYMODE_RANDOM);
@@ -177,14 +177,14 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "onResume: " );
+        Log.e(TAG, "onResume: ");
         updateView();
         initDefaultPlayModeView();
     }
 
-    private void initDefaultPlayModeView(){
+    private void initDefaultPlayModeView() {
         int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
-        switch (playMode){
+        switch (playMode) {
             case Constant.PLAYMODE_SEQUENCE:
                 playModeTv.setText(Constant.PLAYMODE_SEQUENCE_TEXT);
                 break;
@@ -210,7 +210,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 break;
@@ -218,7 +218,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
         return true;
     }
 
-    public void updateView(){
+    public void updateView() {
         try {
             if (label != null) {
                 if (label.equals(Constant.LABEL_LAST)) {
@@ -239,7 +239,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
                 playModeRl.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -247,17 +247,20 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
 
     public void showPopFormBottom(MusicInfo musicInfo) {
         MusicPopMenuWindow menuPopupWindow;
-        if (label.equals(Constant.LABEL_LAST)){
-            menuPopupWindow = new MusicPopMenuWindow(LastMyloveActivity.this,musicInfo,findViewById(R.id.activity_last_mylove), Constant.ACTIVITY_RECENTPLAY);
-        }else {
-            menuPopupWindow = new MusicPopMenuWindow(LastMyloveActivity.this,musicInfo,findViewById(R.id.activity_last_mylove), Constant.ACTIVITY_MYLOVE);
+        if (label.equals(Constant.LABEL_LAST)) {
+            menuPopupWindow = new MusicPopMenuWindow(LastMyloveActivity.this, musicInfo, findViewById(R.id
+                    .activity_last_mylove), Constant.ACTIVITY_RECENTPLAY);
+        } else {
+            menuPopupWindow = new MusicPopMenuWindow(LastMyloveActivity.this, musicInfo, findViewById(R.id
+                    .activity_last_mylove), Constant.ACTIVITY_MYLOVE);
         }
 
-//      设置Popupwindow显示位置（从底部弹出）
-        menuPopupWindow.showAtLocation(findViewById(R.id.activity_last_mylove), Gravity.BOTTOM| Gravity.CENTER_HORIZONTAL, 0, 0);
+        //      设置Popupwindow显示位置（从底部弹出）
+        menuPopupWindow.showAtLocation(findViewById(R.id.activity_last_mylove), Gravity.BOTTOM | Gravity
+                .CENTER_HORIZONTAL, 0, 0);
         WindowManager.LayoutParams params = getWindow().getAttributes();
         //当弹出Popupwindow时，背景变半透明
-        params.alpha=0.7f;
+        params.alpha = 0.7f;
         getWindow().setAttributes(params);
 
         //设置Popupwindow关闭监听，当Popupwindow关闭，背景恢复1f
@@ -265,7 +268,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
             @Override
             public void onDismiss() {
                 WindowManager.LayoutParams params = getWindow().getAttributes();
-                params.alpha=1f;
+                params.alpha = 1f;
                 getWindow().setAttributes(params);
             }
         });
@@ -279,15 +282,15 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
 
     }
 
-    public void deleteOperate(final View swipeView, final int position, final Context context){
+    public void deleteOperate(final View swipeView, final int position, final Context context) {
         final MusicInfo musicInfo = musicInfoList.get(position);
         final int curId = musicInfo.getId();
         final int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
         final DBManager dbManager = DBManager.getInstance(context);
         final String path = dbManager.getMusicPath(curId);
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dialog_delete_file,null);
-        final CheckBox deleteFile = (CheckBox)view.findViewById(R.id.dialog_delete_cb);
+        View view = inflater.inflate(R.layout.dialog_delete_file, null);
+        final CheckBox deleteFile = (CheckBox) view.findViewById(R.id.dialog_delete_cb);
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         builder.setView(view);
@@ -295,26 +298,26 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
         builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                update(swipeView,position,musicInfo,true);
-                if (deleteFile.isChecked()){
+                update(swipeView, position, musicInfo, true);
+                if (deleteFile.isChecked()) {
                     //同时删除文件
                     //删除的是当前播放的音乐
                     File file = new File(path);
                     if (file.exists()) {
-                        MusicPopMenuWindow.deleteMediaDB(file,context);
+                        MusicPopMenuWindow.deleteMediaDB(file, context);
                         boolean ret = file.delete();
-                        Log.e(TAG, "onClick: ret = "+ ret);
+                        Log.e(TAG, "onClick: ret = " + ret);
                         dbManager.deleteMusic(curId);
-                    }else {
-                        Toast.makeText(context,"找不到文件", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "找不到文件", Toast.LENGTH_SHORT).show();
                     }
-                    if (curId == musicId){
+                    if (curId == musicId) {
                         Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
                         intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
                         context.sendBroadcast(intent);
-                        MyMusicUtil.setShared(Constant.KEY_ID,dbManager.getFirstId(Constant.LIST_ALLMUSIC));
+                        MyMusicUtil.setShared(Constant.KEY_ID, dbManager.getFirstId(Constant.LIST_ALLMUSIC));
                     }
-                }else {
+                } else {
                 }
                 dialog.dismiss();
 
@@ -323,7 +326,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                update(swipeView,position,musicInfo,false);
+                update(swipeView, position, musicInfo, false);
                 dialog.dismiss();
             }
         });
@@ -331,14 +334,14 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
         builder.show();
     }
 
-    private void update(View swipeView, int position, MusicInfo musicInfo, boolean isDelete){
-        if (isDelete){
+    private void update(View swipeView, int position, MusicInfo musicInfo, boolean isDelete) {
+        if (isDelete) {
             final int curId = musicInfo.getId();
             final int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
             //从列表移除
-            if (label.equals(Constant.LABEL_LAST)){
+            if (label.equals(Constant.LABEL_LAST)) {
                 dbManager.removeMusic(musicInfo.getId(), Constant.ACTIVITY_RECENTPLAY);
-            }else if (label.equals(Constant.ACTIVITY_MYLOVE)){
+            } else if (label.equals(Constant.ACTIVITY_MYLOVE)) {
                 dbManager.removeMusic(musicInfo.getId(), Constant.LIST_LASTPLAY);
             }
             if (curId == musicId) {
@@ -349,7 +352,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
             }
             recyclerViewAdapter.notifyItemRemoved(position);//推荐用这个
             updateView();
-        }else {
+        } else {
 
         }
         //如果删除时，不使用mAdapter.notifyItemRemoved(pos)，则删除没有动画效果，
@@ -373,7 +376,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(PlayerManagerReceiver.ACTION_UPDATE_UI_ADAPTER);
             this.registerReceiver(mReceiver, intentFilter);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -383,7 +386,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
             if (mReceiver != null) {
                 this.unregisterReceiver(mReceiver);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

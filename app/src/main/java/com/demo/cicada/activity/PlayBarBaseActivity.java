@@ -17,12 +17,12 @@ public abstract class PlayBarBaseActivity extends BaseActivity {
         show();
     }
 
-    private void show(){
+    private void show() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (playBarFragment == null) {
             playBarFragment = PlayBarFragment.newInstance();
             ft.add(R.id.fragment_playbar, playBarFragment).commit();
-        }else {
+        } else {
             ft.show(playBarFragment).commit();
         }
     }

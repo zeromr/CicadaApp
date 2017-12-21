@@ -29,7 +29,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.bumptech.glide.Glide;
 import com.demo.cicada.R;
 import com.demo.cicada.gson.Forecast;
 import com.demo.cicada.gson.Weather;
@@ -64,13 +63,14 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private Button btnNav;
     private Button btnMenu;
     private String mWeatherId;
+    private long clickTime=0;
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
     //声明定位回调监听器
-    AMapLocationListener mAMapLocationListener=new AMapLocationListener() {
+    AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {
             if (aMapLocation != null) {
@@ -161,12 +161,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     // 加载天气和图片数据
     public void loadData() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String bingPic = sp.getString("bing_pic", null);
-        if (bingPic != null) {
-            Glide.with(this).load(bingPic).into(ivBingPic);
-        } else {
-            loadBingPic();
-        }
+        loadBingPic();
         String weatherStr = sp.getString("weather", null);
         if (weatherStr != null) {
             // 有缓存时直接解析天气数据
@@ -174,11 +169,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             mWeatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
         } else {
-            // 无缓存时去服务器查询天气
-            /*mWeatherId = getIntent().getStringExtra("weather_id");
-            svWeather.setVisibility(View.INVISIBLE);
-            requestWeather(mWeatherId);*/
-
             svWeather.setVisibility(View.INVISIBLE);
             checkPermission();
         }
@@ -244,7 +234,12 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
+            long currentTime=new Date().getTime();
+            if ((currentTime - clickTime) > 1500) {
+                Toast.makeText(getApplicationContext(), "再次点击退出程序!", Toast.LENGTH_SHORT).show();
+                clickTime = currentTime;
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

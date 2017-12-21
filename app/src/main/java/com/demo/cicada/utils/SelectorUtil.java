@@ -14,13 +14,12 @@ import java.lang.reflect.Method;
 public class SelectorUtil {
 
     private static final String TAG = "SelectorUtil";
+
     /**
      * 动态修改selector中图片的背景颜色
      *
-     * @param drawable
-     *            selectorDrawable
-     * @param rgbColors
-     *            按下,默认的颜色值
+     * @param drawable  selectorDrawable
+     * @param rgbColors 按下,默认的颜色值
      */
     public static void changeViewColor(StateListDrawable drawable, int[] rgbColors) {
         Drawable.ConstantState cs = drawable.getConstantState();
@@ -28,7 +27,8 @@ public class SelectorUtil {
             return;
         }
         try {
-            Method method = cs.getClass().getMethod("getChildren", new Class[0]);// 通过反射调用getChildren方法获取xml文件中写的drawable数组
+            Method method = cs.getClass().getMethod("getChildren", new Class[0]);//
+            // 通过反射调用getChildren方法获取xml文件中写的drawable数组
             method.setAccessible(true);
             Object obj = method.invoke(cs, new Object[]{});
             Drawable[] drawables = (Drawable[]) obj;
@@ -42,11 +42,13 @@ public class SelectorUtil {
 
                 if (i == 0) {
                     // 我们对按下的状态做浅色处理
-//                    gd.setColor(Color.argb(Color.alpha(rgbColors[0]),Color.red(rgbColors[0]),Color.green(rgbColors[0]),Color.blue(rgbColors[0])) );
+                    //                    gd.setColor(Color.argb(Color.alpha(rgbColors[0]),Color.red(rgbColors[0]),
+                    // Color.green(rgbColors[0]),Color.blue(rgbColors[0])) );
                     gd.setColor(rgbColors[0]);
                 } else {
                     // 对默认状态做深色处理
-//                    gd.setColor(Color.argb(Color.alpha(rgbColors[1]),Color.red(rgbColors[1]),Color.green(rgbColors[1]),Color.blue(rgbColors[1])) );
+                    //                    gd.setColor(Color.argb(Color.alpha(rgbColors[1]),Color.red(rgbColors[1]),
+                    // Color.green(rgbColors[1]),Color.blue(rgbColors[1])) );
                     gd.setColor(rgbColors[1]);
                 }
             }
