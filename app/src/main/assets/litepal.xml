@@ -1,0 +1,9 @@
+<litepal>
+    <dbname value="weather" />
+    <version value="1" />
+    <list>
+        <mapping class="com.demo.cicada.entity.weather.Province" />
+        <mapping class="com.demo.cicada.entity.weather.City" />
+        <mapping class="com.demo.cicada.entity.weather.County" />
+    </list>
+</litepal>
