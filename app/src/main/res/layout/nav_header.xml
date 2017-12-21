@@ -3,10 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:padding="10dp"
     android:background="?attr/colorPrimary">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_nav_head_bg"
+        android:scaleType="centerCrop"/>
+
+    <!--<de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:id="@+id/icon_image"
@@ -28,6 +33,6 @@
         android:layout_above="@+id/tv_mail"
         android:text="test"
         android:textColor="#FFF"
-        android:textSize="16sp"/>
+        android:textSize="16sp"/>-->
 </RelativeLayout>
 

@@ -62,6 +62,7 @@ public class HomeActivity extends PlayBarBaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+            actionBar.setTitle(R.string.music_title);
         }
         init();
         Intent startIntent = new Intent(HomeActivity.this,MusicPlayerService.class);
@@ -207,32 +208,4 @@ public class HomeActivity extends PlayBarBaseActivity {
         }
         return true;
     }
-
-    /*private void loadBingPic(){
-        HttpUtil.sendOkHttpRequest(HttpUtil.requestBingPic, new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    final String bingPic = response.body().string();
-                    MyMusicUtil.setBingShared(bingPic);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Glide.with(MyApplication.getContext()).load(bingPic).into(navHeadIv);
-                        }
-                    });
-                }catch (Exception e){
-                    e.printStackTrace();
-                    navHeadIv.setImageResource(R.drawable.bg_playlist);
-                }
-            }
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                navHeadIv.setImageResource(R.drawable.bg_playlist);
-            }
-        });
-        navHeadIv.setImageResource(R.drawable.bg_playlist);
-    }*/
 }
