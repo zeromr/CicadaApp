@@ -1,90 +1,63 @@
 package com.demo.cicada.activity;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.demo.cicada.R;
 
-public class AboutActivity extends BaseActivity {
-
-    private Toolbar toolbar;
-    private TextView versionTv;
-    private LinearLayout startLl;
-    private LinearLayout scoreLl;
-
+public class AboutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
         setContentView(R.layout.activity_about);
-        init();
-    }
-    private void init(){
-        toolbar = (Toolbar) findViewById(R.id.about_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        ImageView aboutImageView = (ImageView) findViewById(R.id.about_image_view);
+        //        ImageView fruitImageView = (ImageView) findViewById(R.id.fruit_image_view);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        versionTv = (TextView) findViewById(R.id.about_version);
-        startLl = (LinearLayout) findViewById(R.id.about_start_ll);
-        scoreLl = (LinearLayout) findViewById(R.id.about_score_ll);
-        versionTv.setText(getVersion());
-
-        startLl.setOnClickListener(new View.OnClickListener() {
+        collapsingToolbar.setTitleEnabled(false);
+        collapsingToolbar.setTitle(getString(R.string.app_name));
+        Glide.with(this).load(R.drawable.ic_about_head).into(aboutImageView);
+        FloatingActionButton fabShare = (FloatingActionButton) findViewById(R.id.fab_share);
+        fabShare.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                openUrl("https://github.com/lijunyandev/MeetMusic");
+            public void onClick(View view) {
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_txt));
+                startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_app)));
             }
         });
-        scoreLl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openUrl("http://www.coolapk.com/apk/com.lijunyan.blackmusic");
-            }
-        });
-    }
-
-
-    private void openUrl(String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
-                break;
+                finish();
+                return true;
         }
-        return true;
-    }
-
-    /**
-     * 获取版本号
-     * @return 当前应用的版本号
-     */
-    public String getVersion() {
-        try {
-            PackageManager manager = this.getPackageManager();
-            PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
-            String version = info.versionName;
-            return this.getString(R.string.version_name) + version;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return this.getString(R.string.can_not_find_version_name);
-        }
+        return super.onOptionsItemSelected(item);
     }
 }

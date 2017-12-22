@@ -234,9 +234,11 @@ public class ModelActivity extends PlayBarBaseActivity {
 
 
     public void showPopFormBottom(MusicInfo musicInfo) {
-        MusicPopMenuWindow menuPopupWindow = new MusicPopMenuWindow(ModelActivity.this, musicInfo, findViewById(R.id.activity_model),Constant.ACTIVITY_LOCAL);
-//      设置Popupwindow显示位置（从底部弹出）
-        menuPopupWindow.showAtLocation(findViewById(R.id.activity_model), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        MusicPopMenuWindow menuPopupWindow = new MusicPopMenuWindow(ModelActivity.this, musicInfo, findViewById(R.id
+                .activity_model), Constant.ACTIVITY_LOCAL);
+        //      设置Popupwindow显示位置（从底部弹出）
+        menuPopupWindow.showAtLocation(findViewById(R.id.activity_model), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                0, 0);
         WindowManager.LayoutParams params = ModelActivity.this.getWindow().getAttributes();
         //当弹出Popupwindow时，背景变半透明
         params.alpha = 0.7f;
@@ -284,7 +286,7 @@ public class ModelActivity extends PlayBarBaseActivity {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(PlayerManagerReceiver.ACTION_UPDATE_UI_ADAPTER);
             this.registerReceiver(mReceiver, intentFilter);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -294,7 +296,7 @@ public class ModelActivity extends PlayBarBaseActivity {
             if (mReceiver != null) {
                 this.unregisterReceiver(mReceiver);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -402,11 +404,11 @@ public class ModelActivity extends PlayBarBaseActivity {
             int defaultTvColor = typed.getColor(0, getResources().getColor(R.color.grey700));
             typedArray.recycle();
 
-            if (musicInfo.getId() == MyMusicUtil.getIntShared(Constant.KEY_ID)){
+            if (musicInfo.getId() == MyMusicUtil.getIntShared(Constant.KEY_ID)) {
                 holder.musicName.setTextColor(appbg);
                 holder.musicIndex.setTextColor(appbg);
                 holder.musicSinger.setTextColor(appbg);
-            }else {
+            } else {
                 holder.musicName.setTextColor(defaultTvColor);
                 holder.musicIndex.setTextColor(getResources().getColor(R.color.grey700));
                 holder.musicSinger.setTextColor(getResources().getColor(R.color.grey700));
@@ -461,11 +463,11 @@ public class ModelActivity extends PlayBarBaseActivity {
             });
         }
 
-//        public void updateMusicInfoList(List<MusicInfo> musicInfoList) {
-//            musicInfoList.clear();
-//            musicInfoList.addAll(musicInfoList);
-//            notifyDataSetChanged();
-//        }
+        //        public void updateMusicInfoList(List<MusicInfo> musicInfoList) {
+        //            musicInfoList.clear();
+        //            musicInfoList.addAll(musicInfoList);
+        //            notifyDataSetChanged();
+        //        }
 
         public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
             this.onItemClickListener = onItemClickListener;

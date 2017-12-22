@@ -3,12 +3,32 @@
     <string name="local_music">本地音乐</string>
     <string name="last_play">最近播放</string>
     <string name="scan_music">扫描音乐</string>
-    <string name="theme_center">主题中心</string>
     <string name="about">关于</string>
-    <string name="version_name">当前版本 </string>
-    <string name="can_not_find_version_name">寻找当前版本出错</string>
     <string name="copyright">Copyright © %d DEMO</string>
     <string name="music_title">知了听乐</string>
+    <string name="item_notify_singname">歌曲名</string>
+    <string name="item_notify_singer">歌手名</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="aboutContent">
+        &#8195;&#8195;若是闭眼，星辉和你不请自来，知了主动解梦，可遇不可求的的事求而偶遇，
+        错过的人回头，深藏的老酒亲启，你香而甜的微笑，氤氲了一整个夏天。
+    </string>
+    <string name="open_source">
+        • RxJava\n github.com/ReactiveX/RxJava\n
+        • RxAndroid\n github.com/ReactiveX/RxAndroid\n
+        • LitePal\n github.com/LitePalFramework/LitePal\n
+        • Glide\n github.com/bumptech/glide\n
+        • okhttp\n github.com/square/okhttp\n
+        • gson\n github.com/google/gson\n
+        • RxPermissions\n github.com/tbruyelle/RxPermissions\n
+        • pinyin4j\n github.com/belerweb/pinyin4j\n
+        • SwipeDelMenuLayout\n github.com/mcxtzhang/SwipeDelMenuLayout\n
+        • butterknife\n github.com/JakeWharton/butterknife\n
+        • 和风天气提供数据支持\n
+        • 高德定位提供位置定位服务
+    </string>
+
+    <string name="share_txt">欢迎使用“知了”，希望每天都是好心情</string>
+    <string name="share_app">分享-知了App</string>
 </resources>

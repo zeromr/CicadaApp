@@ -27,6 +27,7 @@ public class MusicPlayerService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.e(TAG, "onCreate: ");
+
         register();
     }
 

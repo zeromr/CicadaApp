@@ -20,7 +20,7 @@
         <item name="appbg">@android:color/white</item>
         <!--<item name="my_selector_layout">@drawable/selector_layout</item>-->
         <item name="divider">@color/colorDividerGray</item>
-        <item name="android:windowAnimationStyle">@style/Animation</item>
+        <!--<item name="android:windowAnimationStyle">@style/Animation</item>-->
         <item name="play_bar_color">@android:color/white</item>
         <item name="android:screenOrientation">portrait</item>
         <item name="android:windowSoftInputMode">adjustPan|stateHidden</item>
@@ -38,7 +38,7 @@
 
     <style name="Theme.AppCompat.Light.Dialog.Alert.Self"
         parent="@style/Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/nightBg</item>
+        <!--<item name="android:background">@color/nightBg</item>-->
         <item name="colorAccent">@android:color/white</item>
     </style>
 

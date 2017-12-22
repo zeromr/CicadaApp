@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.demo.cicada.R;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.AlbumInfo;
 import com.demo.cicada.entity.music.FolderInfo;
@@ -321,42 +320,7 @@ public class MyMusicUtil {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("night", mode).commit();
     }
-
-    //得到是否夜间模式
-    public static boolean getNightMode(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.THEME, Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean("night", false);
-    }
-
-    //得到主题
-    public static int getMyThemeStyle(Context context) {
-        int themeId = MyMusicUtil.getTheme(context);
-        switch (themeId) {
-            default:
-            case 0:
-                return R.style.BiLiPinkTheme;
-            case 1:
-                return R.style.ZhiHuBlueTheme;
-            case 2:
-                return R.style.KuAnGreenTheme;
-            case 3:
-                return R.style.CloudRedTheme;
-            case 4:
-                return R.style.TengLuoPurpleTheme;
-            case 5:
-                return R.style.SeaBlueTheme;
-            case 6:
-                return R.style.GrassGreenTheme;
-            case 7:
-                return R.style.CoffeeBrownTheme;
-            case 8:
-                return R.style.LemonOrangeTheme;
-            case 9:
-                return R.style.StartSkyGrayTheme;
-            case 10:
-                return R.style.NightModeTheme;
-        }
-    }
+    
 
     // 设置必用图片 sharedPreferences
     public static void setBingShared(String value) {

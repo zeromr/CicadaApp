@@ -183,12 +183,13 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             switch (item.getItemId()) {
                 case R.id.nav_weather:
                     break;
-                /*case R.id.nav_bus:
-                    break;*/
                 case R.id.nav_music:
                     Intent intentMusic = new Intent();
                     intentMusic.setClass(this, HomeActivity.class);
                     startActivity(intentMusic);
+                    break;
+                case R.id.nav_about:
+                    startActivity(new Intent(this,AboutActivity.class));
                     break;
             }
             drawerLayout.closeDrawers();
