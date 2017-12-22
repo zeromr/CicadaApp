@@ -63,7 +63,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private Button btnNav;
     private Button btnMenu;
     private String mWeatherId;
-    private long clickTime=0;
+    private long clickTime = 0;
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -185,11 +185,11 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                     break;
                 case R.id.nav_music:
                     Intent intentMusic = new Intent();
-                    intentMusic.setClass(this, HomeActivity.class);
+                    intentMusic.setClass(this, MusicActivity.class);
                     startActivity(intentMusic);
                     break;
                 case R.id.nav_about:
-                    startActivity(new Intent(this,AboutActivity.class));
+                    startActivity(new Intent(this, AboutActivity.class));
                     break;
             }
             drawerLayout.closeDrawers();
@@ -235,7 +235,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            long currentTime=new Date().getTime();
+            long currentTime = new Date().getTime();
             if ((currentTime - clickTime) > 1500) {
                 Toast.makeText(getApplicationContext(), "再次点击退出程序!", Toast.LENGTH_SHORT).show();
                 clickTime = currentTime;
@@ -348,8 +348,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             TextView tvMin = (TextView) view.findViewById(R.id.tv_min);
             tvDate.setText(forecast.date);
             tvInfo.setText(forecast.more.info);
-            tvMax.setText(forecast.temperature.max);
-            tvMin.setText(forecast.temperature.min);
+            tvMax.setText(forecast.temperature.max + "℃");
+            tvMin.setText(forecast.temperature.min + "℃");
             llForecast.addView(view);
         }
         if (weather.aqi != null) {

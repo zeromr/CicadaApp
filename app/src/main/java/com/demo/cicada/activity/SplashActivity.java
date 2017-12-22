@@ -2,12 +2,14 @@ package com.demo.cicada.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -36,9 +38,19 @@ public class SplashActivity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_splash);
-        initView();
-        initPermission();
+        hasCache();
+    }
 
+    // 缓存数据判读
+    public void hasCache() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sp.getString("weather", null) != null) {
+            startActivity(new Intent(this, WeatherActivity.class));
+            finish();
+        }else {
+            initView();
+            initPermission();
+        }
     }
 
     private void initView() {

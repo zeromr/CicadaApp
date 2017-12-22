@@ -29,7 +29,6 @@ public class AboutActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         ImageView aboutImageView = (ImageView) findViewById(R.id.about_image_view);
-        //        ImageView fruitImageView = (ImageView) findViewById(R.id.fruit_image_view);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -42,13 +41,17 @@ public class AboutActivity extends AppCompatActivity {
         fabShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
-                sharingIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_txt));
-                startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_app)));
+                shareApp();
             }
         });
+    }
+
+    public void shareApp() {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_txt));
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_app)));
     }
 
     @Override

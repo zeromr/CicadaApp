@@ -27,9 +27,9 @@ import com.demo.cicada.utils.Constant;
 
 import java.util.List;
 
-public class HomeActivity extends PlayBarBaseActivity {
+public class MusicActivity extends PlayBarBaseActivity {
 
-    private static final String TAG = HomeActivity.class.getName();
+    private static final String TAG = MusicActivity.class.getName();
     private DBManager dbManager;
     private LinearLayout localMusicLl;
     private LinearLayout lastPlayLl;
@@ -54,18 +54,18 @@ public class HomeActivity extends PlayBarBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Log.i("msg", "onCreate: music");
-        dbManager = DBManager.getInstance(HomeActivity.this);
+        dbManager = DBManager.getInstance(MusicActivity.this);
         toolbar = (Toolbar)findViewById(R.id.home_activity_toolbar);
         setSupportActionBar(toolbar);
 //        loadBingPic();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
             actionBar.setTitle(R.string.music_title);
         }
         init();
-        Intent startIntent = new Intent(HomeActivity.this,MusicPlayerService.class);
+        Intent startIntent = new Intent(MusicActivity.this,MusicPlayerService.class);
         startService(startIntent);
 
     }
@@ -98,14 +98,14 @@ public class HomeActivity extends PlayBarBaseActivity {
         myPLAddIv = (ImageView) findViewById(R.id.home_my_pl_add_iv);
 
         localMusicLl.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this,LocalMusicActivity.class);
+            Intent intent = new Intent(MusicActivity.this,LocalMusicActivity.class);
             startActivity(intent);
         });
 
         lastPlayLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this,LastMyloveActivity.class);
+                Intent intent = new Intent(MusicActivity.this,LastMyloveActivity.class);
                 intent.putExtra(Constant.LABEL, Constant.LABEL_LAST);
                 startActivity(intent);
             }
@@ -114,7 +114,7 @@ public class HomeActivity extends PlayBarBaseActivity {
         myLoveLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this,LastMyloveActivity.class);
+                Intent intent = new Intent(MusicActivity.this,LastMyloveActivity.class);
                 intent.putExtra(Constant.LABEL, Constant.LABEL_MYLOVE);
                 startActivity(intent);
             }
@@ -127,8 +127,8 @@ public class HomeActivity extends PlayBarBaseActivity {
             @Override
             public void onClick(View v) {
                 //添加歌单
-                final AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.dialog_create_playlist,null);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MusicActivity.this);
+                View view = LayoutInflater.from(MusicActivity.this).inflate(R.layout.dialog_create_playlist,null);
                 final EditText playlistEt = (EditText)view.findViewById(R.id.dialog_playlist_name_et);
                 builder.setView(view);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -136,7 +136,7 @@ public class HomeActivity extends PlayBarBaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String name = playlistEt.getText().toString();
                         if (TextUtils.isEmpty(name)) {
-                            Toast.makeText(HomeActivity.this,"请输入歌单名", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MusicActivity.this,"请输入歌单名", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         dbManager.createPlaylist(name);
@@ -168,7 +168,7 @@ public class HomeActivity extends PlayBarBaseActivity {
                     myPLArrowIv.setImageResource(R.drawable.arrow_down);
                     listView.setVisibility(View.VISIBLE);
                     playListInfos = dbManager.getMyPlayList();
-                    adapter = new HomeListViewAdapter(playListInfos,HomeActivity.this,dbManager);
+                    adapter = new HomeListViewAdapter(playListInfos,MusicActivity.this,dbManager);
                     listView.setAdapter(adapter);
                 }
             }
@@ -191,7 +191,7 @@ public class HomeActivity extends PlayBarBaseActivity {
     protected void onPause() {
         super.onPause();
         if (isStartTheme){
-            HomeActivity.this.finish();
+            MusicActivity.this.finish();
         }
         isStartTheme = false;
     }
@@ -200,13 +200,16 @@ public class HomeActivity extends PlayBarBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                Intent intent = new Intent(HomeActivity.this,WeatherActivity.class);
+                /*Intent intent = new Intent(MusicActivity.this,WeatherActivity.class);
                 startActivity(intent);
                 this.finish();
                 break;
             default:
-                break;
+                break;*/
+                finish();
+                return true;
         }
-        return true;
+//        return true;
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -18,7 +18,7 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="text_color">@color/colorBlack</item>
         <item name="appbg">@android:color/white</item>
-        <!--<item name="my_selector_layout">@drawable/selector_layout</item>-->
+        <item name="my_selector_layout">@drawable/selector_layout</item>
         <item name="divider">@color/colorDividerGray</item>
         <!--<item name="android:windowAnimationStyle">@style/Animation</item>-->
         <item name="play_bar_color">@android:color/white</item>

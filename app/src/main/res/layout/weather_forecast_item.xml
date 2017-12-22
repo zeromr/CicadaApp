@@ -32,6 +32,14 @@
         android:textColor="#fff"/>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:layout_gravity="center"
+        android:layout_marginLeft="30dp"
+        android:text="～"/>
+
+    <TextView
         android:id="@+id/tv_min"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

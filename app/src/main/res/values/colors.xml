@@ -23,9 +23,9 @@
     <color name="lineColor">#60d3d3d3</color>
     <color name="cloudyText">#728288</color>
 
-    <!--夜间模式下 通用背景色-->
+    <!--通用背景色-->
     <color name="common_bg">#ffffff</color>
-    <!--夜间模式下 触摸背景色-->
+    <!--触摸背景色-->
     <color name="common_touch_bg">#e1e1e1</color>
 
 </resources>

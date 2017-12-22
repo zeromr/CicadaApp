@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.demo.cicada.R;
-import com.demo.cicada.activity.HomeActivity;
+import com.demo.cicada.activity.MusicActivity;
 import com.demo.cicada.activity.PlaylistActivity;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.PlayListInfo;
@@ -161,7 +161,7 @@ public class HomeListViewAdapter extends BaseAdapter {
         dataList.clear();
         dataList.addAll(playListInfos);
         notifyDataSetChanged();
-        ((HomeActivity) activity).updatePlaylistCount();
+        ((MusicActivity) activity).updatePlaylistCount();
 
     }
 
