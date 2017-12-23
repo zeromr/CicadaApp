@@ -181,8 +181,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private void initTitle() {
         int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
         if (musicId == -1) {
-            musicNameTv.setText("听听音乐");
-            singerNameTv.setText("好音质");
+            musicNameTv.setText("歌曲");
+            singerNameTv.setText("歌手");
         } else {
             musicNameTv.setText(dbManager.getMusicInfo(musicId).get(1));
             singerNameTv.setText(dbManager.getMusicInfo(musicId).get(2));
@@ -305,7 +305,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
 
     class PlayReceiver extends BroadcastReceiver {
-
         int status;
 
         @Override

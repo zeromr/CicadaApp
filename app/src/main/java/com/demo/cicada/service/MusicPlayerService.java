@@ -75,7 +75,7 @@ public class MusicPlayerService extends Service {
     public void showNotify(){
         Notification.Builder builder=new Builder(this);
         RemoteViews remoteViews=new RemoteViews(getPackageName(), R.layout.notification_layout);
-        //设置 点击后的跳转 通过 pendingIntent 实现
+        // 设置点击后的跳转 通过 pendingIntent 实现
         Intent intent=new Intent(this,MusicActivity.class);
         PendingIntent pendingIntent=PendingIntent.getActivity(this,0, intent,0);
         builder.setContent(remoteViews)

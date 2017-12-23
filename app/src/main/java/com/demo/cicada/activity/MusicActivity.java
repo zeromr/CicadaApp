@@ -68,7 +68,6 @@ public class MusicActivity extends PlayBarBaseActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            //            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
             actionBar.setTitle(R.string.music_title);
         }
     }
@@ -209,16 +208,9 @@ public class MusicActivity extends PlayBarBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                /*Intent intent = new Intent(MusicActivity.this,WeatherActivity.class);
-                startActivity(intent);
-                this.finish();
-                break;
-            default:
-                break;*/
                 finish();
                 return true;
         }
-        //        return true;
         return super.onOptionsItemSelected(item);
     }
 }
