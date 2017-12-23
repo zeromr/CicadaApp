@@ -55,19 +55,28 @@ public class MusicActivity extends PlayBarBaseActivity {
         setContentView(R.layout.activity_home);
         Log.i("msg", "onCreate: music");
         dbManager = DBManager.getInstance(MusicActivity.this);
-        toolbar = (Toolbar)findViewById(R.id.home_activity_toolbar);
+        initToolBar();
+        init();
+        startMusiceService();
+
+    }
+
+    public void initToolBar() {
+        toolbar = (Toolbar) findViewById(R.id.home_activity_toolbar);
         setSupportActionBar(toolbar);
-//        loadBingPic();
+        //        loadBingPic();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-//            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+            //            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
             actionBar.setTitle(R.string.music_title);
         }
-        init();
-        Intent startIntent = new Intent(MusicActivity.this,MusicPlayerService.class);
-        startService(startIntent);
+    }
 
+    public void startMusiceService() {
+        Intent startIntent = new Intent(MusicActivity.this, MusicPlayerService.class);
+//        Intent startIntent = new Intent(MusicActivity.this, MusicService.class);
+        startService(startIntent);
     }
 
     @Override
@@ -84,12 +93,12 @@ public class MusicActivity extends PlayBarBaseActivity {
         adapter.updateDataList();
     }
 
-    private void init(){
+    private void init() {
         localMusicLl = (LinearLayout) findViewById(R.id.home_local_music_ll);
         lastPlayLl = (LinearLayout) findViewById(R.id.home_recently_music_ll);
         myLoveLl = (LinearLayout) findViewById(R.id.home_my_love_music_ll);
         myListTitleLl = (LinearLayout) findViewById(R.id.home_my_list_title_ll);
-        listView = (ListView)findViewById(R.id.home_my_list_lv);
+        listView = (ListView) findViewById(R.id.home_my_list_lv);
         localMusicCountTv = (TextView) findViewById(R.id.home_local_music_count_tv);
         lastPlayCountTv = (TextView) findViewById(R.id.home_recently_music_count_tv);
         myLoveCountTv = (TextView) findViewById(R.id.home_my_love_music_count_tv);
@@ -98,14 +107,14 @@ public class MusicActivity extends PlayBarBaseActivity {
         myPLAddIv = (ImageView) findViewById(R.id.home_my_pl_add_iv);
 
         localMusicLl.setOnClickListener(v -> {
-            Intent intent = new Intent(MusicActivity.this,LocalMusicActivity.class);
+            Intent intent = new Intent(MusicActivity.this, LocalMusicActivity.class);
             startActivity(intent);
         });
 
         lastPlayLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MusicActivity.this,LastMyloveActivity.class);
+                Intent intent = new Intent(MusicActivity.this, LastMyloveActivity.class);
                 intent.putExtra(Constant.LABEL, Constant.LABEL_LAST);
                 startActivity(intent);
             }
@@ -114,29 +123,29 @@ public class MusicActivity extends PlayBarBaseActivity {
         myLoveLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MusicActivity.this,LastMyloveActivity.class);
+                Intent intent = new Intent(MusicActivity.this, LastMyloveActivity.class);
                 intent.putExtra(Constant.LABEL, Constant.LABEL_MYLOVE);
                 startActivity(intent);
             }
         });
 
         playListInfos = dbManager.getMyPlayList();
-        adapter = new HomeListViewAdapter(playListInfos,this,dbManager);
+        adapter = new HomeListViewAdapter(playListInfos, this, dbManager);
         listView.setAdapter(adapter);
         myPLAddIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //添加歌单
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MusicActivity.this);
-                View view = LayoutInflater.from(MusicActivity.this).inflate(R.layout.dialog_create_playlist,null);
-                final EditText playlistEt = (EditText)view.findViewById(R.id.dialog_playlist_name_et);
+                View view = LayoutInflater.from(MusicActivity.this).inflate(R.layout.dialog_create_playlist, null);
+                final EditText playlistEt = (EditText) view.findViewById(R.id.dialog_playlist_name_et);
                 builder.setView(view);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String name = playlistEt.getText().toString();
                         if (TextUtils.isEmpty(name)) {
-                            Toast.makeText(MusicActivity.this,"请输入歌单名", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MusicActivity.this, "请输入歌单名", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         dbManager.createPlaylist(name);
@@ -159,23 +168,23 @@ public class MusicActivity extends PlayBarBaseActivity {
             @Override
             public void onClick(View v) {
                 //展现我的歌单
-                if (isOpenMyPL){
+                if (isOpenMyPL) {
                     isOpenMyPL = false;
                     myPLArrowIv.setImageResource(R.drawable.arrow_right);
                     listView.setVisibility(View.GONE);
-                }else {
+                } else {
                     isOpenMyPL = true;
                     myPLArrowIv.setImageResource(R.drawable.arrow_down);
                     listView.setVisibility(View.VISIBLE);
                     playListInfos = dbManager.getMyPlayList();
-                    adapter = new HomeListViewAdapter(playListInfos,MusicActivity.this,dbManager);
+                    adapter = new HomeListViewAdapter(playListInfos, MusicActivity.this, dbManager);
                     listView.setAdapter(adapter);
                 }
             }
         });
     }
 
-    public void updatePlaylistCount(){
+    public void updatePlaylistCount() {
         count = dbManager.getMusicCount(Constant.LIST_MYPLAY);
         myPLCountTv.setText("(" + count + ")");
     }
@@ -190,7 +199,7 @@ public class MusicActivity extends PlayBarBaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (isStartTheme){
+        if (isStartTheme) {
             MusicActivity.this.finish();
         }
         isStartTheme = false;
@@ -198,7 +207,7 @@ public class MusicActivity extends PlayBarBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 /*Intent intent = new Intent(MusicActivity.this,WeatherActivity.class);
                 startActivity(intent);
@@ -209,7 +218,7 @@ public class MusicActivity extends PlayBarBaseActivity {
                 finish();
                 return true;
         }
-//        return true;
+        //        return true;
         return super.onOptionsItemSelected(item);
     }
 }

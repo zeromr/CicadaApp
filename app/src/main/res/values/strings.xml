@@ -6,7 +6,7 @@
     <string name="about">关于</string>
     <string name="copyright">Copyright © %d DEMO</string>
     <string name="music_title">知了听乐</string>
-    <string name="item_notify_singname">歌曲名</string>
+    <string name="item_notify_song">歌曲名</string>
     <string name="item_notify_singer">歌手名</string>
     <!-- TODO: Remove or change this placeholder text -->
 
