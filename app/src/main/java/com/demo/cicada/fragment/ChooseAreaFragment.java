@@ -60,7 +60,7 @@ public class ChooseAreaFragment extends Fragment {
         tvTitle = (TextView) view.findViewById(R.id.tv_title);
         btnBack = (Button) view.findViewById(R.id.btn_back);
         lvList = (ListView) view.findViewById(R.id.lv_list);
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, dataList);
+        adapter = new ArrayAdapter<>(getContext(), R.layout.item_choose_area, dataList);
         lvList.setAdapter(adapter);
         return view;
     }

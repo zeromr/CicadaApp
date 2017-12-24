@@ -52,7 +52,7 @@ public class MusicActivity extends PlayBarBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_music);
         Log.i("msg", "onCreate: music");
         dbManager = DBManager.getInstance(MusicActivity.this);
         initToolBar();

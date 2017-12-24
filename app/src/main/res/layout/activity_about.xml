@@ -67,6 +67,8 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_share"
         app:layout_anchor="@id/appBar"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end"
+        app:backgroundTint="#5975dc"
+        app:rippleColor="#a6a6a6"/>
 
 </android.support.design.widget.CoordinatorLayout>
