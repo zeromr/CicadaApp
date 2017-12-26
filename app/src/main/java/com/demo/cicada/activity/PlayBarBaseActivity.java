@@ -8,7 +8,6 @@ import com.demo.cicada.R;
 import com.demo.cicada.fragment.PlayBarFragment;
 
 public abstract class PlayBarBaseActivity extends BaseActivity {
-
     private PlayBarFragment playBarFragment;
 
     @Override

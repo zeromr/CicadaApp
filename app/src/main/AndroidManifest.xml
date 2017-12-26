@@ -38,12 +38,6 @@
 
         <service android:name="com.amap.api.location.APSService"/>
 
-        <service
-            android:name=".service.AutoUpdateService"
-            android:enabled="true"
-            android:exported="true">
-        </service>
-
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
@@ -84,11 +78,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/PlaylistActivityTheme"/>
         <activity
-            android:name=".activity.LastMyloveActivity"
+            android:name=".activity.LastAndLoveActivity"
             android:label="@string/last_play"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activity.PlaylistActivity"
+            android:name=".activity.PlayListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/PlaylistActivityTheme"/>
         <activity

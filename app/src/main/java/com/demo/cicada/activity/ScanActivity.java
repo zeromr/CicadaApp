@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 考虑本地没有歌曲的情况（待处理）
+ * 扫描本地歌曲
  */
 public class ScanActivity extends BaseActivity {
 
@@ -62,40 +62,30 @@ public class ScanActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+        initView();
+        initToolBar();
+        setScanBtnBg();
+        handleResult();
+    }
+
+    public void initView() {
         dbManager = DBManager.getInstance(ScanActivity.this);
         scanBtn = (Button) findViewById(R.id.start_scan_btn);
-        setScanBtnBg();
         toolbar = (Toolbar) findViewById(R.id.scan_music_toolbar);
         scanProgressTv = (TextView) findViewById(R.id.scan_progress);
         scanCountTv = (TextView) findViewById(R.id.scan_count);
         scanPathTv = (TextView) findViewById(R.id.scan_path);
         filterCb = (CheckBox) findViewById(R.id.scan_filter_cb);
         scanView = (ScanView) findViewById(R.id.scan_view);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!scanning) {
-                    scanPathTv.setVisibility(View.VISIBLE);
-                    scanning = true;
-                    startScanLocalMusic();
-                    scanView.start();
-                    scanBtn.setText("停止扫描");
-                } else {
-                    scanPathTv.setVisibility(View.GONE);
-                    scanning = false;
-                    scanView.stop();
-                    scanCountTv.setText("");
-                    scanBtn.setText("开始扫描");
-                }
+                scanMusic();
             }
         });
+    }
 
-
+    public void handleResult() {
         handler = new Handler() {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -113,7 +103,6 @@ public class ScanActivity extends BaseActivity {
                         scanComplete();
                         break;
                     case Constant.SCAN_UPDATE:
-                        //                        int updateProgress = msg.getData().getInt("progress");
                         String path = msg.getData().getString("scanPath");
                         scanCountTv.setText("已扫描到" + progress + "首歌曲");
                         scanPathTv.setText(path);
@@ -121,7 +110,30 @@ public class ScanActivity extends BaseActivity {
                 }
             }
         };
+    }
 
+    public void scanMusic() {
+        if (!scanning) {
+            scanPathTv.setVisibility(View.VISIBLE);
+            scanning = true;
+            startScanLocalMusic();
+            scanView.start();
+            scanBtn.setText("停止扫描");
+        } else {
+            scanPathTv.setVisibility(View.GONE);
+            scanning = false;
+            scanView.stop();
+            scanCountTv.setText("");
+            scanBtn.setText("开始扫描");
+        }
+    }
+
+    public void initToolBar() {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void scanComplete() {
@@ -140,14 +152,13 @@ public class ScanActivity extends BaseActivity {
 
     public void startScanLocalMusic() {
         new Thread() {
-
             @Override
             public void run() {
                 super.run();
                 try {
-                    String[] muiscInfoArray = new String[]{MediaStore.Audio.Media.TITLE,               //歌曲名称
-                            MediaStore.Audio.Media.ARTIST,              //歌曲歌手
-                            MediaStore.Audio.Media.ALBUM,               //歌曲的专辑名
+                    String[] muiscInfoArray = new String[]{MediaStore.Audio.Media.TITLE,    //歌曲名称
+                            MediaStore.Audio.Media.ARTIST,              //歌手
+                            MediaStore.Audio.Media.ALBUM,               //专辑
                             MediaStore.Audio.Media.DURATION,            //歌曲时长
                             MediaStore.Audio.Media.DATA};               //歌曲文件的全路径
                     Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -175,10 +186,10 @@ public class ScanActivity extends BaseActivity {
                             File file = new File(path);
                             String parentPath = file.getParentFile().getPath();
 
-                            name = replaseUnKnowe(name);
-                            singer = replaseUnKnowe(singer);
-                            album = replaseUnKnowe(album);
-                            path = replaseUnKnowe(path);
+                            name = replaseUnknown(name);
+                            singer = replaseUnknown(singer);
+                            album = replaseUnknown(album);
+                            path = replaseUnknown(path);
 
                             MusicInfo musicInfo = new MusicInfo();
 
@@ -230,7 +241,7 @@ public class ScanActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(TAG, "run: error = ", e);
-                    //扫描出错
+                    // 扫描出错
                     msg = new Message();
                     msg.what = Constant.SCAN_ERROR;
                     handler.sendMessage(msg);
@@ -239,7 +250,8 @@ public class ScanActivity extends BaseActivity {
         }.start();
     }
 
-    public static String replaseUnKnowe(String oldStr) {
+    // 未知音乐
+    public static String replaseUnknown(String oldStr) {
         try {
             if (oldStr != null) {
                 if (oldStr.equals("<unknown>")) {
@@ -247,12 +259,12 @@ public class ScanActivity extends BaseActivity {
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, "replaseUnKnowe: error = ", e);
+            Log.i(TAG, "replaseUnknown: error = ", e);
         }
         return oldStr;
     }
 
-    //初始化当前播放音乐，有可能当前正在播放音乐已经被过滤掉了
+    // 初始化当前播放音乐，有可能当前正在播放音乐已经被过滤掉了
     private void initCurPlaying() {
         try {
             boolean contain = false;
@@ -287,8 +299,8 @@ public class ScanActivity extends BaseActivity {
     }
 
     private void setScanBtnBg() {
-        int defColor = CustomAttrValueUtil.getAttrColorValue(R.attr.colorAccent, R.color.colorAccent, this);
-        int pressColor = CustomAttrValueUtil.getAttrColorValue(R.attr.press_color, R.color.colorAccent, this);
+        int defColor = CustomAttrValueUtil.getAttrColorValue(R.attr.colorAccent, R.color.zhihuBlue, this);
+        int pressColor = CustomAttrValueUtil.getAttrColorValue(R.attr.press_color, R.color.zhihuBlue, this);
         Drawable backgroundDrawable = scanBtn.getBackground();
         StateListDrawable sld = (StateListDrawable) backgroundDrawable;//
         // 通过向下转型，转回原型，selector对应的Java类为：StateListDrawable

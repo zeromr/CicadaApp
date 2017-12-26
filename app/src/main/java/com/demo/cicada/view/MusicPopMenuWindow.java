@@ -110,7 +110,7 @@ public class MusicPopMenuWindow extends PopupWindow {
         addLl = (LinearLayout) view.findViewById(R.id.popwin_add_rl);
         loveLl = (LinearLayout) view.findViewById(R.id.popwin_love_ll);
 //        ringLl = (LinearLayout) view.findViewById(R.id.popwin_ring_ll);
-        deleteLl = (LinearLayout) view.findViewById(R.id.popwin_delete_ll);
+//        deleteLl = (LinearLayout) view.findViewById(R.id.popwin_delete_ll);
         cancelLl = (LinearLayout) view.findViewById(R.id.popwin_cancel_ll);
 
         nameTv.setText("歌曲： " + musicInfo.getName());
@@ -168,13 +168,13 @@ public class MusicPopMenuWindow extends PopupWindow {
 //            }
 //        });
 
-        deleteLl.setOnClickListener(new View.OnClickListener() {
+        /*deleteLl.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 deleteOperate(musicInfo,activity);
                 dismiss();
             }
-        });
+        });*/
 
         cancelLl.setOnClickListener(new View.OnClickListener() {
 

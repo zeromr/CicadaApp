@@ -25,20 +25,14 @@ import com.demo.cicada.utils.MyMusicUtil;
 import java.util.List;
 
 /**
- *
+ * 底部弹出窗口
  */
 
 public class PlayingPopWindow extends PopupWindow {
-    
+
     private static final String TAG = PlayingPopWindow.class.getName();
     private View view;
     private Activity activity;
-//    private ImageView playModeIv;
-    private TextView countTv;
-//    private TextView playModeTv;
-    private RelativeLayout closeRv;
-    private RecyclerView recyclerView;
-    private Adapter adapter;
     private List<MusicInfo> musicInfoList;
     private DBManager dbManager;
 
@@ -50,12 +44,12 @@ public class PlayingPopWindow extends PopupWindow {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         this.view = LayoutInflater.from(activity).inflate(R.layout.playbar_menu_window, null);
         this.setContentView(this.view);
         Point size = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(size);
-        int height = (int)(size.y * 0.5);
+        int height = (int) (size.y * 0.5);
         this.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         this.setHeight(height);
 
@@ -82,26 +76,17 @@ public class PlayingPopWindow extends PopupWindow {
             }
         });
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.playing_list_rv);
-        adapter = new Adapter();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.playing_list_rv);
+        Adapter adapter = new Adapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
 
-//        playModeIv = (ImageView)view.findViewById(R.id.playing_list_playmode_iv);
-//        playModeTv = (TextView) view.findViewById(R.id.playing_list_playmode_Tv);
-        closeRv = (RelativeLayout) view.findViewById(R.id.playing_list_close_rv);
-        countTv = (TextView)view.findViewById(R.id.playing_list_count_tv);
-        countTv.setText("("+musicInfoList.size()+")");
-
-//        initPlayMode();
-
-//        playModeIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                switchPlayMode();
-//            }
-//        });
+        //        playModeIv = (ImageView)view.findViewById(R.id.playing_list_playmode_iv);
+        //        playModeTv = (TextView) view.findViewById(R.id.playing_list_playmode_Tv);
+        RelativeLayout closeRv = (RelativeLayout) view.findViewById(R.id.playing_list_close_rv);
+        TextView countTv = (TextView) view.findViewById(R.id.playing_list_count_tv);
+        countTv.setText("(" + musicInfoList.size() + ")");
 
         closeRv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,49 +97,9 @@ public class PlayingPopWindow extends PopupWindow {
 
     }
 
-
-//    private void initPlayMode() {
-//        int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
-//        if (playMode == -1) {
-//            playMode = 0;
-//        }
-//        playModeIv.setImageLevel(playMode);
-//        switch (playMode){
-//            case Constant.PLAYMODE_SEQUENCE:
-//                playModeTv.setText(Constant.PLAYMODE_SEQUENCE_TEXT);
-//                break;
-//            case Constant.PLAYMODE_RANDOM:
-//                playModeTv.setText(Constant.PLAYMODE_RANDOM_TEXT);
-//                break;
-//            case Constant.PLAYMODE_SINGLE_REPEAT:
-//                playModeTv.setText(Constant.PLAYMODE_SINGLE_REPEAT_TEXT);
-//                break;
-//        }
-//    }
-
-//    private void switchPlayMode() {
-//        int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
-//        switch (playMode){
-//            case Constant.PLAYMODE_SEQUENCE:
-//                playModeTv.setText(Constant.PLAYMODE_RANDOM_TEXT);
-//                MyMusicUtil.setShared(Constant.KEY_MODE,Constant.PLAYMODE_RANDOM);
-//                break;
-//            case Constant.PLAYMODE_RANDOM:
-//                playModeTv.setText(Constant.PLAYMODE_SINGLE_REPEAT_TEXT);
-//                MyMusicUtil.setShared(Constant.KEY_MODE,Constant.PLAYMODE_SINGLE_REPEAT);
-//                break;
-//            case Constant.PLAYMODE_SINGLE_REPEAT:
-//                playModeTv.setText(Constant.PLAYMODE_SEQUENCE_TEXT);
-//                MyMusicUtil.setShared(Constant.KEY_MODE,Constant.PLAYMODE_SEQUENCE);
-//                break;
-//        }
-//        initPlayMode();
-//    }
-
-
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-        class ViewHolder extends RecyclerView.ViewHolder{
+        class ViewHolder extends RecyclerView.ViewHolder {
             LinearLayout contentLl;
             TextView nameTv;
             TextView singerTv;
@@ -174,22 +119,22 @@ public class PlayingPopWindow extends PopupWindow {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(activity).inflate(R.layout.item_playbar_rv_list,parent,false);
+            View view = LayoutInflater.from(activity).inflate(R.layout.item_playbar_rv_list, parent, false);
             ViewHolder viewHolder = new ViewHolder(view);
             return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder,final int position) {
-            Log.d(TAG, "onBindViewHolder: position = "+position);
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            Log.d(TAG, "onBindViewHolder: position = " + position);
             final MusicInfo musicInfo = musicInfoList.get(position);
             holder.nameTv.setText(musicInfo.getName());
-            holder.singerTv.setText("-"+musicInfo.getSinger());
+            holder.singerTv.setText("-" + musicInfo.getSinger());
 
-            if (musicInfo.getId() == MyMusicUtil.getIntShared(Constant.KEY_ID)){
+            if (musicInfo.getId() == MyMusicUtil.getIntShared(Constant.KEY_ID)) {
                 holder.nameTv.setTextColor(activity.getResources().getColor(R.color.colorAccent));
                 holder.singerTv.setTextColor(activity.getResources().getColor(R.color.colorAccent));
-            }else {
+            } else {
                 holder.nameTv.setTextColor(activity.getResources().getColor(R.color.grey700));
                 holder.singerTv.setTextColor(activity.getResources().getColor(R.color.grey500));
             }
@@ -197,13 +142,13 @@ public class PlayingPopWindow extends PopupWindow {
             holder.contentLl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i(TAG, "onClick: 播放 "+musicInfo.getName());
+                    Log.i(TAG, "onClick: 播放 " + musicInfo.getName());
                     String path = dbManager.getMusicPath(musicInfo.getId());
                     Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
                     intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
                     intent.putExtra(Constant.KEY_PATH, path);
                     activity.sendBroadcast(intent);
-                    MyMusicUtil.setShared(Constant.KEY_ID,musicInfo.getId());
+                    MyMusicUtil.setShared(Constant.KEY_ID, musicInfo.getId());
                     notifyDataSetChanged();
                 }
             });
@@ -211,7 +156,4 @@ public class PlayingPopWindow extends PopupWindow {
         }
 
     }
-
-
-
 }

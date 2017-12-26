@@ -7,13 +7,7 @@ import android.graphics.drawable.StateListDrawable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-/**
- *
- */
-
 public class SelectorUtil {
-
-    private static final String TAG = "SelectorUtil";
 
     /**
      * 动态修改selector中图片的背景颜色
@@ -58,14 +52,8 @@ public class SelectorUtil {
             // mFillPaint，从名字就可以看出这个对象是用来绘制drawable的背景的，
             // 于是顺着往下找，发现setColor方法，于是bingo，这个过程也是挺曲折的。
 
-        } catch (NoSuchMethodException e1) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | IllegalArgumentException e1) {
             e1.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -1,13 +1,8 @@
 package com.demo.cicada.utils;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * 音乐工具类
  */
 
 public class MyMusicUtil {
@@ -152,30 +147,9 @@ public class MyMusicUtil {
         dbManager.setMyLove(musicId);
     }
 
-    //设置--铃声的具体方法
-    public static void setMyRingtone(Context context) {
-        DBManager dbManager = DBManager.getInstance(context);
-        int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
-        String path = dbManager.getMusicPath(musicId);
-        File sdfile = new File(path);
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.MediaColumns.DATA, sdfile.getAbsolutePath());
-        values.put(MediaStore.MediaColumns.TITLE, sdfile.getName());
-        values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/*");
-        values.put(MediaStore.Audio.Media.IS_RINGTONE, true);
-        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, false);
-        values.put(MediaStore.Audio.Media.IS_ALARM, false);
-        values.put(MediaStore.Audio.Media.IS_MUSIC, false);
-
-        Uri uri = MediaStore.Audio.Media.getContentUriForPath(sdfile.getAbsolutePath());
-        Uri newUri = context.getContentResolver().insert(uri, values);
-        RingtoneManager.setActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE, newUri);
-        Toast.makeText(context, "设置来电铃声成功！", Toast.LENGTH_SHORT).show();
-    }
-
     // 设置sharedPreferences
     public static void setShared(String key, int value) {
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext()
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", Context
                 .MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt(key, value);
@@ -183,7 +157,7 @@ public class MyMusicUtil {
     }
 
     public static void setShared(String key, String value) {
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext()
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", Context
                 .MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(key, value);
@@ -192,7 +166,7 @@ public class MyMusicUtil {
 
     // 获取sharedPreferences
     public static int getIntShared(String key) {
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext()
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", Context
                 .MODE_PRIVATE);
         int value;
         if (key.equals(Constant.KEY_CURRENT)) {
@@ -204,7 +178,7 @@ public class MyMusicUtil {
     }
 
     public static String getStringShared(String key) {
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", MyApplication.getContext()
+        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("music", Context
                 .MODE_PRIVATE);
         String value;
         value = pref.getString(key, null);
@@ -292,52 +266,5 @@ public class MyMusicUtil {
 
         return folderInfoList;
     }
-
-    //设置主题
-    public static void setTheme(Context context, int position) {
-//        int preSelect = getTheme(context);
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.THEME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putInt("theme_select", position).apply();
-        /*if (preSelect != ThemeActivity.THEME_SIZE - 1) {
-            sharedPreferences.edit().putInt("pre_theme_select", preSelect).apply();
-        }*/
-    }
-
-    //得到主题
-    public static int getTheme(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.THEME, Context.MODE_PRIVATE);
-        return sharedPreferences.getInt("theme_select", 0);
-    }
-
-    //设置夜间模式
-    public static void setNightMode(Context context, boolean mode) {
-        if (mode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.THEME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("night", mode).commit();
-    }
-    
-
-    // 设置必用图片 sharedPreferences
-    public static void setBingShared(String value) {
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("bing_pic", MyApplication.getContext
-                ().MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("pic", value);
-        editor.commit();
-    }
-
-    // 获取必用图片 sharedPreferences
-    public static String getBingShared() {
-        SharedPreferences pref = MyApplication.getContext().getSharedPreferences("bing_pic", MyApplication.getContext
-                ().MODE_PRIVATE);
-        String value = pref.getString("pic", null);
-        return value;
-    }
-
 
 }

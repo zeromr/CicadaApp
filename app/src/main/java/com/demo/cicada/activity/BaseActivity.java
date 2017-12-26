@@ -16,5 +16,4 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void initTheme() {
         setTheme(R.style.ZhiHuBlueTheme);
     }
-
 }

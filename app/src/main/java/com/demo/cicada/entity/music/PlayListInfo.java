@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- *
+ * 播放列表
  */
 
 public class PlayListInfo implements Parcelable {

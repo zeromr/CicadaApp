@@ -4,6 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
@@ -20,7 +24,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.demo.cicada.R;
 import com.demo.cicada.adapter.PlaylistAdapter;
 import com.demo.cicada.database.DBManager;
@@ -35,25 +38,25 @@ import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
 
-public class PlaylistActivity extends PlayBarBaseActivity {
-
-    private RecyclerView recyclerView;
+public class PlayListActivity extends PlayBarBaseActivity {
     private PlaylistAdapter playlistAdapter;
     private List<MusicInfo> musicInfoList;
     private PlayListInfo playListInfo;
-    private Toolbar toolbar;
-    private TextView noneTv;//没有歌单时现实的TextView
-    private ImageView bgIv;
     private DBManager dbManager;
     private UpdateReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
         setContentView(R.layout.activity_playlist);
         loadBingPic();
         playListInfo = getIntent().getParcelableExtra("playlistInfo");
-        toolbar = (Toolbar) findViewById(R.id.activity_playlist_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_playlist_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -74,12 +77,12 @@ public class PlaylistActivity extends PlayBarBaseActivity {
     }
 
     private void initView() {
-        recyclerView = (RecyclerView) findViewById(R.id.activity_playlist_rv);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_playlist_rv);
         playlistAdapter = new PlaylistAdapter(this, playListInfo, musicInfoList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(playlistAdapter);
-        noneTv = (TextView) findViewById(R.id.activity_playlist_none_tv);
+        TextView noneTv = (TextView) findViewById(R.id.activity_playlist_none_tv);
         if (playListInfo.getCount() == 0) {
             recyclerView.setVisibility(View.GONE);
             noneTv.setVisibility(View.VISIBLE);
@@ -104,9 +107,9 @@ public class PlaylistActivity extends PlayBarBaseActivity {
                 //从列表移除
                 int ret = dbManager.removeMusicFromPlaylist(musicInfo.getId(), playListInfo.getId());
                 if (ret > 0) {
-                    Toast.makeText(PlaylistActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PlayListActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(PlaylistActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PlayListActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
                 }
                 if (curId == musicId) {
                     //移除的是当前播放的音乐
@@ -140,12 +143,12 @@ public class PlaylistActivity extends PlayBarBaseActivity {
     }
 
     public void showPopFormBottom(MusicInfo musicInfo) {
-        MusicPopMenuWindow menuPopupWindow = new MusicPopMenuWindow(PlaylistActivity.this, musicInfo, findViewById(R
+        MusicPopMenuWindow menuPopupWindow = new MusicPopMenuWindow(PlayListActivity.this, musicInfo, findViewById(R
                 .id.activity_playlist), Constant.ACTIVITY_MYLIST);
         //      设置Popupwindow显示位置（从底部弹出）
         menuPopupWindow.showAtLocation(findViewById(R.id.activity_playlist), Gravity.BOTTOM | Gravity
                 .CENTER_HORIZONTAL, 0, 0);
-        WindowManager.LayoutParams params = PlaylistActivity.this.getWindow().getAttributes();
+        WindowManager.LayoutParams params = PlayListActivity.this.getWindow().getAttributes();
         //当弹出Popupwindow时，背景变半透明
         params.alpha = 0.7f;
         getWindow().setAttributes(params);
@@ -170,7 +173,6 @@ public class PlaylistActivity extends PlayBarBaseActivity {
 
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -180,13 +182,11 @@ public class PlaylistActivity extends PlayBarBaseActivity {
         return true;
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unRegister();
     }
-
 
     private void register() {
         try {
@@ -221,16 +221,8 @@ public class PlaylistActivity extends PlayBarBaseActivity {
     }
 
     private void loadBingPic() {
-        try {
-            bgIv = (ImageView) findViewById(R.id.playlist_head_bg_iv);
-            String bingPic = MyMusicUtil.getBingShared();
-            if (bingPic != null) {
-                Glide.with(this).load(bingPic).into(bgIv);
-            } else {
-                bgIv.setImageResource(R.drawable.bg_playlist);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ImageView bgIv = (ImageView) findViewById(R.id.playlist_head_bg_iv);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_playlist_head);
+        bgIv.setImageBitmap(bitmap);
     }
 }

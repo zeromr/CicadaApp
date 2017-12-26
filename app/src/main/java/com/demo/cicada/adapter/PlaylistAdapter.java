@@ -23,7 +23,7 @@ import com.demo.cicada.utils.MyMusicUtil;
 import java.util.List;
 
 /**
- *
+ * 播放列表适配器
  */
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
@@ -33,9 +33,9 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     private Context context;
     private DBManager dbManager;
     private PlayListInfo playListInfo;
-    private PlaylistAdapter.OnItemClickListener onItemClickListener ;
+    private PlaylistAdapter.OnItemClickListener onItemClickListener;
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         View swipeContent;
         LinearLayout contentLl;
         TextView musicIndex;
@@ -46,7 +46,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.swipeContent = (View) itemView.findViewById(R.id.swipemenu_layout);
+            this.swipeContent = itemView.findViewById(R.id.swipemenu_layout);
             this.contentLl = (LinearLayout) itemView.findViewById(R.id.local_music_item_ll);
             this.musicName = (TextView) itemView.findViewById(R.id.local_music_name);
             this.musicIndex = (TextView) itemView.findViewById(R.id.local_index);
@@ -72,23 +72,22 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     @Override
     public PlaylistAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.local_music_item,parent,false);
-        PlaylistAdapter.ViewHolder viewHolder = new PlaylistAdapter.ViewHolder(view);
-        return viewHolder;
+        View view = LayoutInflater.from(context).inflate(R.layout.local_music_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final PlaylistAdapter.ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder: position = "+position);
+        Log.d(TAG, "onBindViewHolder: position = " + position);
         final MusicInfo musicInfo = musicInfoList.get(position);
         holder.musicName.setText(musicInfo.getName());
         holder.musicIndex.setText("" + (position + 1));
         holder.musicSinger.setText(musicInfo.getSinger());
-        if (musicInfo.getId() == MyMusicUtil.getIntShared(Constant.KEY_ID)){
+        if (musicInfo.getId() == MyMusicUtil.getIntShared(Constant.KEY_ID)) {
             holder.musicName.setTextColor(context.getResources().getColor(R.color.colorAccent));
             holder.musicIndex.setTextColor(context.getResources().getColor(R.color.colorAccent));
             holder.musicSinger.setTextColor(context.getResources().getColor(R.color.colorAccent));
-        }else {
+        } else {
             holder.musicName.setTextColor(context.getResources().getColor(R.color.grey700));
             holder.musicIndex.setTextColor(context.getResources().getColor(R.color.grey700));
             holder.musicSinger.setTextColor(context.getResources().getColor(R.color.grey700));
@@ -97,15 +96,15 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         holder.contentLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick: 播放 "+musicInfo.getName());
+                Log.i(TAG, "onClick: 播放 " + musicInfo.getName());
                 String path = dbManager.getMusicPath(musicInfo.getId());
                 Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
                 intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
                 intent.putExtra(Constant.KEY_PATH, path);
                 context.sendBroadcast(intent);
-                MyMusicUtil.setShared(Constant.KEY_ID,musicInfo.getId());
+                MyMusicUtil.setShared(Constant.KEY_ID, musicInfo.getId());
                 MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_PLAYLIST);
-                MyMusicUtil.setShared(Constant.KEY_LIST_ID,playListInfo.getId());
+                MyMusicUtil.setShared(Constant.KEY_LIST_ID, playListInfo.getId());
                 notifyDataSetChanged();
             }
         });
@@ -120,7 +119,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onDeleteMenuClick(holder.swipeContent,holder.getAdapterPosition());
+                onItemClickListener.onDeleteMenuClick(holder.swipeContent, holder.getAdapterPosition());
             }
         });
     }
@@ -131,13 +130,14 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onOpenMenuClick(int position);
+
         void onDeleteMenuClick(View content, int position);
     }
 
-    public void setOnItemClickListener(PlaylistAdapter.OnItemClickListener onItemClickListener){
-        this.onItemClickListener = onItemClickListener ;
+    public void setOnItemClickListener(PlaylistAdapter.OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
 }

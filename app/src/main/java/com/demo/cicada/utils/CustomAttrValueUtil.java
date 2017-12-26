@@ -8,15 +8,8 @@ import android.content.res.TypedArray;
  */
 
 public class CustomAttrValueUtil {
-
-    /**
-     * 动态获取当前主题中的自定义颜色属性值
-     *
-     * @param attr
-     *         e.g R.attr.colorAccent
-     * @param defaultColor
-     *         默认颜色值
-     */
+/**/
+    // 动态获取当前主题中的自定义颜色属性值
     public static int getAttrColorValue(int attr, int defaultColor, Context context) {
 
         int[] attrsArray = {attr};

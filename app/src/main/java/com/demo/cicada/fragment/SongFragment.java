@@ -43,19 +43,19 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ * 歌曲
  */
 
-public class SingleFragment extends Fragment {
+public class SongFragment extends Fragment {
 
-    private static final String TAG = "SingleFragment";
+    private static final String TAG = "SongFragment";
     private RelativeLayout playModeRl;
     private ImageView playModeIv;
     private TextView playModeTv;
     private RecyclerView recyclerView;
     private SideBar sideBar;
-    private TextView sideBarPreTv;
-    public  RecyclerViewAdapter recyclerViewAdapter;
+    //    private TextView sideBarPreTv;
+    public RecyclerViewAdapter recyclerViewAdapter;
     private List<MusicInfo> musicInfoList = new ArrayList<>();
     private DBManager dbManager;
     private View view;
@@ -77,18 +77,18 @@ public class SingleFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: " );
+        Log.d(TAG, "onResume: ");
         updateView();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        Log.d(TAG, "onCreateView: " );
-        view = inflater.inflate(R.layout.fragment_single,container,false);
+        Log.d(TAG, "onCreateView: ");
+        view = inflater.inflate(R.layout.fragment_single, container, false);
         Collections.sort(musicInfoList);
-        recyclerView = (RecyclerView)view.findViewById(R.id.local_recycler_view);
-        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(),musicInfoList);
+        recyclerView = (RecyclerView) view.findViewById(R.id.local_recycler_view);
+        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), musicInfoList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -103,12 +103,12 @@ public class SingleFragment extends Fragment {
             @Override
             public void onDeleteMenuClick(View swipeView, int position) {
                 MusicInfo musicInfo = musicInfoList.get(position);
-                deleteOperate(swipeView,position,context);
+                deleteOperate(swipeView, position, context);
             }
 
             @Override
             public void onContentClick(int position) {
-                MyMusicUtil.setShared(Constant.KEY_LIST,Constant.LIST_ALLMUSIC);
+                MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_ALLMUSIC);
             }
         });
 
@@ -126,9 +126,9 @@ public class SingleFragment extends Fragment {
             }
         });
 
-        playModeRl = (RelativeLayout)view.findViewById(R.id.local_music_playmode_rl);
-        playModeIv = (ImageView)view.findViewById(R.id.local_music_playmode_iv);
-        playModeTv = (TextView)view.findViewById(R.id.local_music_playmode_tv);
+        playModeRl = (RelativeLayout) view.findViewById(R.id.local_music_playmode_rl);
+        playModeIv = (ImageView) view.findViewById(R.id.local_music_playmode_iv);
+        playModeTv = (TextView) view.findViewById(R.id.local_music_playmode_tv);
 
         initDefaultPlayModeView();
 
@@ -137,33 +137,33 @@ public class SingleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
-                switch (playMode){
+                switch (playMode) {
                     case Constant.PLAYMODE_SEQUENCE:
                         playModeTv.setText(Constant.PLAYMODE_RANDOM_TEXT);
-                        MyMusicUtil.setShared(Constant.KEY_MODE,Constant.PLAYMODE_RANDOM);
+                        MyMusicUtil.setShared(Constant.KEY_MODE, Constant.PLAYMODE_RANDOM);
                         break;
                     case Constant.PLAYMODE_RANDOM:
                         playModeTv.setText(Constant.PLAYMODE_SINGLE_REPEAT_TEXT);
-                        MyMusicUtil.setShared(Constant.KEY_MODE,Constant.PLAYMODE_SINGLE_REPEAT);
+                        MyMusicUtil.setShared(Constant.KEY_MODE, Constant.PLAYMODE_SINGLE_REPEAT);
                         break;
                     case Constant.PLAYMODE_SINGLE_REPEAT:
                         playModeTv.setText(Constant.PLAYMODE_SEQUENCE_TEXT);
-                        MyMusicUtil.setShared(Constant.KEY_MODE,Constant.PLAYMODE_SEQUENCE);
+                        MyMusicUtil.setShared(Constant.KEY_MODE, Constant.PLAYMODE_SEQUENCE);
                         break;
                 }
                 initPlayMode();
             }
         });
-        sideBarPreTv = (TextView) view.findViewById(R.id.local_music_siderbar_pre_tv);
-        sideBar = (SideBar)view.findViewById(R.id.local_music_siderbar);
-        sideBar.setTextView(sideBarPreTv);
+        //        sideBarPreTv = (TextView) view.findViewById(R.id.local_music_siderbar_pre_tv);
+        sideBar = (SideBar) view.findViewById(R.id.local_music_siderbar);
+        //        sideBar.setTextView(sideBarPreTv);
         sideBar.setOnListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String letter) {
-                Log.i(TAG, "onTouchingLetterChanged: letter = "+letter);
+                Log.i(TAG, "onTouchingLetterChanged: letter = " + letter);
                 //该字母首次出现的位置
                 int position = recyclerViewAdapter.getPositionForSection(letter.charAt(0));
-                if(position != -1){
+                if (position != -1) {
                     recyclerView.smoothScrollToPosition(position);
                 }
             }
@@ -171,9 +171,9 @@ public class SingleFragment extends Fragment {
         return view;
     }
 
-    private void initDefaultPlayModeView(){
+    private void initDefaultPlayModeView() {
         int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
-        switch (playMode){
+        switch (playMode) {
             case Constant.PLAYMODE_SEQUENCE:
                 playModeTv.setText(Constant.PLAYMODE_SEQUENCE_TEXT);
                 break;
@@ -195,16 +195,16 @@ public class SingleFragment extends Fragment {
         playModeIv.setImageLevel(playMode);
     }
 
-    public void updateView(){
+    public void updateView() {
         musicInfoList = dbManager.getAllMusicFromMusicTable();
         Collections.sort(musicInfoList);
         recyclerViewAdapter.updateMusicInfoList(musicInfoList);
-        Log.d(TAG, "updateView: musicInfoList.size() = "+musicInfoList.size());
-        if (musicInfoList.size() == 0){
+        Log.d(TAG, "updateView: musicInfoList.size() = " + musicInfoList.size());
+        if (musicInfoList.size() == 0) {
             sideBar.setVisibility(View.GONE);
             playModeRl.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
-        }else {
+        } else {
             sideBar.setVisibility(View.VISIBLE);
             playModeRl.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
@@ -213,12 +213,13 @@ public class SingleFragment extends Fragment {
     }
 
     public void showPopFormBottom(MusicInfo musicInfo) {
-        MusicPopMenuWindow menuPopupWindow = new MusicPopMenuWindow(getActivity(),musicInfo,view,Constant.ACTIVITY_LOCAL);
-//      设置Popupwindow显示位置（从底部弹出）
-        menuPopupWindow.showAtLocation(view, Gravity.BOTTOM| Gravity.CENTER_HORIZONTAL, 0, 0);
+        MusicPopMenuWindow menuPopupWindow = new MusicPopMenuWindow(getActivity(), musicInfo, view, Constant
+                .ACTIVITY_LOCAL);
+        //      设置Popupwindow显示位置（从底部弹出）
+        menuPopupWindow.showAtLocation(view, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         WindowManager.LayoutParams params = getActivity().getWindow().getAttributes();
         //当弹出Popupwindow时，背景变半透明
-        params.alpha=0.7f;
+        params.alpha = 0.7f;
         getActivity().getWindow().setAttributes(params);
 
         //设置Popupwindow关闭监听，当Popupwindow关闭，背景恢复1f
@@ -226,7 +227,7 @@ public class SingleFragment extends Fragment {
             @Override
             public void onDismiss() {
                 WindowManager.LayoutParams params = getActivity().getWindow().getAttributes();
-                params.alpha=1f;
+                params.alpha = 1f;
                 getActivity().getWindow().setAttributes(params);
             }
         });
@@ -239,15 +240,15 @@ public class SingleFragment extends Fragment {
 
     }
 
-    public void deleteOperate(final View swipeView, final int position, final Context context){
+    public void deleteOperate(final View swipeView, final int position, final Context context) {
         final MusicInfo musicInfo = musicInfoList.get(position);
         final int curId = musicInfo.getId();
         final int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
         final DBManager dbManager = DBManager.getInstance(context);
         final String path = dbManager.getMusicPath(curId);
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dialog_delete_file,null);
-        final CheckBox deleteFile = (CheckBox)view.findViewById(R.id.dialog_delete_cb);
+        View view = inflater.inflate(R.layout.dialog_delete_file, null);
+        final CheckBox deleteFile = (CheckBox) view.findViewById(R.id.dialog_delete_cb);
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         builder.setView(view);
@@ -255,26 +256,26 @@ public class SingleFragment extends Fragment {
         builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                update(swipeView,position,musicInfo,true);
-                if (deleteFile.isChecked()){
+                update(swipeView, position, musicInfo, true);
+                if (deleteFile.isChecked()) {
                     //同时删除文件
                     //删除的是当前播放的音乐
                     File file = new File(path);
                     if (file.exists()) {
-                        MusicPopMenuWindow.deleteMediaDB(file,context);
+                        MusicPopMenuWindow.deleteMediaDB(file, context);
                         boolean ret = file.delete();
-                        Log.e(TAG, "onClick: ret = "+ ret);
+                        Log.e(TAG, "onClick: ret = " + ret);
                         dbManager.deleteMusic(curId);
-                    }else {
-                        Toast.makeText(context,"找不到文件", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "找不到文件", Toast.LENGTH_SHORT).show();
                     }
-                    if (curId == musicId){
+                    if (curId == musicId) {
                         Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
                         intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
                         context.sendBroadcast(intent);
-                        MyMusicUtil.setShared(Constant.KEY_ID,dbManager.getFirstId(Constant.LIST_ALLMUSIC));
+                        MyMusicUtil.setShared(Constant.KEY_ID, dbManager.getFirstId(Constant.LIST_ALLMUSIC));
                     }
-                }else {
+                } else {
                 }
                 dialog.dismiss();
 
@@ -283,7 +284,7 @@ public class SingleFragment extends Fragment {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                update(swipeView,position,musicInfo,false);
+                update(swipeView, position, musicInfo, false);
                 dialog.dismiss();
             }
         });
@@ -291,12 +292,12 @@ public class SingleFragment extends Fragment {
         builder.show();
     }
 
-    private void update(View swipeView, int position, MusicInfo musicInfo, boolean isDelete){
-        if (isDelete){
+    private void update(View swipeView, int position, MusicInfo musicInfo, boolean isDelete) {
+        if (isDelete) {
             final int curId = musicInfo.getId();
             final int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
             //从列表移除
-            dbManager.removeMusic(musicInfo.getId(),Constant.ACTIVITY_LOCAL);
+            dbManager.removeMusic(musicInfo.getId(), Constant.ACTIVITY_LOCAL);
             if (curId == musicId) {
                 //移除的是当前播放的音乐
                 Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
@@ -305,7 +306,7 @@ public class SingleFragment extends Fragment {
             }
             recyclerViewAdapter.notifyItemRemoved(position);//推荐用这个
             updateView();
-        }else {
+        } else {
 
         }
         //如果删除时，不使用mAdapter.notifyItemRemoved(pos)，则删除没有动画效果，
@@ -329,7 +330,7 @@ public class SingleFragment extends Fragment {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(PlayerManagerReceiver.ACTION_UPDATE_UI_ADAPTER);
             this.context.registerReceiver(mReceiver, intentFilter);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -339,7 +340,7 @@ public class SingleFragment extends Fragment {
             if (mReceiver != null) {
                 this.context.unregisterReceiver(mReceiver);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

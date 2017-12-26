@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- *
+ * 文件夹
  */
 
 public class FolderInfo implements Parcelable {
@@ -39,14 +39,14 @@ public class FolderInfo implements Parcelable {
 
     @Override
     public int hashCode() {
-        String code = name + path + count ;
+        String code = name + path + count;
         return code.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         FolderInfo info = (FolderInfo) (obj);
-        return info.getName().equals(name) && info.getPath().equals(path) && info.getCount() == count ;
+        return info.getName().equals(name) && info.getPath().equals(path) && info.getCount() == count;
     }
 
     @Override

@@ -20,7 +20,7 @@ import android.view.View;
 import com.demo.cicada.R;
 
 /**
- *
+ * 扫描音乐视图
  */
 
 public class ScanView extends View {
@@ -85,7 +85,8 @@ public class ScanView extends View {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.theme);
         if (typedArray != null) {
-            accentColor = typedArray.getColor(R.styleable.theme_accent_color, getResources().getColor(R.color.colorPrimary));
+            accentColor = typedArray.getColor(R.styleable.theme_accent_color, getResources().getColor(R.color
+                    .colorPrimary));
             typedArray.recycle();
         }
         color = colorToHexString(Color.red(accentColor)) + colorToHexString(Color.green(accentColor)) +
@@ -93,17 +94,18 @@ public class ScanView extends View {
         circlrColor1 = "#D0" + color;
         circlrColor2 = "#70" + color;
         circlrColor3 = "#30" + color;
-        Log.d(TAG, "ScanView: accentColor = "+ accentColor);
-        Log.d(TAG, "ScanView: color = "+ color);
-        Log.d(TAG, "ScanView: circlrColor1 = "+ circlrColor1);
+        Log.d(TAG, "ScanView: accentColor = " + accentColor);
+        Log.d(TAG, "ScanView: color = " + color);
+        Log.d(TAG, "ScanView: circlrColor1 = " + circlrColor1);
         initBitmap();
     }
-    public static String colorToHexString(int color){
+
+    public static String colorToHexString(int color) {
         String colorHex;
-        Log.d(TAG, "colorToHexString: color = "+color);
-        if (color < 16){
-            colorHex = "0"+ Integer.toHexString(color);
-        }else {
+        Log.d(TAG, "colorToHexString: color = " + color);
+        if (color < 16) {
+            colorHex = "0" + Integer.toHexString(color);
+        } else {
             colorHex = Integer.toHexString(color);
         }
         return colorHex;
@@ -111,6 +113,7 @@ public class ScanView extends View {
 
     /**
      * 此处设置viewSize固定值为500
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
@@ -126,15 +129,15 @@ public class ScanView extends View {
      * 从资源中解码bitmap
      */
     private void initBitmap() {
-        Drawable drawable = tintDrawable(getResources().getDrawable(R.drawable.music_note), ColorStateList.valueOf(accentColor));
+        Drawable drawable = tintDrawable(getResources().getDrawable(R.drawable.music_note), ColorStateList.valueOf
+                (accentColor));
         bitmap = drawableToBitamp(drawable);
     }
 
-    private Bitmap drawableToBitamp(Drawable drawable)
-    {
+    private Bitmap drawableToBitamp(Drawable drawable) {
         int w = drawable.getIntrinsicWidth();
         int h = drawable.getIntrinsicHeight();
-        Bitmap bitmap = Bitmap.createBitmap(w,h, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, w, h);
         drawable.draw(canvas);
@@ -147,7 +150,8 @@ public class ScanView extends View {
         Paint mPaint = new Paint();
         mPaint.setAntiAlias(true);
         Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        Rect rectd = new Rect((viewSize / 10) * 4, (viewSize / 10) * 4, viewSize - (viewSize / 10) * 4, viewSize - (viewSize / 10) * 4);
+        Rect rectd = new Rect((viewSize / 10) * 4, (viewSize / 10) * 4, viewSize - (viewSize / 10) * 4, viewSize -
+                (viewSize / 10) * 4);
         canvas.drawBitmap(bitmap, rect, rectd, mPaint);
 
         circlePaint = new Paint();
@@ -168,10 +172,9 @@ public class ScanView extends View {
         sectorPaint.setAntiAlias(true);
         sectorPaint.setStyle(Paint.Style.STROKE);
         sectorPaint.setStrokeWidth((viewSize / 10) * 3);
-        Shader sectorShader = new SweepGradient(viewSize / 2, viewSize / 2,
-                new int[]{Color.TRANSPARENT, Color.argb(0, Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor)),
-                        Color.argb(255, Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor))},
-                new float[]{0, 0.875f, 1f});
+        Shader sectorShader = new SweepGradient(viewSize / 2, viewSize / 2, new int[]{Color.TRANSPARENT, Color.argb
+                (0, Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor)), Color.argb(255, Color
+                .red(accentColor), Color.green(accentColor), Color.blue(accentColor))}, new float[]{0, 0.875f, 1f});
         sectorPaint.setShader(sectorShader);
 
         if (threadFlag) {

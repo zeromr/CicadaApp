@@ -11,27 +11,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.demo.cicada.R;
-import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.FolderInfo;
 
 import java.util.List;
 
 /**
- *
+ * 文件夹适配器
  */
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
 
-    private static final String TAG = FolderAdapter.class.getName();
+//    private static final String TAG = FolderAdapter.class.getName();
     private List<FolderInfo> folderInfoList;
     private Context context;
-    private DBManager dbManager;
+//    private DBManager dbManager;
     private FolderAdapter.OnItemClickListener onItemClickListener;
 
     public FolderAdapter(Context context, List<FolderInfo> folderInfoList) {
         this.context = context;
         this.folderInfoList = folderInfoList;
-        this.dbManager = DBManager.getInstance(context);
+//        this.dbManager = DBManager.getInstance(context);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -42,9 +41,9 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         TextView count;
 //        Button deleteBtn;
 
-        public ViewHolder(View itemView) {
+        private ViewHolder(View itemView) {
             super(itemView);
-            this.swipeContent = (View) itemView.findViewById(R.id.model_swipemenu_layout);
+            this.swipeContent = itemView.findViewById(R.id.model_swipemenu_layout);
             this.contentLl = (LinearLayout) itemView.findViewById(R.id.model_music_item_ll);
             this.folderIv = (ImageView) itemView.findViewById(R.id.model_head_iv);
             this.folderName = (TextView) itemView.findViewById(R.id.model_item_name);
@@ -57,8 +56,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     @Override
     public FolderAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.local_model_rv_item, parent, false);
-        FolderAdapter.ViewHolder viewHolder = new FolderAdapter.ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -88,11 +86,11 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         return folderInfoList.size();
     }
 
-    public void update(List<FolderInfo> folderInfoList) {
+    /*public void update(List<FolderInfo> folderInfoList) {
         this.folderInfoList.clear();
         this.folderInfoList.addAll(folderInfoList);
         notifyDataSetChanged();
-    }
+    }*/
 
     public interface OnItemClickListener {
         void onDeleteMenuClick(View content, int position);

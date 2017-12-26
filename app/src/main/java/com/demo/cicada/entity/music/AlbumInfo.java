@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- *
+ * 专辑
  */
 
 public class AlbumInfo implements Parcelable {
@@ -35,6 +35,7 @@ public class AlbumInfo implements Parcelable {
     public void setSinger(String singer) {
         this.singer = singer;
     }
+
     @Override
     public int hashCode() {
         String code = name + singer + count;

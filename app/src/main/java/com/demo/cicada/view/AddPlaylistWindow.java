@@ -23,19 +23,16 @@ import com.demo.cicada.entity.music.MusicInfo;
 import com.demo.cicada.entity.music.PlayListInfo;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 添加播放列表界面
  */
 
 public class AddPlaylistWindow extends PopupWindow {
     private View view;
     private Activity activity;
     private MusicInfo musicInfo;
-    private LinearLayout addLl;
-    private ListView listView;
     private Adapter adapter;
     private List<PlayListInfo> dataList;
     private DBManager dbManager;
@@ -86,11 +83,11 @@ public class AddPlaylistWindow extends PopupWindow {
             }
         });
 
-        listView = (ListView) view.findViewById(R.id.pop_add_pl_lv);
+        ListView listView = (ListView) view.findViewById(R.id.pop_add_pl_lv);
         adapter = new Adapter();
         listView.setAdapter(adapter);
 
-        addLl = (LinearLayout) view.findViewById(R.id.pop_add_playlist_ll);
+        LinearLayout addLl = (LinearLayout) view.findViewById(R.id.pop_add_playlist_ll);
         addLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,7 +174,7 @@ public class AddPlaylistWindow extends PopupWindow {
         }
 
         public void updateDataList() {
-            List<PlayListInfo> playListInfos = new ArrayList<>();
+            List<PlayListInfo> playListInfos;
             playListInfos = dbManager.getMyPlayList();
             dataList.clear();
             dataList.addAll(playListInfos);

@@ -33,7 +33,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
- * Created by Zero on 2017/11/29.
+ * 区域选择
  */
 
 public class ChooseAreaFragment extends Fragment {

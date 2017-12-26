@@ -58,16 +58,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_weight="0"
-                    android:background="@color/colorDividerGray"></View>
+                    android:background="@color/colorDividerGray"/>
             </LinearLayout>
         </LinearLayout>
-        <!--<Button-->
-            <!--android:id="@+id/model_swip_delete_menu_btn"-->
-            <!--android:layout_width="60dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@color/colorRed"-->
-            <!--android:gravity="center"-->
-            <!--android:text="删除"-->
-            <!--android:textColor="@color/colorWhite" />-->
     </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
 </LinearLayout>

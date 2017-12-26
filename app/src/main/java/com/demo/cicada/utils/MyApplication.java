@@ -6,7 +6,7 @@ import android.content.Context;
 import org.litepal.LitePalApplication;
 
 /**
- *
+ * 全局变量
  */
 
 public class MyApplication extends Application {

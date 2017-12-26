@@ -35,26 +35,15 @@ import java.util.Locale;
 
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = PlayActivity.class.getName();
-
     private DBManager dbManager;
-
-    private ImageView backIv;
     private ImageView playIv;
-    private ImageView menuIv;
-    private ImageView preIv;
-    private ImageView nextIv;
     private ImageView modeIv;
-
     private TextView curTimeTv;
     private TextView totalTimeTv;
-
     private TextView musicNameTv;
     private TextView singerNameTv;
-
     private SeekBar seekBar;
-
     private PlayReceiver mReceiver;
-
     private int mProgress;
     private int duration;
     private int current;
@@ -63,18 +52,18 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
-        setStyle();
         dbManager = DBManager.getInstance(PlayActivity.this);
+        setStyle();
         initView();
         register();
     }
 
     private void initView() {
-        backIv = (ImageView) findViewById(R.id.iv_back);
+        ImageView backIv = (ImageView) findViewById(R.id.iv_back);
         playIv = (ImageView) findViewById(R.id.iv_play);
-        menuIv = (ImageView) findViewById(R.id.iv_menu);
-        preIv = (ImageView) findViewById(R.id.iv_prev);
-        nextIv = (ImageView) findViewById(R.id.iv_next);
+        ImageView menuIv = (ImageView) findViewById(R.id.iv_menu);
+        ImageView preIv = (ImageView) findViewById(R.id.iv_prev);
+        ImageView nextIv = (ImageView) findViewById(R.id.iv_next);
         modeIv = (ImageView) findViewById(R.id.iv_mode);
         curTimeTv = (TextView) findViewById(R.id.tv_current_time);
         totalTimeTv = (TextView) findViewById(R.id.tv_total_time);
@@ -228,7 +217,9 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             LayerDrawable layerDrawable = (LayerDrawable) seekBar.getProgressDrawable();
             ScaleDrawable scaleDrawable = (ScaleDrawable) layerDrawable.findDrawableByLayerId(android.R.id.progress);
             GradientDrawable drawable = (GradientDrawable) scaleDrawable.getDrawable();
-            drawable.setColor(progressColor);
+            if (drawable != null) {
+                drawable.setColor(progressColor);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -265,6 +256,9 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    /**
+     * 显示当前音乐的详情界面
+     */
     public void showPopFormBottom() {
         PlayingPopWindow playingPopWindow = new PlayingPopWindow(PlayActivity.this);
         playingPopWindow.showAtLocation(findViewById(R.id.activity_play), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
@@ -302,7 +296,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             unregisterReceiver(mReceiver);
         }
     }
-
 
     class PlayReceiver extends BroadcastReceiver {
         int status;
@@ -344,5 +337,4 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
     }
-
 }

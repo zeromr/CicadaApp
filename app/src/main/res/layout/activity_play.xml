@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_play"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@drawable/bg_play">
+    android:background="@drawable/ic_play_bg"
+    android:fitsSystemWindows="true">
 
     <!--<ImageView-->
-        <!--android:id="@+id/iv_play_page_bg"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:clickable="true"-->
-        <!--android:scaleType="centerCrop"-->
-        <!--android:fitsSystemWindows="true"-->
-        <!--android:src="@drawable/bg_play" />-->
+    <!--android:id="@+id/iv_play_page_bg"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:clickable="true"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:fitsSystemWindows="true"-->
+    <!--android:src="@drawable/bg_play" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,6 +26,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -37,43 +39,47 @@
                     android:layout_height="?attr/actionBarSize"
                     android:padding="10dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/down_arror" />
+                    android:src="@drawable/down_arror"/>
 
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginRight="?attr/actionBarSize"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
                     android:text="歌名"
-                    android:gravity="center"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"/>
             </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_artist"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:gravity="center"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
                 android:text="歌手"
                 android:textColor="@color/grey50"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/iv_disc_rotate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/bg_disc"/>
+
+                <ImageView
+                    android:id="@+id/iv_disc_rotate"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginTop="65dp"
+                    android:src="@drawable/ic_play_icon"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -96,19 +102,19 @@
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:textColor="@android:color/white"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
 
                 <SeekBar
                     android:id="@+id/activity_play_seekbar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="10dp"
+                    android:layout_weight="1"
                     android:maxHeight="2dp"
                     android:minHeight="2dp"
                     android:progressDrawable="@drawable/seekbar_style"
-                    android:thumb="@drawable/thumb_png" />
+                    android:thumb="@drawable/thumb_png"/>
 
                 <TextView
                     android:id="@+id/tv_total_time"
@@ -116,18 +122,19 @@
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:textColor="@android:color/white"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:id="@+id/iv_play"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/selector_play_btn_play_pause" />
+                    android:src="@drawable/selector_play_btn_play_pause"/>
 
                 <ImageView
                     android:id="@+id/iv_prev"
@@ -135,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/iv_play"
-                    android:src="@drawable/selector_play_btn_prev" />
+                    android:src="@drawable/selector_play_btn_prev"/>
 
 
                 <ImageView
@@ -144,15 +151,15 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/iv_play"
-                    android:src="@drawable/play_btn_next_selector" />
+                    android:src="@drawable/play_btn_next_selector"/>
 
                 <ImageView
                     android:id="@+id/iv_menu"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="16dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
                     android:padding="10dp"
                     android:src="@drawable/selector_menu"/>
 
@@ -160,12 +167,12 @@
                     android:id="@+id/iv_mode"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/play_mode_level_list"
-                    android:padding="10dp"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_marginLeft="16dp"/>
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:padding="10dp"
+                    android:src="@drawable/play_mode_level_list"/>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

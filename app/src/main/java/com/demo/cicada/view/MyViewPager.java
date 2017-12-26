@@ -6,12 +6,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- *
+ * 自定义ViewPager：左右切换当前的view
  */
 
 public class MyViewPager extends ViewPager {
-
-    boolean isSliding = false;
+    boolean isSliding = false;      // 是否滑动
 
     public MyViewPager(Context context) {
         super(context);
@@ -39,7 +38,4 @@ public class MyViewPager extends ViewPager {
         }
     }
 
-    public void setSliding(boolean sliding) {
-        isSliding = sliding;
-    }
 }

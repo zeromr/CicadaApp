@@ -2,19 +2,18 @@ package com.demo.cicada.entity.music;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 /**
+ * 音乐信息
  *
- *
- *
- *
- MediaStore.Audio.Media._ID,                 //歌曲ID
- MediaStore.Audio.Media.TITLE,               //歌曲名称
- MediaStore.Audio.Media.ARTIST,              //歌曲歌手
- MediaStore.Audio.Media.ALBUM,               //歌曲的专辑名
- MediaStore.Audio.Media.DURATION,            //歌曲时长
- MediaStore.Audio.Media.DISPLAY_NAME,        //歌曲文件的名称
- MediaStore.Audio.Media.DATA};               //歌曲文件的全路径
+ * MediaStore.Audio.Media._ID,                 //歌曲ID
+ * MediaStore.Audio.Media.TITLE,               //歌曲名称
+ * MediaStore.Audio.Media.ARTIST,              //歌曲歌手
+ * MediaStore.Audio.Media.ALBUM,               //歌曲的专辑名
+ * MediaStore.Audio.Media.DURATION,            //歌曲时长
+ * MediaStore.Audio.Media.DISPLAY_NAME,        //歌曲文件的名称
+ * MediaStore.Audio.Media.DATA};               //歌曲文件的全路径
  */
 
 public class MusicInfo implements Comparable, Parcelable {
@@ -25,8 +24,8 @@ public class MusicInfo implements Comparable, Parcelable {
     private String album;
     private String duration;
     private String path;
-    private String parentPath; //父目录路径
-    private int love; //1设置我喜欢 0未设置
+    private String parentPath;          //父目录路径
+    private int love;                   //1设置收藏，0未设置
     private String firstLetter;
 
 
@@ -103,7 +102,7 @@ public class MusicInfo implements Comparable, Parcelable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NonNull Object o) {
         MusicInfo info = (MusicInfo)o;
         if (info.getFirstLetter().equals("#"))
             return -1;

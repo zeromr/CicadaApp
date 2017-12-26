@@ -3,7 +3,7 @@ package com.demo.cicada.entity.weather;
 import org.litepal.crud.DataSupport;
 
 /**
- * Created by Zero on 2017/11/29.
+ * 省
  */
 
 public class Province extends DataSupport {

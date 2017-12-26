@@ -38,6 +38,8 @@ public class SplashActivity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_splash);
+        /*initView();
+        initPermission();*/
         hasCache();
     }
 
@@ -47,7 +49,7 @@ public class SplashActivity extends BaseActivity {
         if (sp.getString("weather", null) != null) {
             startActivity(new Intent(this, WeatherActivity.class));
             finish();
-        }else {
+        } else {
             initView();
             initPermission();
         }
@@ -74,12 +76,13 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startWeatherActivity() {
-        Intent intent = new Intent();
-        intent.setClass(this, WeatherActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, WeatherActivity.class));
         finish();
     }
 
+    /**
+     * 检查权限
+     */
     private void initPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             checkSkip();
@@ -107,13 +110,13 @@ public class SplashActivity extends BaseActivity {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0) {
-                    for (int result : grantResults) {
+                    /*for (int result : grantResults) {
                         if (result != PackageManager.PERMISSION_GRANTED) {
                             Toast.makeText(this, "必须同意所有权限才能使用本程序", Toast.LENGTH_SHORT).show();
-                            finish();
-                            return;
+//                            finish();
+//                            return;
                         }
-                    }
+                    }*/
                     checkSkip();
                 } else {
                     Toast.makeText(this, "发生未知的错误", Toast.LENGTH_SHORT).show();

@@ -46,6 +46,7 @@ public class AboutActivity extends AppCompatActivity {
         });
     }
 
+    // 分享App
     public void shareApp() {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");

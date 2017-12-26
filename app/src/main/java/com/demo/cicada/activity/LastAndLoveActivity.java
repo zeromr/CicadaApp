@@ -42,15 +42,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-/*
-*   最近播放和我喜爱 复用同一个Activity
-* 
-* */
 
-public class LastMyloveActivity extends PlayBarBaseActivity {
+/**
+ * 最近播放和我的收藏 复用同一个Activity
+ */
+public class LastAndLoveActivity extends PlayBarBaseActivity {
 
     private static final String TAG = LocalMusicActivity.class.getName();
-    private Toolbar toolbar;
     private RelativeLayout playModeRl;
     private ImageView playModeIv;
     private TextView playModeTv;
@@ -65,10 +63,16 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_last_mylove);
-        dbManager = DBManager.getInstance(LastMyloveActivity.this);
+        setContentView(R.layout.activity_last_and_love);
+        dbManager = DBManager.getInstance(LastAndLoveActivity.this);
+        initToolbar();
+        init();
+        register();
+    }
+
+    public void initToolbar() {
         label = getIntent().getStringExtra(Constant.LABEL);
-        toolbar = (Toolbar) findViewById(R.id.last_mylove_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.last_mylove_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -77,19 +81,17 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
                 actionBar.setTitle(label);
             }
         }
-        init();
-        register();
     }
 
     private void init() {
         recyclerView = (RecyclerView) findViewById(R.id.last_mylove_recycler_view);
-        recyclerViewAdapter = new RecyclerViewAdapter(LastMyloveActivity.this, musicInfoList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LastMyloveActivity.this);
+        recyclerViewAdapter = new RecyclerViewAdapter(LastAndLoveActivity.this, musicInfoList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LastAndLoveActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         //设置Item增加、移除动画
         //        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(LastMyloveActivity.this, DividerItemDecoration
+        recyclerView.addItemDecoration(new DividerItemDecoration(LastAndLoveActivity.this, DividerItemDecoration
                 .VERTICAL_LIST));
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -102,7 +104,7 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
 
             @Override
             public void onDeleteMenuClick(View swipeView, int position) {
-                deleteOperate(swipeView, position, LastMyloveActivity.this);
+                deleteOperate(swipeView, position, LastAndLoveActivity.this);
             }
 
             @Override
@@ -206,7 +208,6 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
         playModeIv.setImageLevel(playMode);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -248,10 +249,10 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
     public void showPopFormBottom(MusicInfo musicInfo) {
         MusicPopMenuWindow menuPopupWindow;
         if (label.equals(Constant.LABEL_LAST)) {
-            menuPopupWindow = new MusicPopMenuWindow(LastMyloveActivity.this, musicInfo, findViewById(R.id
+            menuPopupWindow = new MusicPopMenuWindow(LastAndLoveActivity.this, musicInfo, findViewById(R.id
                     .activity_last_mylove), Constant.ACTIVITY_RECENTPLAY);
         } else {
-            menuPopupWindow = new MusicPopMenuWindow(LastMyloveActivity.this, musicInfo, findViewById(R.id
+            menuPopupWindow = new MusicPopMenuWindow(LastAndLoveActivity.this, musicInfo, findViewById(R.id
                     .activity_last_mylove), Constant.ACTIVITY_MYLOVE);
         }
 
@@ -352,8 +353,6 @@ public class LastMyloveActivity extends PlayBarBaseActivity {
             }
             recyclerViewAdapter.notifyItemRemoved(position);//推荐用这个
             updateView();
-        } else {
-
         }
         //如果删除时，不使用mAdapter.notifyItemRemoved(pos)，则删除没有动画效果，
         //且如果想让侧滑菜单同时关闭，需要同时调用 ((CstSwipeDelMenu) holder.itemView).quickClose();

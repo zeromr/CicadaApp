@@ -21,7 +21,7 @@ import com.demo.cicada.utils.MyMusicUtil;
 import java.util.ArrayList;
 
 /**
- *
+ * 专辑
  */
 
 public class AlbumFragment extends Fragment {

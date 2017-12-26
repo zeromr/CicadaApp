@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.demo.cicada.R;
 import com.demo.cicada.activity.MusicActivity;
-import com.demo.cicada.activity.PlaylistActivity;
+import com.demo.cicada.activity.PlayListActivity;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.PlayListInfo;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
@@ -28,13 +28,13 @@ import java.util.List;
  *
  */
 
-public class HomeListViewAdapter extends BaseAdapter {
+public class MusicListViewAdapter extends BaseAdapter {
 
     private List<PlayListInfo> dataList;
     private Activity activity;
     private DBManager dbManager;
 
-    public HomeListViewAdapter(List<PlayListInfo> dataList, Activity activity, DBManager dbManager) {
+    public MusicListViewAdapter(List<PlayListInfo> dataList, Activity activity, DBManager dbManager) {
         this.dataList = dataList;
         this.activity = activity;
         this.dbManager = dbManager;
@@ -119,7 +119,7 @@ public class HomeListViewAdapter extends BaseAdapter {
                     builder.show();
                 } else {
                     //进入歌单
-                    Intent intent = new Intent(activity, PlaylistActivity.class);
+                    Intent intent = new Intent(activity, PlayListActivity.class);
                     intent.putExtra("playlistInfo", dataList.get(position));
                     activity.startActivity(intent);
                 }
@@ -165,7 +165,7 @@ public class HomeListViewAdapter extends BaseAdapter {
 
     }
 
-    class Holder {
+    private class Holder {
         View swipView;
         LinearLayout contentView;
         ImageView coverIv;

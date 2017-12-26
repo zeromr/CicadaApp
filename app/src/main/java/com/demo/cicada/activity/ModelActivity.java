@@ -50,7 +50,6 @@ public class ModelActivity extends PlayBarBaseActivity {
     public static final String SINGER_TYPE = "singer_type";
     public static final String ALBUM_TYPE = "album_type";
     public static final String FOLDER_TYPE = "folder_type";
-    private Toolbar toolbar;
     private String type;
     private String title;
     private RecyclerView recyclerView;
@@ -59,7 +58,6 @@ public class ModelActivity extends PlayBarBaseActivity {
     private RelativeLayout playModeRl;
     private ImageView playModeIv;
     private TextView playModeTv;
-    //    private Context context;
     private DBManager dbManager;
     private List<MusicInfo> musicInfoList;
     private UpdateReceiver mReceiver;
@@ -68,20 +66,25 @@ public class ModelActivity extends PlayBarBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_model);
+
         dbManager = DBManager.getInstance(this);
         title = getIntent().getStringExtra(KEY_TITLE);
         type = getIntent().getStringExtra(KEY_TYPE);
-        toolbar = (Toolbar) findViewById(R.id.model_music_toolbar);
+        musicInfoList = new ArrayList<>();
+        initToolbar();
+        init();
+        updateView();
+        register();
+    }
+
+    public void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.model_music_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(title);
         }
-        musicInfoList = new ArrayList<>();
-        init();
-        updateView();
-        register();
     }
 
     @Override
@@ -147,14 +150,13 @@ public class ModelActivity extends PlayBarBaseActivity {
             @Override
             public void onTouchingLetterChanged(String letter) {
                 Log.i(TAG, "onTouchingLetterChanged: letter = " + letter);
-                //该字母首次出现的位置
+                // 该字母首次出现的位置
                 int position = adapter.getPositionForSection(letter.charAt(0));
                 if (position != -1) {
                     recyclerView.smoothScrollToPosition(position);
                 }
             }
         });
-
 
         playModeRl = (RelativeLayout) findViewById(R.id.model_music_playmode_rl);
         playModeIv = (ImageView) findViewById(R.id.model_music_playmode_iv);
@@ -212,12 +214,16 @@ public class ModelActivity extends PlayBarBaseActivity {
 
     public void updateView() {
         musicInfoList.clear();
-        if (type.equals(SINGER_TYPE)) {
-            musicInfoList.addAll(dbManager.getMusicListBySinger(title));
-        } else if (type.equals(ALBUM_TYPE)) {
-            musicInfoList.addAll(dbManager.getMusicListByAlbum(title));
-        } else if (type.equals(FOLDER_TYPE)) {
-            musicInfoList.addAll(dbManager.getMusicListByFolder(getIntent().getStringExtra(KEY_PATH)));
+        switch (type) {
+            case SINGER_TYPE:
+                musicInfoList.addAll(dbManager.getMusicListBySinger(title));
+                break;
+            case ALBUM_TYPE:
+                musicInfoList.addAll(dbManager.getMusicListByAlbum(title));
+                break;
+            case FOLDER_TYPE:
+                musicInfoList.addAll(dbManager.getMusicListByFolder(getIntent().getStringExtra(KEY_PATH)));
+                break;
         }
         Collections.sort(musicInfoList);
         adapter.notifyDataSetChanged();
@@ -319,7 +325,7 @@ public class ModelActivity extends PlayBarBaseActivity {
 
         private OnItemClickListener onItemClickListener;
 
-        public ModelAdapter() {
+        private ModelAdapter() {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
@@ -332,9 +338,9 @@ public class ModelActivity extends PlayBarBaseActivity {
             ImageView menuIv;
             Button deleteBtn;
 
-            public ViewHolder(View itemView) {
+            ViewHolder(View itemView) {
                 super(itemView);
-                this.swipeContent = (View) itemView.findViewById(R.id.swipemenu_layout);
+                this.swipeContent = itemView.findViewById(R.id.swipemenu_layout);
                 this.contentLl = (LinearLayout) itemView.findViewById(R.id.local_music_item_ll);
                 this.musicName = (TextView) itemView.findViewById(R.id.local_music_name);
                 this.musicIndex = (TextView) itemView.findViewById(R.id.local_index);
@@ -380,8 +386,7 @@ public class ModelActivity extends PlayBarBaseActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(ModelActivity.this).inflate(R.layout.local_music_item, parent, false);
-            ViewHolder viewHolder = new ViewHolder(view);
-            return viewHolder;
+            return new ViewHolder(view);
         }
 
         @Override
@@ -434,15 +439,19 @@ public class ModelActivity extends PlayBarBaseActivity {
                     intent.putExtra(Constant.KEY_PATH, path);
                     sendBroadcast(intent);
                     MyMusicUtil.setShared(Constant.KEY_ID, musicInfo.getId());
-                    if (type.equals(SINGER_TYPE)) {
-                        MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_SINGER);
-                        MyMusicUtil.setShared(Constant.KEY_LIST_ID, title);
-                    } else if (type.equals(ALBUM_TYPE)) {
-                        MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_ALBUM);
-                        MyMusicUtil.setShared(Constant.KEY_LIST_ID, title);
-                    } else if (type.equals(FOLDER_TYPE)) {
-                        MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_FOLDER);
-                        MyMusicUtil.setShared(Constant.KEY_LIST_ID, getIntent().getStringExtra(KEY_PATH));
+                    switch (type) {
+                        case SINGER_TYPE:
+                            MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_SINGER);
+                            MyMusicUtil.setShared(Constant.KEY_LIST_ID, title);
+                            break;
+                        case ALBUM_TYPE:
+                            MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_ALBUM);
+                            MyMusicUtil.setShared(Constant.KEY_LIST_ID, title);
+                            break;
+                        case FOLDER_TYPE:
+                            MyMusicUtil.setShared(Constant.KEY_LIST, Constant.LIST_FOLDER);
+                            MyMusicUtil.setShared(Constant.KEY_LIST_ID, getIntent().getStringExtra(KEY_PATH));
+                            break;
                     }
                     notifyDataSetChanged();
                 }
@@ -463,16 +472,8 @@ public class ModelActivity extends PlayBarBaseActivity {
             });
         }
 
-        //        public void updateMusicInfoList(List<MusicInfo> musicInfoList) {
-        //            musicInfoList.clear();
-        //            musicInfoList.addAll(musicInfoList);
-        //            notifyDataSetChanged();
-        //        }
-
         public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
             this.onItemClickListener = onItemClickListener;
         }
-
     }
-
 }

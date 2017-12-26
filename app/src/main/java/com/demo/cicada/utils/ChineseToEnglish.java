@@ -11,6 +11,7 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 public class ChineseToEnglish {
     private static final String TAG = "ChineseToEnglish";
+
     /**
      * 返回一个字的拼音
      */
@@ -27,21 +28,20 @@ public class ChineseToEnglish {
             }
         } catch (BadHanyuPinyinOutputFormatCombination e) {
             e.printStackTrace();
-            Log.e(TAG, "toPinYin: hanzi = "+hanzi );
-            Log.e(TAG, "toPinYin: pinyinArray.toString() = "+pinyinArray.toString() );
+            Log.e(TAG, "toPinYin: hanzi = " + hanzi);
         }
         //将获取到的拼音返回
         if (pinyinArray != null && pinyinArray.length > 0) {
             return pinyinArray[0];
         } else {
-            Log.e(TAG, "toPinYin: hanzi = "+hanzi );
+            Log.e(TAG, "toPinYin: hanzi = " + hanzi);
             return "#";
         }
     }
 
     //字符串转换成拼音
-    public static String StringToPingYin(String input) {
-        if (input == null){
+    /*public static String StringToPingYin(String input) {
+        if (input == null) {
             return null;
         }
         String result = null;
@@ -57,10 +57,10 @@ public class ChineseToEnglish {
             result = result.substring(4, result.length());
         }
         return result;
-    }
+    }*/
 
-    public static String StringToPinyinSpecial(String input){
-        if (input == null){
+    public static String StringToPinyinSpecial(String input) {
+        if (input == null) {
             return null;
         }
         String result = null;
@@ -76,9 +76,9 @@ public class ChineseToEnglish {
             result = result.substring(4, result.length());
         }
         //如果首字母不在[a,z]和[A,Z]内则首字母改为‘#’
-        if (!(result.toUpperCase().charAt(0) >= 'A' && result.toUpperCase().charAt(0) <= 'Z')){
+        if (!(result.toUpperCase().charAt(0) >= 'A' && result.toUpperCase().charAt(0) <= 'Z')) {
             StringBuilder builder = new StringBuilder(result);
-            builder.replace(0,1,"#");
+            builder.replace(0, 1, "#");
             result = builder.toString();
         }
         return result;

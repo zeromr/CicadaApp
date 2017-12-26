@@ -32,7 +32,6 @@ import com.amap.api.location.AMapLocationListener;
 import com.demo.cicada.R;
 import com.demo.cicada.gson.Forecast;
 import com.demo.cicada.gson.Weather;
-import com.demo.cicada.service.AutoUpdateService;
 import com.demo.cicada.utils.HttpUtil;
 import com.demo.cicada.utils.Utility;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -60,8 +59,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView ivBingPic;
     public SwipeRefreshLayout swipeRefresh;
     public DrawerLayout drawerLayout;
-    private Button btnNav;
-    private Button btnMenu;
     private String mWeatherId;
     private long clickTime = 0;
 
@@ -82,9 +79,12 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                     Date date = new Date(aMapLocation.getTime());
                 /*df.format(date);*/
                     Log.i("msg", "时间: " + df.format(date));
-                    requestWeather(aMapLocation.getCity());
+                    //                    requestWeather(aMapLocation.getCity());
+                    requestWeather(aMapLocation.getDistrict());
                     mLocationClient.stopLocation();     //停止定位后，本地定位服务并不会被销毁
                 } else {
+                    Toast.makeText(WeatherActivity.this, "定位失败，加载默认城市", Toast.LENGTH_SHORT).show();
+                    requestWeather("德阳");
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                     Log.e("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" +
                             aMapLocation.getErrorInfo());
@@ -139,16 +139,16 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         rxPermissions.request(Manifest.permission.ACCESS_COARSE_LOCATION).subscribe(granted -> {
             try {
                 if (granted) {
-                    Log.i("msg", "checkPermission: test1");
+                    Log.i("msg", "checkPermission: 已获得定位权限");
                     getLocation();
                 } else {
-                    Log.i("msg", "checkPermission: test2");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                            Toast.makeText(getApplicationContext(), "未获得定位权限，加载默认城市", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "未获得定位权限，加载默认城市", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    requestWeather("成都");
+                    }*/
+                    Toast.makeText(getApplicationContext(), "未获得定位权限，加载默认城市", Toast.LENGTH_SHORT).show();
+                    requestWeather("德阳");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -160,18 +160,23 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
     // 加载天气和图片数据
     public void loadData() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        loadBingPic();
-        String weatherStr = sp.getString("weather", null);
+        //        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        loadImage();
+        svWeather.setVisibility(View.INVISIBLE);
+        checkPermission();
+        /*String weatherStr = sp.getString("weather", null);
         if (weatherStr != null) {
             // 有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherStr);
-            mWeatherId = weather.basic.weatherId;
+            if (weather != null) {
+                mWeatherId = weather.basic.weatherId;
+            }
             showWeatherInfo(weather);
+
         } else {
             svWeather.setVisibility(View.INVISIBLE);
             checkPermission();
-        }
+        }*/
         swipeRefresh.setOnRefreshListener(() -> requestWeather(mWeatherId));
     }
 
@@ -214,8 +219,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        btnNav = (Button) findViewById(R.id.btn_nav);
-        btnMenu = (Button) findViewById(R.id.btn_menu);
+        Button btnNav = (Button) findViewById(R.id.btn_nav);
+        Button btnMenu = (Button) findViewById(R.id.btn_menu);
         btnNav.setOnClickListener(this);
         btnMenu.setOnClickListener(this);
     }
@@ -246,33 +251,11 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * 加载必应每日一图
+     * 加载天气背景图
      */
-    private void loadBingPic() {
+    private void loadImage() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_bg_weather);
         ivBingPic.setImageBitmap(bitmap);
-        /*String requestBingPic = "http://guolin.tech/api/bing_pic";
-        HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String bingPic = response.body().string();
-                SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this)
-                        .edit();
-                edit.putString("bing_pic", bingPic);
-                edit.apply();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Glide.with(WeatherActivity.this).load(bingPic).into(ivBingPic);
-                    }
-                });
-            }
-        });*/
     }
 
     /**
@@ -285,8 +268,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                 "&key=bc0418b57b2d4918819d3974ac1285d9";*/
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId +
                 "&key=3ab404ccea9d416abe84dfe936af6f07";
-        //        String weatherUrl = "https://free-api.heweather
-        // .com/v5/forecast?city="+weatherId+"&key=3ab404ccea9d416abe84dfe936af6f07";
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -322,7 +303,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                 });
             }
         });
-        loadBingPic();
+        loadImage();
     }
 
     /**
@@ -363,8 +344,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         tvCarWash.setText(carWash);
         tvSport.setText(sport);
         svWeather.setVisibility(View.VISIBLE);
-        Intent intent = new Intent(this, AutoUpdateService.class);
-        startService(intent);
+        /*Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);*/
     }
 
 }

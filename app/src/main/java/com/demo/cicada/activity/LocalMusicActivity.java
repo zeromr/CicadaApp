@@ -11,14 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.demo.cicada.R;
 import com.demo.cicada.fragment.AlbumFragment;
 import com.demo.cicada.fragment.FolderFragment;
 import com.demo.cicada.fragment.SingerFragment;
-import com.demo.cicada.fragment.SingleFragment;
+import com.demo.cicada.fragment.SongFragment;
 import com.demo.cicada.utils.Constant;
 import com.demo.cicada.view.MyViewPager;
 
@@ -28,31 +26,28 @@ import java.util.List;
 public class LocalMusicActivity extends PlayBarBaseActivity {
 
     private static final String TAG = LocalMusicActivity.class.getName();
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private MyViewPager viewPager;
-    private MyAdapter fragmentAdapter;
     private List<String> titleList = new ArrayList<>(4);
     private List<Fragment> fragments = new ArrayList<>(4);
-    private SingleFragment singleFragment;
+    private SongFragment songFragment;
     private SingerFragment singerFragment;
     private AlbumFragment albumFragment;
     private FolderFragment folderFragment;
-    private TextView nothingTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_music);
 
-        toolbar = (Toolbar)findViewById(R.id.local_music_toolbar);
+        // 标题栏设置
+        Toolbar toolbar = (Toolbar) findViewById(R.id.local_music_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+            // 给标题栏左边加上一个返回的图标
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(Constant.LABEL_LOCAL);
         }
-        init();
+        initView();
     }
 
 
@@ -65,48 +60,35 @@ public class LocalMusicActivity extends PlayBarBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: " );
+        Log.d(TAG, "onResume: ");
     }
 
-
-    private void init(){
+    // 初始化控件
+    private void initView() {
         addTapData();
-        viewPager = (MyViewPager) findViewById(R.id.local_viewPager);
-        tabLayout = (TabLayout)findViewById(R.id.local_tab);
-        if (viewPager == null) {
-            Log.i("msg", "init: viewPager should not be null");
-        }
-        Log.i("msg", "viewPager: "+viewPager);
-        fragmentAdapter = new MyAdapter(getSupportFragmentManager());
+        MyViewPager viewPager = (MyViewPager) findViewById(R.id.local_viewPager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.local_tab);
+        MyAdapter fragmentAdapter = new MyAdapter(getSupportFragmentManager());
         viewPager.setAdapter(fragmentAdapter);
-        viewPager.setOffscreenPageLimit(2); //预加载页面数
-
+        //当前view的左右两边的预加载的页面的个数
+        viewPager.setOffscreenPageLimit(2);
+        // 设置tab模式，当前为系统默认模式
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        // TabLayout绑定ViewPager滑动
         tabLayout.setupWithViewPager(viewPager);
-
-        nothingTv = (TextView)findViewById(R.id.local_nothing_tv);
-        nothingTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LocalMusicActivity.this,ScanActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
-
-    //滑动布局
+    // 滑动布局
     private void addTapData() {
-        titleList.add("单曲");
+        titleList.add("歌曲");
         titleList.add("歌手");
         titleList.add("专辑");
         titleList.add("文件夹");
 
-        if (singleFragment == null) {
-            singleFragment = new SingleFragment();
-            fragments.add(singleFragment);
+        if (songFragment == null) {
+            songFragment = new SongFragment();
+            fragments.add(songFragment);
         }
         if (singerFragment == null) {
             singerFragment = new SingerFragment();
@@ -122,37 +104,31 @@ public class LocalMusicActivity extends PlayBarBaseActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.local_music_menu,menu);
+        getMenuInflater().inflate(R.menu.local_music_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        if (item.getItemId() == R.id.scan_local_menu){
-            Intent intent = new Intent(LocalMusicActivity.this,ScanActivity.class);
+        if (item.getItemId() == R.id.scan_local_menu) {
+            Intent intent = new Intent(LocalMusicActivity.this, ScanActivity.class);
             startActivity(intent);
-        }else if (item.getItemId() == android.R.id.home){
+        } else if (item.getItemId() == android.R.id.home) {
             this.finish();
         }
         return true;
     }
 
-    class MyAdapter extends FragmentPagerAdapter {
-
-        public MyAdapter(FragmentManager fm) {
+    private class MyAdapter extends FragmentPagerAdapter {
+        MyAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        /**
-         * 用来显示tab上的名字
-         * @param position
-         * @return
-         */
+        // 用来显示tab上的名字
         @Override
         public CharSequence getPageTitle(int position) {
             return titleList.get(position);

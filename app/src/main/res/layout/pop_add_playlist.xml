@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="500dp"
-              android:background="?attr/appbg"
-              android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="500dp"
+    android:background="?attr/appbg"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
-        android:text="收藏到歌单"/>
+        android:text="添加到歌单"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/colorDividerGray"></View>
+        android:background="@color/colorDividerGray"/>
 
     <LinearLayout
         android:id="@+id/pop_add_playlist_ll"
@@ -42,7 +43,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/colorDividerGray"></View>
+        android:background="@color/colorDividerGray"/>
 
     <ListView
         android:id="@+id/pop_add_pl_lv"

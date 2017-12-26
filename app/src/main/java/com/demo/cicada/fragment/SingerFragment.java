@@ -22,13 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 歌手
  */
 
 public class SingerFragment extends Fragment {
 
     private static final String TAG = "SingerFragment";
-    private RecyclerView recyclerView;
     private SingerAdapter adapter;
     private List<SingerInfo> singerInfoList = new ArrayList<>();
     private DBManager dbManager;
@@ -46,7 +45,7 @@ public class SingerFragment extends Fragment {
         super.onResume();
         singerInfoList.clear();
         singerInfoList.addAll(MyMusicUtil.groupBySinger((ArrayList) dbManager.getAllMusicFromMusicTable()));
-        Log.d(TAG, "onResume: singerInfoList.size() = "+singerInfoList.size());
+        Log.d(TAG, "onResume: singerInfoList.size() = " + singerInfoList.size());
         adapter.notifyDataSetChanged();
     }
 
@@ -54,11 +53,11 @@ public class SingerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         Log.d("aaaa", "onCreateView: ");
-        View view = inflater.inflate(R.layout.fragment_singer,container,false);
-        recyclerView = (RecyclerView)view.findViewById(R.id.singer_recycler_view);
+        View view = inflater.inflate(R.layout.fragment_singer, container, false);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.singer_recycler_view);
         dbManager = DBManager.getInstance(getContext());
-        Log.e(TAG, "SingerFragment: singerInfoList.size() ="+ singerInfoList.size());
-        adapter = new SingerAdapter(getContext(),singerInfoList);
+        Log.e(TAG, "SingerFragment: singerInfoList.size() =" + singerInfoList.size());
+        adapter = new SingerAdapter(getContext(), singerInfoList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -72,8 +71,8 @@ public class SingerFragment extends Fragment {
             @Override
             public void onContentClick(View content, int position) {
                 Log.d(TAG, "onContentClick: ");
-                Intent intent = new Intent(mContext,ModelActivity.class);
-                intent.putExtra(ModelActivity.KEY_TITLE,singerInfoList.get(position).getName());
+                Intent intent = new Intent(mContext, ModelActivity.class);
+                intent.putExtra(ModelActivity.KEY_TITLE, singerInfoList.get(position).getName());
                 intent.putExtra(ModelActivity.KEY_TYPE, ModelActivity.SINGER_TYPE);
                 mContext.startActivity(intent);
             }

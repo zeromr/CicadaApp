@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- *
+ * 歌手
  */
 
 public class SingerInfo implements Parcelable {
