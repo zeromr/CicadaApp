@@ -3,17 +3,12 @@ package com.demo.cicada.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -37,14 +32,13 @@ import com.demo.cicada.utils.Utility;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class WeatherActivity extends AppCompatActivity implements View.OnClickListener {
+public class WeatherActivity extends BaseActivity implements View.OnClickListener {
     private ScrollView svWeather;
     private TextView tvTitleCity;
     private TextView tvUpdateTime;
@@ -75,10 +69,9 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                     //可在其中解析amapLocation获取相应内容。
                     Log.i("msg", "城市信息: " + aMapLocation.getCity());
                     //获取定位时间+
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    Date date = new Date(aMapLocation.getTime());
-                /*df.format(date);*/
-                    Log.i("msg", "时间: " + df.format(date));
+                    /*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    Date date = new Date(aMapLocation.getTime());*/
+//                    Log.i("msg", "时间: " + df.format(date));
                     //                    requestWeather(aMapLocation.getCity());
                     requestWeather(aMapLocation.getDistrict());
                     mLocationClient.stopLocation();     //停止定位后，本地定位服务并不会被销毁
@@ -96,11 +89,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
+        buildVersion();
         setContentView(R.layout.activity_weather);
 
         initView();
@@ -108,6 +97,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         loadData();
     }
 
+    // 获取位置
     public void getLocation() {
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());
@@ -128,9 +118,11 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         mLocationClient.startLocation();
 
         Log.i("msg", "getLocation: 定位已启动...");
-
     }
 
+    /**
+     * 检查是否已授予权限
+     */
     private void checkPermission() {
 
         //need to check permission above android 6.0
@@ -161,7 +153,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     // 加载天气和图片数据
     public void loadData() {
         //        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        loadImage();
+//        loadImage();
+        loadBgImage(ivBingPic,R.drawable.ic_bg_weather);
         svWeather.setVisibility(View.INVISIBLE);
         checkPermission();
         /*String weatherStr = sp.getString("weather", null);
@@ -202,7 +195,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    // 初始化各控件
+    // 初始化控件
     public void initView() {
         svWeather = (ScrollView) findViewById(R.id.sv_weather);
         tvTitleCity = (TextView) findViewById(R.id.tv_title_city);
@@ -241,21 +234,13 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             long currentTime = new Date().getTime();
-            if ((currentTime - clickTime) > 1500) {
+            if ((currentTime - clickTime) > 2000) {
                 Toast.makeText(getApplicationContext(), "再次点击退出程序!", Toast.LENGTH_SHORT).show();
                 clickTime = currentTime;
                 return true;
             }
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * 加载天气背景图
-     */
-    private void loadImage() {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_bg_weather);
-        ivBingPic.setImageBitmap(bitmap);
     }
 
     /**
@@ -303,7 +288,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                 });
             }
         });
-        loadImage();
+//        loadImage();
+        loadBgImage(ivBingPic,R.drawable.ic_bg_weather);
     }
 
     /**
@@ -344,8 +330,6 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         tvCarWash.setText(carWash);
         tvSport.setText(sport);
         svWeather.setVisibility(View.VISIBLE);
-        /*Intent intent = new Intent(this, AutoUpdateService.class);
-        startService(intent);*/
     }
 
 }

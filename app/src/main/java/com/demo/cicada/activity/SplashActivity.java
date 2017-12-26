@@ -4,16 +4,12 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,20 +22,17 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * 启动界面
+ */
 public class SplashActivity extends BaseActivity {
     List<String> permissionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
+        buildVersion();
         setContentView(R.layout.activity_splash);
-        /*initView();
-        initPermission();*/
         hasCache();
     }
 
@@ -51,41 +44,44 @@ public class SplashActivity extends BaseActivity {
             finish();
         } else {
             initView();
-            initPermission();
+            applyPermission();
         }
     }
 
+    // 初始化控件
     private void initView() {
         ImageView ivSplash = (ImageView) findViewById(R.id.iv_splash);
         TextView tvCopyright = (TextView) findViewById(R.id.tv_copyright);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_splash);
-        ivSplash.setImageBitmap(bitmap);
+        /*Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_splash);
+        ivSplash.setImageBitmap(bitmap);*/
+        loadBgImage(ivSplash,R.drawable.ic_splash);
         int year = Calendar.getInstance().get(Calendar.YEAR);
         tvCopyright.setText(getString(R.string.copyright, year));
     }
 
-    private void checkSkip() {
+    // Timer是一种定时器工具，用来在一个后台线程计划执行指定任务，它可以计划执行一个任务一次或反复多次
+    private void gotoActivity() {
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                startWeatherActivity();
+                startActivity(WeatherActivity.class);
             }
         };
-        timer.schedule(task, 2000);
+        timer.schedule(task, 2000);     // 2秒后跳转
     }
 
-    private void startWeatherActivity() {
+    /*private void startWeatherActivity() {
         startActivity(new Intent(this, WeatherActivity.class));
         finish();
-    }
+    }*/
 
     /**
-     * 检查权限
+     * 申请权限
      */
-    private void initPermission() {
+    private void applyPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            checkSkip();
+            gotoActivity();
             return;
         }
         if (ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
@@ -100,10 +96,11 @@ public class SplashActivity extends BaseActivity {
             String[] permisstions = permissionList.toArray(new String[permissionList.size()]);
             ActivityCompat.requestPermissions(SplashActivity.this, permisstions, 1);
         } else {
-            checkSkip();
+            gotoActivity();
         }
     }
 
+    // 权限回调
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[]
             grantResults) {
@@ -117,7 +114,7 @@ public class SplashActivity extends BaseActivity {
 //                            return;
                         }
                     }*/
-                    checkSkip();
+                    gotoActivity();
                 } else {
                     Toast.makeText(this, "发生未知的错误", Toast.LENGTH_SHORT).show();
                     finish();

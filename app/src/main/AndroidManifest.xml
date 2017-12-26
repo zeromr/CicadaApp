@@ -32,6 +32,7 @@
         <activity android:name=".activity.WeatherActivity">
         </activity>
 
+        <!--高德定位相关配置-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="fa7c1775d858235e8aab453fbe86c71f"/>

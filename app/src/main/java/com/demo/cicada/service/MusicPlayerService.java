@@ -1,6 +1,5 @@
 package com.demo.cicada.service;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.Notification.Builder;
 import android.app.NotificationManager;
@@ -48,7 +47,6 @@ public class MusicPlayerService extends Service {
         register();
     }
 
-    @SuppressLint("NewApi")
     private void creatNotification() {
         //通过 Builder 来创建  Notification 的
         Builder builder = new Notification.Builder(this);
@@ -59,7 +57,6 @@ public class MusicPlayerService extends Service {
         //设置 通知栏 标题
         builder.setContentTitle("知了听乐");
         //设置 通知内容
-        // TODO: 2017/12/23
         builder.setContentText("音乐服务已启动,尽情享受音乐之旅吧...");
         //设置 提醒 声音/震动/指示灯
         //        builder.setDefaults(Notification.DEFAULT_ALL);
