@@ -61,7 +61,7 @@ public class ScanActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
         initView();
-        initToolbar(R.id.scan_music_toolbar,0);
+        initToolbar(R.id.scan_music_toolbar, R.string.scan_music);
         setScanBtnBg();
         handleResult();
     }

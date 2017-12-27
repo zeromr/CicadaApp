@@ -58,7 +58,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     public void onBindViewHolder(final AlbumAdapter.ViewHolder holder, final int position) {
         Log.d("aaaa", "onBindViewHolder: position = " + position);
         AlbumInfo album = albumInfoList.get(position);
-        holder.albumIv.setImageResource(R.drawable.album);
+        holder.albumIv.setImageResource(R.drawable.ic_album);
         holder.albumName.setText(album.getName());
         holder.count.setText(album.getCount() + "首 " + album.getSinger());
         holder.contentLl.setOnClickListener(new View.OnClickListener() {

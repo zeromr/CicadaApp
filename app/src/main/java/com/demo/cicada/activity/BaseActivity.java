@@ -55,7 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 初始化标题栏
      * @param id
-     * @param resId
+     * @param resId 资源Id
      */
     public void initToolbar(int id,int resId) {
         Toolbar toolbar = (Toolbar) findViewById(id);
@@ -65,6 +65,22 @@ public abstract class BaseActivity extends AppCompatActivity {
             // 给标题栏左边加上一个返回箭头
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(resId);
+        }
+    }
+
+    /**
+     * 初始化标题栏
+     * @param id
+     * @param title 标题
+     */
+    public void initToolbar(int id,String title) {
+        Toolbar toolbar = (Toolbar) findViewById(id);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // 给标题栏左边加上一个返回箭头
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(title);
         }
     }
 }

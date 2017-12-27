@@ -60,7 +60,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
         Log.d("aaaa", "onBindViewHolder: position = " + position);
         SingerInfo singer = singerInfoList.get(position);
         holder.singelName.setText(singer.getName());
-        holder.singerIv.setImageResource(R.drawable.singer);
+        holder.singerIv.setImageResource(R.drawable.ic_singer);
         holder.count.setText(singer.getCount() + "首");
         holder.contentLl.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -129,7 +129,7 @@ public class ScanView extends View {
      * 从资源中解码bitmap
      */
     private void initBitmap() {
-        Drawable drawable = tintDrawable(getResources().getDrawable(R.drawable.music_note), ColorStateList.valueOf
+        Drawable drawable = tintDrawable(getResources().getDrawable(R.drawable.ic_music), ColorStateList.valueOf
                 (accentColor));
         bitmap = drawableToBitamp(drawable);
     }

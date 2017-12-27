@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -71,14 +69,14 @@ public class ModelActivity extends PlayBarBaseActivity {
         title = getIntent().getStringExtra(KEY_TITLE);
         type = getIntent().getStringExtra(KEY_TYPE);
         musicInfoList = new ArrayList<>();
-        initToolbar();
+        initToolbar(R.id.model_music_toolbar,title);
         initView();
         updateView();
         register();
     }
 
     // 初始化标题栏
-    public void initToolbar() {
+    /*public void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.model_music_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -86,7 +84,7 @@ public class ModelActivity extends PlayBarBaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(title);
         }
-    }
+    }*/
 
     @Override
     protected void onResume() {

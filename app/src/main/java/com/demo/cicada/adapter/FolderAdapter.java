@@ -63,7 +63,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     public void onBindViewHolder(final FolderAdapter.ViewHolder holder, final int position) {
         Log.d("aaaa", "onBindViewHolder: position = " + position);
         FolderInfo folder = folderInfoList.get(position);
-        holder.folderIv.setImageResource(R.drawable.folder);
+        holder.folderIv.setImageResource(R.drawable.ic_folder);
         holder.folderName.setText(folder.getName());
         holder.count.setText("" + folder.getCount()+"首"+folder.getPath());
         holder.contentLl.setOnClickListener(new View.OnClickListener() {
