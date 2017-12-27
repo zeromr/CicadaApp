@@ -3,9 +3,7 @@ package com.demo.cicada.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,13 +46,19 @@ public class MusicActivity extends PlayBarBaseActivity {
         setContentView(R.layout.activity_music);
         Log.i("msg", "onCreate: music");
         dbManager = DBManager.getInstance(MusicActivity.this);
-        initToolBar();
+//        initToolBar();
+        initToolbar(R.id.home_activity_toolbar,R.string.music_title);
         initView();
         startMusiceService();
     }
 
     // 初始化ToolBar
-    public void initToolBar() {
+    /*@Override
+    public void initToolbar(int id, int resId) {
+        super.initToolbar(id, resId);
+    }*/
+
+    /*public void initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.home_activity_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -62,7 +66,7 @@ public class MusicActivity extends PlayBarBaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(R.string.music_title);
         }
-    }
+    }*/
 
     public void startMusiceService() {
         Intent intent = new Intent(MusicActivity.this, MusicPlayerService.class);

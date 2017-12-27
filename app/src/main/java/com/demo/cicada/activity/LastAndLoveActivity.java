@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.demo.cicada.R.id.last_mylove_toolbar;
+
 /**
  * 最近播放和我的收藏 复用同一个Activity
  */
@@ -72,7 +74,7 @@ public class LastAndLoveActivity extends PlayBarBaseActivity {
 
     public void initToolbar() {
         label = getIntent().getStringExtra(Constant.LABEL);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.last_mylove_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(last_mylove_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

@@ -6,8 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +15,6 @@ import com.demo.cicada.fragment.AlbumFragment;
 import com.demo.cicada.fragment.FolderFragment;
 import com.demo.cicada.fragment.SingerFragment;
 import com.demo.cicada.fragment.SongFragment;
-import com.demo.cicada.utils.Constant;
 import com.demo.cicada.view.MyViewPager;
 
 import java.util.ArrayList;
@@ -39,14 +36,15 @@ public class LocalMusicActivity extends PlayBarBaseActivity {
         setContentView(R.layout.activity_local_music);
 
         // 标题栏设置
-        Toolbar toolbar = (Toolbar) findViewById(R.id.local_music_toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.local_music_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // 给标题栏左边加上一个返回的图标
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(Constant.LABEL_LOCAL);
-        }
+        }*/
+        initToolbar(R.id.local_music_toolbar, R.string.local_music);
         initView();
     }
 

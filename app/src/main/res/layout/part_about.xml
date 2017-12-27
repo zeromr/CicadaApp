@@ -19,7 +19,7 @@
             android:drawablePadding="4dp"
             android:gravity="center"
             android:text="知了心语"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/zhihuBlue"
             android:textSize="16sp"
             android:drawableLeft="@drawable/about_txt"/>
         <View
@@ -57,7 +57,7 @@
             android:drawableStart="@drawable/about_thanks"
             android:gravity="center"
             android:text="感谢开源的技术和开放的资源"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/zhihuBlue"
             android:textSize="16sp"
             android:drawableLeft="@drawable/about_thanks"/>
         <View

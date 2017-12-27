@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,15 +25,16 @@ public class AboutActivity extends BaseActivity {
     public void initView() {
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         ImageView aboutImageView = (ImageView) findViewById(R.id.about_image_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        }*/
+        initToolbar(R.id.toolbar, R.string.about);
         collapsingToolbar.setTitleEnabled(false);
-        collapsingToolbar.setTitle(getString(R.string.app_name));
+//        collapsingToolbar.setTitle(getString(R.string.about));
         Glide.with(this).load(R.drawable.ic_about_head).into(aboutImageView);
     }
 

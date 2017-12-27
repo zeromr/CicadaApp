@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,16 +39,16 @@ public class ScanActivity extends BaseActivity {
 
     private static final String TAG = ScanActivity.class.getName();
     private DBManager dbManager;
-    private Toolbar toolbar;
+//    private Toolbar toolbar;
     private Button scanBtn;
-    private TextView scanProgressTv;
+//    private TextView scanProgressTv;
     private TextView scanPathTv;
     private TextView scanCountTv;
     private CheckBox filterCb;
     private ScanView scanView;
     private Handler handler;
     private Message msg;
-    private String scanPath;
+//    private String scanPath;
     private int progress = 0;
     private int musicCount = 0;
     private boolean scanning = false;
@@ -63,7 +61,7 @@ public class ScanActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
         initView();
-        initToolBar();
+        initToolbar(R.id.scan_music_toolbar,0);
         setScanBtnBg();
         handleResult();
     }
@@ -71,8 +69,8 @@ public class ScanActivity extends BaseActivity {
     public void initView() {
         dbManager = DBManager.getInstance(ScanActivity.this);
         scanBtn = (Button) findViewById(R.id.start_scan_btn);
-        toolbar = (Toolbar) findViewById(R.id.scan_music_toolbar);
-        scanProgressTv = (TextView) findViewById(R.id.scan_progress);
+//        toolbar = (Toolbar) findViewById(R.id.scan_music_toolbar);
+//        scanProgressTv = (TextView) findViewById(R.id.scan_progress);
         scanCountTv = (TextView) findViewById(R.id.scan_count);
         scanPathTv = (TextView) findViewById(R.id.scan_path);
         filterCb = (CheckBox) findViewById(R.id.scan_filter_cb);
@@ -128,13 +126,13 @@ public class ScanActivity extends BaseActivity {
         }
     }
 
-    public void initToolBar() {
+    /*public void initToolBar() {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-    }
+    }*/
 
     private void scanComplete() {
         scanBtn.setText("完成");
@@ -204,7 +202,7 @@ public class ScanActivity extends BaseActivity {
 
                             musicInfoList.add(musicInfo);
                             progress++;
-                            scanPath = path;
+//                            scanPath = path;
                             musicCount = cursor.getCount();
                             msg = new Message();    //每次都必须new，必须发送新对象，不然会报错
                             msg.what = Constant.SCAN_UPDATE;

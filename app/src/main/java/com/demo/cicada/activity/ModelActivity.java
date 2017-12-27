@@ -72,11 +72,12 @@ public class ModelActivity extends PlayBarBaseActivity {
         type = getIntent().getStringExtra(KEY_TYPE);
         musicInfoList = new ArrayList<>();
         initToolbar();
-        init();
+        initView();
         updateView();
         register();
     }
 
+    // 初始化标题栏
     public void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.model_music_toolbar);
         setSupportActionBar(toolbar);
@@ -93,14 +94,22 @@ public class ModelActivity extends PlayBarBaseActivity {
         initDefaultPlayModeView();
     }
 
-    private void init() {
+    private void initView() {
         recyclerView = (RecyclerView) findViewById(R.id.model_recycler_view);
         adapter = new ModelAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+        sideBar = (SideBar) findViewById(R.id.model_music_siderbar);
+        playModeRl = (RelativeLayout) findViewById(R.id.model_music_playmode_rl);
+        playModeIv = (ImageView) findViewById(R.id.model_music_playmode_iv);
+        playModeTv = (TextView) findViewById(R.id.model_music_playmode_tv);
+        onListener();
+    }
 
+    // 监听事件
+    public void onListener() {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onOpenMenuClick(int position) {
@@ -144,8 +153,6 @@ public class ModelActivity extends PlayBarBaseActivity {
             }
         });
 
-
-        sideBar = (SideBar) findViewById(R.id.model_music_siderbar);
         sideBar.setOnListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String letter) {
@@ -157,10 +164,6 @@ public class ModelActivity extends PlayBarBaseActivity {
                 }
             }
         });
-
-        playModeRl = (RelativeLayout) findViewById(R.id.model_music_playmode_rl);
-        playModeIv = (ImageView) findViewById(R.id.model_music_playmode_iv);
-        playModeTv = (TextView) findViewById(R.id.model_music_playmode_tv);
 
         initDefaultPlayModeView();
 
@@ -188,6 +191,7 @@ public class ModelActivity extends PlayBarBaseActivity {
         });
     }
 
+    // 初始化默认的播放模式
     private void initDefaultPlayModeView() {
         int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
         switch (playMode) {
@@ -204,6 +208,7 @@ public class ModelActivity extends PlayBarBaseActivity {
         initPlayMode();
     }
 
+    // 播放模式
     private void initPlayMode() {
         int playMode = MyMusicUtil.getIntShared(Constant.KEY_MODE);
         if (playMode == -1) {

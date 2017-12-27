@@ -167,7 +167,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="10dp"
-                android:src="@drawable/ic_favorite"
+                android:src="@drawable/ic_favorite_border"
                 android:tint="?attr/image_tint"/>
 
             <LinearLayout

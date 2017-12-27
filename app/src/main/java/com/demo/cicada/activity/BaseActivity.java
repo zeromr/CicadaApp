@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -50,4 +52,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         imageView.setImageBitmap(bitmap);
     }
 
+    /**
+     * 初始化标题栏
+     * @param id
+     * @param resId
+     */
+    public void initToolbar(int id,int resId) {
+        Toolbar toolbar = (Toolbar) findViewById(id);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // 给标题栏左边加上一个返回箭头
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(resId);
+        }
+    }
 }
