@@ -64,7 +64,7 @@
             android:screenOrientation="portrait"/>
 
         <service
-            android:name=".service.MusicPlayerService"
+            android:name=".service.MusicService"
             android:enabled="true"
             android:exported="true"/>
 

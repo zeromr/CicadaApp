@@ -48,8 +48,12 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
     private TextView tvAQI;
     private TextView tvPM25;
     private TextView tvComfort;
+    private TextView tvDress;
+    private TextView tvCold;
     private TextView tvCarWash;
     private TextView tvSport;
+    private TextView tvTravel;
+    private TextView tvUV;
     private ImageView ivBingPic;
     public SwipeRefreshLayout swipeRefresh;
     public DrawerLayout drawerLayout;
@@ -71,7 +75,7 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                     //获取定位时间+
                     /*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     Date date = new Date(aMapLocation.getTime());*/
-//                    Log.i("msg", "时间: " + df.format(date));
+                    //                    Log.i("msg", "时间: " + df.format(date));
                     //                    requestWeather(aMapLocation.getCity());
                     requestWeather(aMapLocation.getDistrict());
                     mLocationClient.stopLocation();     //停止定位后，本地定位服务并不会被销毁
@@ -153,8 +157,8 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
     // 加载天气和图片数据
     public void loadData() {
         //        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-//        loadImage();
-        loadBgImage(ivBingPic,R.drawable.ic_bg_weather);
+        //        loadImage();
+        loadBgImage(ivBingPic, R.drawable.ic_bg_weather);
         svWeather.setVisibility(View.INVISIBLE);
         checkPermission();
         /*String weatherStr = sp.getString("weather", null);
@@ -206,8 +210,12 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
         tvAQI = (TextView) findViewById(R.id.tv_aqi);
         tvPM25 = (TextView) findViewById(R.id.tv_pm25);
         tvComfort = (TextView) findViewById(R.id.tv_comfort);
+        tvDress = (TextView) findViewById(R.id.tv_dress);
+        tvCold = (TextView) findViewById(R.id.tv_cold);
         tvCarWash = (TextView) findViewById(R.id.tv_car_wash);
         tvSport = (TextView) findViewById(R.id.tv_sport);
+        tvTravel = (TextView) findViewById(R.id.tv_travel);
+        tvUV = (TextView) findViewById(R.id.tv_uv);
         ivBingPic = (ImageView) findViewById(R.id.iv_bing_pic);
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
@@ -288,8 +296,8 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                 });
             }
         });
-//        loadImage();
-        loadBgImage(ivBingPic,R.drawable.ic_bg_weather);
+        //        loadImage();
+        loadBgImage(ivBingPic, R.drawable.ic_bg_weather);
     }
 
     /**
@@ -323,12 +331,20 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
             tvAQI.setText(weather.aqi.city.aqi);
             tvPM25.setText(weather.aqi.city.pm25);
         }
-        String comfort = "舒适度：" + weather.suggestion.comfort.info;
-        String carWash = "洗车指数：" + weather.suggestion.carWash.info;
-        String sport = "运动建议：" + weather.suggestion.sport.info;
+        String comfort = "舒适度 (" + weather.suggestion.comfort.brief + ")：" + weather.suggestion.comfort.info;
+        String dress = "穿衣建议 (" + weather.suggestion.dress.brief + ")：" + weather.suggestion.dress.info;
+        String cold = "感冒指数 (" + weather.suggestion.cold.brief + ")：" + weather.suggestion.cold.info;
+        String carWash = "洗车建议 (" + weather.suggestion.carWash.brief + ")：" + weather.suggestion.carWash.info;
+        String sport = "运动建议 (" + weather.suggestion.sport.brief + ")：" + weather.suggestion.sport.info;
+        String travel = "旅游建议 (" + weather.suggestion.travel.brief + ")：" + weather.suggestion.travel.info;
+        String uv = "紫外线指数 (" + weather.suggestion.uv.brief + ")：" + weather.suggestion.uv.info;
         tvComfort.setText(comfort);
+        tvDress.setText(dress);
+        tvCold.setText(cold);
         tvCarWash.setText(carWash);
         tvSport.setText(sport);
+        tvTravel.setText(travel);
+        tvUV.setText(uv);
         svWeather.setVisibility(View.VISIBLE);
     }
 

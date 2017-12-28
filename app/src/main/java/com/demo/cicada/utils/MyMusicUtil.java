@@ -11,7 +11,7 @@ import com.demo.cicada.entity.music.AlbumInfo;
 import com.demo.cicada.entity.music.FolderInfo;
 import com.demo.cicada.entity.music.MusicInfo;
 import com.demo.cicada.entity.music.SingerInfo;
-import com.demo.cicada.service.MusicPlayerService;
+import com.demo.cicada.service.MusicService;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class MyMusicUtil {
         musicId = dbManager.getNextMusic(musicIdList, musicId, playMode);
         MyMusicUtil.setShared(Constant.KEY_ID, musicId);
         if (musicId == -1) {
-            Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+            Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
             intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
             context.sendBroadcast(intent);
             Toast.makeText(context, "歌曲不存在", Toast.LENGTH_LONG).show();
@@ -100,7 +100,7 @@ public class MyMusicUtil {
         Log.d(TAG, "next path =" + path);
         //发送播放请求
         Log.d(TAG, "next  id = " + musicId + "path = " + path);
-        Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+        Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
         intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
         intent.putExtra(Constant.KEY_PATH, path);
         context.sendBroadcast(intent);
@@ -120,7 +120,7 @@ public class MyMusicUtil {
         musicId = dbManager.getPreMusic(musicIdList, musicId, playMode);
         MyMusicUtil.setShared(Constant.KEY_ID, musicId);
         if (musicId == -1) {
-            Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+            Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
             intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
             context.sendBroadcast(intent);
             Toast.makeText(context, "歌曲不存在", Toast.LENGTH_LONG).show();
@@ -132,7 +132,7 @@ public class MyMusicUtil {
         Log.d(TAG, "pre path =" + path);
         //发送播放请求
         Log.d(TAG, "pre  id = " + musicId + "path = " + path);
-        Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+        Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
         intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
         intent.putExtra(Constant.KEY_PATH, path);
         context.sendBroadcast(intent);

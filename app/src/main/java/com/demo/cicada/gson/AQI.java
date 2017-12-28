@@ -1,7 +1,7 @@
 package com.demo.cicada.gson;
 
 /**
- * Created by Zero on 2017/11/30.
+ * 空气质量指数
  */
 
 public class AQI {

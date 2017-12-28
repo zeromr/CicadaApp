@@ -22,7 +22,7 @@ import com.demo.cicada.R;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.MusicInfo;
 import com.demo.cicada.entity.music.PlayListInfo;
-import com.demo.cicada.service.MusicPlayerService;
+import com.demo.cicada.service.MusicService;
 import com.demo.cicada.utils.Constant;
 import com.demo.cicada.utils.MyMusicUtil;
 
@@ -214,7 +214,7 @@ public class MusicPopMenuWindow extends PopupWindow {
                         dbManager.deleteMusic(curId);
                     }
                     if (curId == musicId){
-                        Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+                        Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
                         intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
                         context.sendBroadcast(intent);
                         MyMusicUtil.setShared(Constant.KEY_ID,dbManager.getFirstId(Constant.LIST_ALLMUSIC));
@@ -229,7 +229,7 @@ public class MusicPopMenuWindow extends PopupWindow {
 
                     if (curId == musicId) {
                         //移除的是当前播放的音乐
-                        Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+                        Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
                         intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
                         context.sendBroadcast(intent);
                     }

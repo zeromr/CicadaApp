@@ -3,7 +3,7 @@ package com.demo.cicada.gson;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Zero on 2017/11/30.
+ * 基础信息
  */
 
 public class Basic {

@@ -24,6 +24,13 @@
         android:textColor="#fff"/>
 
     <TextView
+        android:id="@+id/tv_dress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textColor="#fff"/>
+
+    <TextView
         android:id="@+id/tv_car_wash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,6 +39,27 @@
 
     <TextView
         android:id="@+id/tv_sport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textColor="#fff"/>
+
+    <TextView
+        android:id="@+id/tv_travel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textColor="#fff"/>
+
+    <TextView
+        android:id="@+id/tv_cold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textColor="#fff"/>
+
+    <TextView
+        android:id="@+id/tv_uv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"

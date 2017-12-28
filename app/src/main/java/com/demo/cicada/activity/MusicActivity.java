@@ -20,7 +20,7 @@ import com.demo.cicada.R;
 import com.demo.cicada.adapter.MusicListViewAdapter;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.PlayListInfo;
-import com.demo.cicada.service.MusicPlayerService;
+import com.demo.cicada.service.MusicService;
 import com.demo.cicada.utils.Constant;
 
 import java.util.List;
@@ -69,8 +69,8 @@ public class MusicActivity extends PlayBarBaseActivity {
     }*/
 
     public void startMusiceService() {
-        Intent intent = new Intent(MusicActivity.this, MusicPlayerService.class);
-        //        Intent startIntent = new Intent(MusicActivity.this, MusicService.class);
+        Intent intent = new Intent(MusicActivity.this, MusicService.class);
+        //        Intent startIntent = new Intent(MusicActivity.this, Music2Service.class);
         startService(intent);
     }
 

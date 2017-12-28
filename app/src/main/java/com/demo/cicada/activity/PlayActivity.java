@@ -25,7 +25,7 @@ import com.demo.cicada.R;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.fragment.PlayBarFragment;
 import com.demo.cicada.receiver.PlayerManagerReceiver;
-import com.demo.cicada.service.MusicPlayerService;
+import com.demo.cicada.service.MusicService;
 import com.demo.cicada.utils.Constant;
 import com.demo.cicada.utils.CustomAttrValueUtil;
 import com.demo.cicada.utils.MyMusicUtil;
@@ -89,7 +89,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 //                seekBar_touch = true;	//可以拖动标志
                 int musicId = MyMusicUtil.getIntShared(Constant.KEY_ID);
                 if (musicId == -1) {
-                    Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+                    Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
                     intent.putExtra("cmd", Constant.COMMAND_STOP);
                     sendBroadcast(intent);
                     Toast.makeText(PlayActivity.this, "歌曲不存在", Toast.LENGTH_LONG).show();
@@ -97,7 +97,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 }
 
                 //发送播放请求
-                Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+                Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
                 intent.putExtra("cmd", Constant.COMMAND_PROGRESS);
                 intent.putExtra("current", mProgress);
                 sendBroadcast(intent);
@@ -238,17 +238,17 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         }
         //如果当前媒体在播放音乐状态，则图片显示暂停图片，按下播放键，则发送暂停媒体命令，图片显示播放图片。以此类推。
         if (PlayerManagerReceiver.status == Constant.STATUS_PAUSE) {
-            Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+            Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
             intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
             sendBroadcast(intent);
         } else if (PlayerManagerReceiver.status == Constant.STATUS_PLAY) {
-            Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+            Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
             intent.putExtra(Constant.COMMAND, Constant.COMMAND_PAUSE);
             sendBroadcast(intent);
         } else {
             //为停止状态时发送播放命令，并发送将要播放歌曲的路径
             String path = dbManager.getMusicPath(musicId);
-            Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+            Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
             intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
             intent.putExtra(Constant.KEY_PATH, path);
             Log.i(TAG, "onClick: path = " + path);

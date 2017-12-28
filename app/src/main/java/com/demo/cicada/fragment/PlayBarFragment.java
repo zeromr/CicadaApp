@@ -26,7 +26,7 @@ import com.demo.cicada.R;
 import com.demo.cicada.activity.PlayActivity;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.receiver.PlayerManagerReceiver;
-import com.demo.cicada.service.MusicPlayerService;
+import com.demo.cicada.service.MusicService;
 import com.demo.cicada.utils.Constant;
 import com.demo.cicada.utils.MyMusicUtil;
 import com.demo.cicada.view.PlayingPopWindow;
@@ -110,17 +110,17 @@ public class PlayBarFragment extends Fragment {
                 }
                 //如果当前媒体在播放音乐状态，则图片显示暂停图片，按下播放键，则发送暂停媒体命令，图片显示播放图片。以此类推。
                 if (status == Constant.STATUS_PAUSE) {
-                    Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+                    Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
                     intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
                     getActivity().sendBroadcast(intent);
                 } else if (status == Constant.STATUS_PLAY) {
-                    Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+                    Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
                     intent.putExtra(Constant.COMMAND, Constant.COMMAND_PAUSE);
                     getActivity().sendBroadcast(intent);
                 } else {
                     //为停止状态时发送播放命令，并发送将要播放歌曲的路径
                     String path = dbManager.getMusicPath(musicId);
-                    Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+                    Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
                     intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
                     intent.putExtra(Constant.KEY_PATH, path);
                     Log.i(TAG, "onClick: path = " + path);

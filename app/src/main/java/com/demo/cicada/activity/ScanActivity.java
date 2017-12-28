@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.demo.cicada.R;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.MusicInfo;
-import com.demo.cicada.service.MusicPlayerService;
+import com.demo.cicada.service.MusicService;
 import com.demo.cicada.utils.ChineseToEnglish;
 import com.demo.cicada.utils.Constant;
 import com.demo.cicada.utils.CustomAttrValueUtil;
@@ -285,7 +285,7 @@ public class ScanActivity extends BaseActivity {
                 MyMusicUtil.setShared(Constant.KEY_ID, id);
             } else {
                 Log.d(TAG, "initCurPlaying: !!!contains");
-                Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+                Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
                 intent.putExtra(Constant.COMMAND, Constant.COMMAND_STOP);
                 sendBroadcast(intent);
             }

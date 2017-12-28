@@ -16,7 +16,7 @@ import com.demo.cicada.R;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.MusicInfo;
 import com.demo.cicada.entity.music.PlayListInfo;
-import com.demo.cicada.service.MusicPlayerService;
+import com.demo.cicada.service.MusicService;
 import com.demo.cicada.utils.Constant;
 import com.demo.cicada.utils.MyMusicUtil;
 
@@ -98,7 +98,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             public void onClick(View v) {
                 Log.i(TAG, "onClick: 播放 " + musicInfo.getName());
                 String path = dbManager.getMusicPath(musicInfo.getId());
-                Intent intent = new Intent(MusicPlayerService.PLAYER_MANAGER_ACTION);
+                Intent intent = new Intent(MusicService.PLAYER_MANAGER_ACTION);
                 intent.putExtra(Constant.COMMAND, Constant.COMMAND_PLAY);
                 intent.putExtra(Constant.KEY_PATH, path);
                 context.sendBroadcast(intent);
