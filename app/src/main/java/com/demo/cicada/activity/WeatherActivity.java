@@ -9,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.demo.cicada.utils.Utility;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import okhttp3.Call;
@@ -43,10 +45,13 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
     private TextView tvTitleCity;
     private TextView tvUpdateTime;
     private TextView tvDegree;
+    private ImageView ivWeatherIcon;
     private TextView tvWeatherInfo;
+    private ImageView ivMapIcon;
     private LinearLayout llForecast;
     private TextView tvAQI;
     private TextView tvPM25;
+    private TextView tvAirQuality;
     private TextView tvComfort;
     private TextView tvDress;
     private TextView tvCold;
@@ -64,6 +69,7 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
     public AMapLocationClient mLocationClient = null;
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
+    private String currentArea;
     //声明定位回调监听器
     AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
         @Override
@@ -77,8 +83,11 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                     Date date = new Date(aMapLocation.getTime());*/
                     //                    Log.i("msg", "时间: " + df.format(date));
                     //                    requestWeather(aMapLocation.getCity());
-                    requestWeather(aMapLocation.getDistrict());
-                    mLocationClient.stopLocation();     //停止定位后，本地定位服务并不会被销毁
+                    currentArea=aMapLocation.getDistrict();
+                    tvTitleCity.setText(currentArea);
+                    Log.i("msg", "tvTitleCity: "+tvTitleCity.getText().toString()+",getDistrict："+currentArea);
+                    requestWeather(currentArea);
+
                 } else {
                     Toast.makeText(WeatherActivity.this, "定位失败，加载默认城市", Toast.LENGTH_SHORT).show();
                     requestWeather("德阳");
@@ -86,9 +95,11 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                     Log.e("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" +
                             aMapLocation.getErrorInfo());
                 }
+                mLocationClient.stopLocation();     //停止定位后，本地定位服务并不会被销毁
             }
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,9 +217,12 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
         tvUpdateTime = (TextView) findViewById(R.id.tv_update_time);
         tvDegree = (TextView) findViewById(R.id.tv_degree);
         tvWeatherInfo = (TextView) findViewById(R.id.tv_weather_info);
+        ivWeatherIcon = (ImageView) findViewById(R.id.iv_weather_icon);
+        ivMapIcon = (ImageView) findViewById(R.id.iv_map_icon);
         llForecast = (LinearLayout) findViewById(R.id.ll_forecast);
         tvAQI = (TextView) findViewById(R.id.tv_aqi);
         tvPM25 = (TextView) findViewById(R.id.tv_pm25);
+        tvAirQuality = (TextView) findViewById(R.id.tv_air_quality);
         tvComfort = (TextView) findViewById(R.id.tv_comfort);
         tvDress = (TextView) findViewById(R.id.tv_dress);
         tvCold = (TextView) findViewById(R.id.tv_cold);
@@ -296,7 +310,6 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                 });
             }
         });
-        //        loadImage();
         loadBgImage(ivBingPic, R.drawable.ic_bg_weather);
     }
 
@@ -310,11 +323,21 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
         String updateTime = weather.basic.update.updateTime.split(" ")[1];
         String degree = weather.now.temperature + "℃";
         String weatherInfo = weather.now.more.info;
+
+        // 设置当前地区图标
+        if(tvTitleCity.getText().toString().equals(currentArea)){
+            ivMapIcon.setImageResource(R.drawable.ic_location);
+        }else{
+            ivMapIcon.setImageResource(0);
+        }
         tvTitleCity.setText(cityName);
+        Log.i("msg", "区域: "+tvTitleCity.getText().toString());
         tvUpdateTime.setText(updateTime);
         tvDegree.setText(degree);
         tvWeatherInfo.setText(weatherInfo);
+        ivWeatherIcon.setImageResource(getWeatherIcon(weatherInfo));
         llForecast.removeAllViews();
+
         for (Forecast forecast : weather.forecastList) {
             View view = LayoutInflater.from(this).inflate(R.layout.weather_forecast_item, llForecast, false);
             TextView tvDate = (TextView) view.findViewById(R.id.tv_date);
@@ -330,6 +353,7 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
         if (weather.aqi != null) {
             tvAQI.setText(weather.aqi.city.aqi);
             tvPM25.setText(weather.aqi.city.pm25);
+            tvAirQuality.setText("("+weather.aqi.city.qlty+")");
         }
         String comfort = "舒适度 (" + weather.suggestion.comfort.brief + ")：" + weather.suggestion.comfort.info;
         String dress = "穿衣建议 (" + weather.suggestion.dress.brief + ")：" + weather.suggestion.dress.info;
@@ -346,6 +370,55 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
         tvTravel.setText(travel);
         tvUV.setText(uv);
         svWeather.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 天气图标
+     * @param weather
+     * @return
+     */
+    private int getWeatherIcon(String weather) {
+        if (TextUtils.isEmpty(weather)) {
+            return R.drawable.ic_weather_sunny;
+        }
+
+        if (weather.contains("-")) {
+            weather = weather.substring(0, weather.indexOf("-"));
+        }
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        int resId;
+        if (weather.contains("晴")) {
+            if (hour >= 7 && hour < 19) {
+                resId = R.drawable.ic_weather_sunny;
+            } else {
+                resId = R.drawable.ic_weather_sunny_night;
+            }
+        } else if (weather.contains("多云")) {
+            if (hour >= 7 && hour < 19) {
+                resId = R.drawable.ic_weather_cloudy;
+            } else {
+                resId = R.drawable.ic_weather_cloudy_night;
+            }
+        } else if (weather.contains("阴")) {
+            resId = R.drawable.ic_weather_overcast;
+        } else if (weather.contains("雷阵雨")) {
+            resId = R.drawable.ic_weather_thunderstorm;
+        } else if (weather.contains("雨夹雪")) {
+            resId = R.drawable.ic_weather_sleet;
+        } else if (weather.contains("雨")) {
+            resId = R.drawable.ic_weather_rain;
+        } else if (weather.contains("雪")) {
+            resId = R.drawable.ic_weather_snow;
+        } else if (weather.contains("雾") || weather.contains("霾")) {
+            resId = R.drawable.ic_weather_foggy;
+        } else if (weather.contains("风") || weather.contains("飑")) {
+            resId = R.drawable.ic_weather_typhoon;
+        } else if (weather.contains("沙") || weather.contains("尘")) {
+            resId = R.drawable.ic_weather_sandstorm;
+        } else {
+            resId = R.drawable.ic_weather_cloudy;
+        }
+        return resId;
     }
 
 }

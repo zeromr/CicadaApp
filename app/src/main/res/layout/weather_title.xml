@@ -21,6 +21,14 @@
         android:textColor="#fff"
         android:textSize="20sp"/>
 
+    <ImageView
+        android:id="@+id/iv_map_icon"
+        android:layout_width="15dp"
+        android:layout_height="18dp"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/tv_title_city"
+        android:layout_margin="5dp"/>
+
     <Button
         android:id="@+id/btn_nav"
         android:layout_width="30dp"
