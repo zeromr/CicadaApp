@@ -29,9 +29,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.WeatherActivity">
-        </activity>
-
         <!--高德定位相关配置-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
@@ -48,20 +45,24 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".activity.WeatherActivity" />
         <activity
             android:name=".activity.MusicActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activity.WeatherActivity"/>
         <activity
             android:name=".activity.ScanActivity"
             android:label="@string/scan_music"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activity.LocalMusicActivity"/>
         <activity
             android:name=".activity.LocalMusicActivity"
             android:label="@string/local_music"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activity.MusicActivity"/>
 
         <service
             android:name=".service.MusicService"
@@ -81,18 +82,21 @@
         <activity
             android:name=".activity.LastAndLoveActivity"
             android:label="@string/last_play"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".activity.PlayListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/PlaylistActivityTheme"/>
+            android:parentActivityName=".activity.MusicActivity"/>
+        <activity
+            android:name=".activity.SongListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PlaylistActivityTheme"
+            android:parentActivityName=".activity.MusicActivity"/>
         <activity
             android:name=".activity.ModelActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.AboutActivity"
-            android:label="@string/about"/>
+            android:label="@string/about"
+            android:parentActivityName=".activity.WeatherActivity"/>
     </application>
 
 </manifest>

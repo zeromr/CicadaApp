@@ -538,8 +538,8 @@ public class DBManager {
             }
         } else {
             musicInfo.add("0");
-            musicInfo.add("听听音乐");
-            musicInfo.add("好音质");
+            musicInfo.add("知了听乐");
+            musicInfo.add("Music");
             musicInfo.add("0");
             musicInfo.add("0");
             musicInfo.add("0");

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * 天气
+ * 天气预报类
  */
 
 public class Weather {

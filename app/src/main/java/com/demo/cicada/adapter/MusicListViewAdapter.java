@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.demo.cicada.R;
 import com.demo.cicada.activity.MusicActivity;
-import com.demo.cicada.activity.PlayListActivity;
+import com.demo.cicada.activity.SongListActivity;
 import com.demo.cicada.database.DBManager;
 import com.demo.cicada.entity.music.PlayListInfo;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
@@ -119,7 +119,7 @@ public class MusicListViewAdapter extends BaseAdapter {
                     builder.show();
                 } else {
                     //进入歌单
-                    Intent intent = new Intent(activity, PlayListActivity.class);
+                    Intent intent = new Intent(activity, SongListActivity.class);
                     intent.putExtra("playlistInfo", dataList.get(position));
                     activity.startActivity(intent);
                 }

@@ -40,11 +40,14 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+/**
+ * 天气预报
+ */
 public class WeatherActivity extends BaseActivity implements View.OnClickListener {
     private ScrollView svWeather;
     private TextView tvTitleCity;
-    private TextView tvUpdateTime;
-    private TextView tvDegree;
+    private TextView tvUpdateTime;      // 更新时间
+    private TextView tvDegree;          // 度数
     private ImageView ivWeatherIcon;
     private TextView tvWeatherInfo;
     private ImageView ivMapIcon;
@@ -78,14 +81,13 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                 if (aMapLocation.getErrorCode() == 0) {
                     //可在其中解析amapLocation获取相应内容。
                     Log.i("msg", "城市信息: " + aMapLocation.getCity());
-                    //获取定位时间+
-                    /*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    Date date = new Date(aMapLocation.getTime());*/
-                    //                    Log.i("msg", "时间: " + df.format(date));
-                    //                    requestWeather(aMapLocation.getCity());
-                    currentArea=aMapLocation.getDistrict();
-                    tvTitleCity.setText(currentArea);
-                    Log.i("msg", "tvTitleCity: "+tvTitleCity.getText().toString()+",getDistrict："+currentArea);
+                    currentArea = aMapLocation.getDistrict().substring(0,2);
+                    // 缓存当前地区
+                    SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences
+                            (WeatherActivity.this).edit();
+                    edit.putString("currentAreaStr", currentArea);
+                    edit.apply();
+                    Log.i("msg", "tvTitleCity: " + tvTitleCity.getText().toString() + ",getDistrict：" + currentArea);
                     requestWeather(currentArea);
 
                 } else {
@@ -110,6 +112,7 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
         initView();
         menuItem();
         loadData();
+
     }
 
     // 获取位置
@@ -167,12 +170,9 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
 
     // 加载天气和图片数据
     public void loadData() {
-        //        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        //        loadImage();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String weatherStr = sp.getString("weather", null);
         loadBgImage(ivBingPic, R.drawable.ic_bg_weather);
-        svWeather.setVisibility(View.INVISIBLE);
-        checkPermission();
-        /*String weatherStr = sp.getString("weather", null);
         if (weatherStr != null) {
             // 有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherStr);
@@ -180,11 +180,12 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                 mWeatherId = weather.basic.weatherId;
             }
             showWeatherInfo(weather);
+//            ivMapIcon.setImageResource(R.drawable.ic_location);
 
         } else {
             svWeather.setVisibility(View.INVISIBLE);
             checkPermission();
-        }*/
+        }
         swipeRefresh.setOnRefreshListener(() -> requestWeather(mWeatherId));
     }
 
@@ -268,13 +269,17 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
     /**
      * 根据天气id请求城市天气信息
      *
-     * @param weatherId
+     * @param weatherId 天气信息id
      */
     public void requestWeather(final String weatherId) {
         /*String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId +
                 "&key=bc0418b57b2d4918819d3974ac1285d9";*/
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId +
                 "&key=3ab404ccea9d416abe84dfe936af6f07";
+        //        String weatherUrl = "https://free-api.heweather
+        // .com/s6/weather?key=bc0418b57b2d4918819d3974ac1285d9&location="+weatherId;
+        //        String weatherUrl = "https://free-api.heweather
+        // .com/s6/weather?key=3ab404ccea9d416abe84dfe936af6f07&location="+weatherId;
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -296,10 +301,12 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void run() {
                         if (weather != null && "ok".equals(weather.status)) {
-                            SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences
-                                    (WeatherActivity.this).edit();
-                            edit.putString("weather", responseText);
-                            edit.apply();
+                            if (weather.basic.cityName.equals(currentArea)) {
+                                SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences
+                                        (WeatherActivity.this).edit();
+                                edit.putString("weather", responseText);
+                                edit.apply();
+                            }
                             mWeatherId = weather.basic.weatherId;
                             showWeatherInfo(weather);
                         } else {
@@ -316,22 +323,29 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
     /**
      * 处理并显示Weather实体类中的数据
      *
-     * @param weather
+     * @param weather 天气预报对象
      */
     private void showWeatherInfo(Weather weather) {
         String cityName = weather.basic.cityName;
         String updateTime = weather.basic.update.updateTime.split(" ")[1];
+        //        String updateTime = weather.basic.update.updateTime.split(" ")[0];
         String degree = weather.now.temperature + "℃";
         String weatherInfo = weather.now.more.info;
 
         // 设置当前地区图标
-        if(tvTitleCity.getText().toString().equals(currentArea)){
+        Log.i("msg", "tvTitleCity: "+tvTitleCity.getText().toString()+",currentArea："+currentArea);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String currentAreaStr = sp.getString("currentAreaStr", null);
+        Log.i("msg", ",currentAreaStr："+currentAreaStr);
+
+        tvTitleCity.setText(cityName);
+        if (tvTitleCity.getText().toString().equals(currentAreaStr)) {
             ivMapIcon.setImageResource(R.drawable.ic_location);
-        }else{
+        } else {
             ivMapIcon.setImageResource(0);
         }
-        tvTitleCity.setText(cityName);
-        Log.i("msg", "区域: "+tvTitleCity.getText().toString());
+
+        Log.i("msg", "区域: " + tvTitleCity.getText().toString());
         tvUpdateTime.setText(updateTime);
         tvDegree.setText(degree);
         tvWeatherInfo.setText(weatherInfo);
@@ -346,14 +360,14 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
             TextView tvMin = (TextView) view.findViewById(R.id.tv_min);
             tvDate.setText(forecast.date);
             tvInfo.setText(forecast.more.info);
-            tvMax.setText(forecast.temperature.max + "℃");
-            tvMin.setText(forecast.temperature.min + "℃");
+            tvMax.setText(String.format("%s℃", forecast.temperature.max));
+            tvMin.setText(String.format("%s℃", forecast.temperature.min));
             llForecast.addView(view);
         }
         if (weather.aqi != null) {
             tvAQI.setText(weather.aqi.city.aqi);
             tvPM25.setText(weather.aqi.city.pm25);
-            tvAirQuality.setText("("+weather.aqi.city.qlty+")");
+            tvAirQuality.setText("(" + weather.aqi.city.qlty + ")");
         }
         String comfort = "舒适度 (" + weather.suggestion.comfort.brief + ")：" + weather.suggestion.comfort.info;
         String dress = "穿衣建议 (" + weather.suggestion.dress.brief + ")：" + weather.suggestion.dress.info;
@@ -373,9 +387,8 @@ public class WeatherActivity extends BaseActivity implements View.OnClickListene
     }
 
     /**
-     * 天气图标
-     * @param weather
-     * @return
+     * @param weather 天气图标
+     * @return resId
      */
     private int getWeatherIcon(String weather) {
         if (TextUtils.isEmpty(weather)) {

@@ -34,7 +34,7 @@ import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
 
-public class PlayListActivity extends PlayBarBaseActivity {
+public class SongListActivity extends PlayBarBaseActivity {
     private PlaylistAdapter playlistAdapter;
     private List<MusicInfo> musicInfoList;
     private PlayListInfo playListInfo;
@@ -44,22 +44,10 @@ public class PlayListActivity extends PlayBarBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (Build.VERSION.SDK_INT >= 21) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }*/
         buildVersion();
-        setContentView(R.layout.activity_playlist);
+        setContentView(R.layout.activity_songlist);
         loadBingPic();
         playListInfo = getIntent().getParcelableExtra("playlistInfo");
-
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.activity_playlist_toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }*/
         initToolbar(R.id.activity_playlist_toolbar,0);
 
         CollapsingToolbarLayout mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id
@@ -107,9 +95,9 @@ public class PlayListActivity extends PlayBarBaseActivity {
                 //从列表移除
                 int ret = dbManager.removeMusicFromPlaylist(musicInfo.getId(), playListInfo.getId());
                 if (ret > 0) {
-                    Toast.makeText(PlayListActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SongListActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(PlayListActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SongListActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
                 }
                 if (curId == musicId) {
                     //移除的是当前播放的音乐
@@ -143,12 +131,12 @@ public class PlayListActivity extends PlayBarBaseActivity {
     }
 
     public void showPopFormBottom(MusicInfo musicInfo) {
-        MusicPopMenuWindow menuPopupWindow = new MusicPopMenuWindow(PlayListActivity.this, musicInfo, findViewById(R
+        MusicPopMenuWindow menuPopupWindow = new MusicPopMenuWindow(SongListActivity.this, musicInfo, findViewById(R
                 .id.activity_playlist), Constant.ACTIVITY_MYLIST);
         //      设置Popupwindow显示位置（从底部弹出）
         menuPopupWindow.showAtLocation(findViewById(R.id.activity_playlist), Gravity.BOTTOM | Gravity
                 .CENTER_HORIZONTAL, 0, 0);
-        WindowManager.LayoutParams params = PlayListActivity.this.getWindow().getAttributes();
+        WindowManager.LayoutParams params = SongListActivity.this.getWindow().getAttributes();
         //当弹出Popupwindow时，背景变半透明
         params.alpha = 0.7f;
         getWindow().setAttributes(params);

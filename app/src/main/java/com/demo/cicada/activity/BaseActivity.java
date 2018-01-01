@@ -8,11 +8,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.support.v7.widget.Toolbar;
 
 import com.demo.cicada.R;
+
+//import android.support.v7.widget.Toolbar;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -60,6 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void initToolbar(int id,int resId) {
         Toolbar toolbar = (Toolbar) findViewById(id);
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // 给标题栏左边加上一个返回箭头
@@ -76,6 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void initToolbar(int id,String title) {
         Toolbar toolbar = (Toolbar) findViewById(id);
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // 给标题栏左边加上一个返回箭头

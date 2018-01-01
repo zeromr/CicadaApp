@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:textColor="#fff"
-            android:textSize="52sp"/>
+            android:textSize="50sp"/>
 
     </RelativeLayout>
 
