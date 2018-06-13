@@ -58,15 +58,15 @@
 地理定位服务： 高德地图
 
 #### 开源技术
-1. [Rxjava][2]
-2. [RxAndroid][3]
-3. [LitePal][4]
-5. [GLide][5]
-6. [okhttp][6]
-7. [gson][7]
-8. [RxPermissions][8]
-9. [SwipeDelMenuLayout][9]
-10. [butterknife][10]
+1. [Rxjava]
+2. [RxAndroid]
+3. [LitePal]
+4. [GLide]
+5. [okhttp]
+6. [gson]
+7. [RxPermissions]
+8. [SwipeDelMenuLayout]
+9. [butterknife]
 
 
 ### 截图
@@ -77,7 +77,6 @@
 感谢开源，学习到了前辈们优秀的代码：
 - [@张鸿洋][7]
 - [@郭霖][8]
-- [@泡在网上编代码][9]
 
 ### 关于作者
 
@@ -87,6 +86,7 @@
 
 
 [7]: https://github.com/hongyangAndroid
+[8]: https://blog.csdn.net/guolin_blog
 
 [image-2]: /images/startup.png
 [image-3]: /images/weather.png
